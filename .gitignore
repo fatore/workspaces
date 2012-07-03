@@ -1,8 +1,5 @@
 *.*
 !.gitignore
-!Makefile
-!makefile
-!README
 !*.sql
 !*.txt
 !*.r
