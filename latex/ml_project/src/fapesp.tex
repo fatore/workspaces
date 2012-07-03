@@ -1,0 +1,401 @@
+\documentclass[a4paper,12pt,titlepage]{article}
+
+% config
+\usepackage[brazil]{babel}
+%\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{subfigure}
+\usepackage{times}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage[pdftex]{graphicx}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{textfit}
+%\usepackage[numbers, sort]{natbib}
+\usepackage[natbib=true,sorting=none, firstinits=true]{biblatex}
+\usepackage{url}
+\usepackage{color}	
+\usepackage{wrapfig}
+\usepackage[top=30mm,bottom=20mm,left=30mm,right=20mm,twoside]{geometry}
+\usepackage[font=small,format=plain,labelfont=bf,up,textfont=it,up]{caption}
+
+% custom commands
+\newcommand{\ie}{\textit{i.e.}}
+\newcommand{\eg}{\textit{e.g.}}
+\newcommand{\obj}[1]{\mathbf{x}_#1}
+\definecolor{gray_c}{rgb}{0.5,0.5,0.5}
+
+\hypersetup{
+    colorlinks=true,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+\bibliography{resources/references}
+
+
+% misc
+\title{
+  \vspace{-4.5cm}
+  \includegraphics[width=15cm]{./resources/logo.png}\\
+  \vspace{6cm}
+  \renewcommand{\baselinestretch}{1.75}{\LARGE Análise de Dados Eleitorais:\\
+  Uma Abordagem Baseada em Visualização}
+  \vspace{2cm}
+  \normalsize\\
+  Proposta de Projeto de Iniciação Científica\\
+}
+\author{Orientador: Prof. Dr. Fernando Vieira Paulovich\\
+Aluno: Francisco Morgani Fatore}
+\date{Abril de 2012}
+
+% identation
+\setlength{\parindent}{0pt} % no ident
+\setlength{\parskip}{2.0ex plus 0.5ex minus 0.2ex} % paragraph spacing
+\setlength{\skip\footins}{2cm} % spacing between footer and text
+\setlength{\footnotesep}{0.5cm} % space between footer itens
+\renewcommand{\baselinestretch}{1.5} % line spacing
+
+% begin of document
+\begin{document}
+
+% cover 
+\maketitle
+
+% abstract (max 20 lines)
+\clearpage
+\thispagestyle{empty}
+
+\begin{center}
+\renewcommand{\baselinestretch}{1.0}{
+\large{\textbf{Análise de Dados Eleitorais:\\  Uma Abordagem Baseada em Visualização}}\\
+\vspace{1.5cm}
+\normalsize{Instituto de Ciências Matemáticas e de Computação (ICMC)\\
+Universidade de São Paulo (USP), São Carlos/SP, Brasil}\\
+\vspace{1cm}
+\normalsize{Orientador: Prof . Dr . Fernando Vieira Paulovich\\
+Aluno: Francisco Morgani Fatore}
+}
+\vspace{1cm}
+\end{center}
+
+\begin{center}
+\textbf{Resumo}
+\end{center}
+
+\begin{quotation}
+A capacidade de armazenamento de dados alcançada pelo atual desenvolvimento tecnológico viabilizou 
+a muitas empresas e instituições registrar dados relativos aos seus negócios em busca de obter 
+melhores resultados e respostas de seus serviços.
+Atualmente, muitas dessas empresas e instituições obtêm bons resultados com a exploração de suas bases de dados. 
+Um exemplo conhecido são os supermercados e o comércio em geral,
+que buscam extrair padrões e tendências dos dados de seus clientes de modo a obter melhores vendas.
+Muito têm se trabalhado na exploração de dados comerciais e científicos, 
+mas pouco na exploração de dados políticos e sociais.
+Com o intuito de aprofundar o estudo desse tipo de dados, em especial de dados eleitorais, este projeto busca utilizar técnicas de visualização de informação para definir representações
+visuais de forma que a habilidade visual humana possa ser empregada na interpretação desses.
+%Esse tipo de técnica tem despertado grande interesse pois emprega as habilidades visuais humanas na análise de grandes conjuntos de dados.
+%Assim, os resultados esperados são representações visuais que indicam tendências, padrões e comportamentos presentes nos dados.
+Nesse projeto (com duração de $7$ meses), os objetivos principais se centram em análises que envolvam informação 
+sobre votação e financiamento de campanha. 
+Pretende-se disponibilizar os resultados e software produzidos em algum recurso na \emph{web},
+de modo que possam ser utilizados em outros trabalhos e que fiquem disponíveis para toda população. 
+Esforço será feito para que tal ferramenta, ou alguma versão inicial, esteja disponível antes das 
+eleições que ocorrerão no final desse ano.
+\end{quotation}
+
+\clearpage
+
+% list of contents
+\thispagestyle{empty}
+\tableofcontents  
+%\listoffigures
+%\listoftables
+\clearpage
+
+% begin of content
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+%%%%%%%%%%%%%%%%% Introduction %%%%%%%%%%%%%%%%%%%%
+\section{Introdução}\label{sec:introducao}
+
+A capacidade de armazenamento de dados alcançada pelo atual desenvolvimento tecnológico viabilizou 
+a muitas empresas e instituições registrar dados relativos aos seus negócios em busca de obter 
+melhores resultados e respostas de seus serviços.
+Porém, existe um longo caminho entre o armazenamento dos dados e a extração e interpretação de informações de interesse. 
+
+Empresas como Google e Facebook dedicam grande parte de seus esforços no sentido de explorar esses dados 
+e dependem desta análise para fornecer uma publicidade direcionada aos seus clientes. 
+A exploração de grandes bases de dados não precisa estar vinculada a algum interesse comercial,
+mas como essa atividade é muito dispendiosa acaba ocorrendo principalmente com esse pretexto ou 
+dentro de algum ambiente de pesquisa.
+
+Existe uma imensa quantidade de dados sem um aparente interesse financeiro que pode oferecer à população recursos 
+para compreender melhor a sociedade em diferentes aspectos.
+O governo brasileiro, por exemplo, tem trabalhado junto à OGP\footnote{\url{http://www.opengovpartnership.org/}} (Open Government Partnership)
+no sentido de oferecer uma maior transparência de suas atividades à população por meio da disponibilização de dados públicos.
+Exemplos desse esforço são os portais eletrônicos Portal da Transparência\footnote{\url{http://www.portaltransparencia.gov.br/}} e 
+Portal Brasileiro de Dados Abertos\footnote{\url{http://beta.dados.gov.br/}}.
+
+Contudo, a iniciativa do governo é muito recente, formalizada no final de 2011 pelo 
+Decreto de 15 de setembro de 2011~\cite{decreto_15-09-11} e pela Lei de Acesso a Informação Pública~\cite{lei_12527},
+e ainda requer um amadurecimento em questões de organização e aproveitamento dos dados. 
+Hoje, o governo se limita a disponibilizar os dados em sua forma bruta,
+ou seja, sem suporte a análise exploratória com intuito de extrair informações de interesse e ajudar na sua interpretação.
+
+O Portal da Transparência, mencionado anteriormente, possui uma vasta e variada base de dados, 
+porém, em sua maioria, eles se encontram no formato de planilhas que são de difícil interpretação.
+Já o segundo portal mencionado, o Portal de Dados Abertos, disponibiliza os dados em formatos que podem ser tratados em larga escala,
+entretanto, não possui um registro tão vasto e variado como o do Portal da Transparência.
+
+Outro recurso fornecido pelo governo, por meio do TSE (Tribunal Superior Eleitoral), trata-se do Repositório de Dados 
+Eleitorais\footnote{\url{http://www.tse.jus.br/eleicoes/repositorio-de-dados-eleitorais}}.
+Este recurso conta com uma base de dados referente a candidatos, eleitorado, resultados e prestação de contas.
+Os registros contém informações de eleições municipais, estaduais e nacionais de 1994 até 2010 
+e encontram-se em formatos adequados para o processamento computacional, configurando uma fonte 
+valiosa para entendimento dos mecanismos de funcionamento da política nacional, incluindo a possibilidade 
+da análise das mudanças e evolução do cenário político nessas últimas décadas.
+
+Este projeto busca utilizar técnicas de visualização de informação para fornecer 
+recursos para um aprofundamento no estudo dos dados eleitorais contidos no repositório de dados do TSE, buscando
+prover representação visuais intuitivas para que as habilidades visuais humanas possam ser empregadas 
+para identificação e interpretação de tendências, padrões e comportamentos presentes nos dados.
+Pretende-se disponibilizar o software e resultados obtidos em algum recurso na \emph{web},
+de modo que possam ser utilizados em outros trabalhos e que fiquem disponíveis para toda população.
+
+Na próxima seção são apresentados alguns poucos trabalhos em visualização que tratam de dados
+políticos eleitorais, na Seção~\ref{sec:proposta} a proposta desse projeto de iniciação científica
+é detalhada, explicitando nossos objetivos principais e a forma de análise dos resultados. 
+Por fim, a Seção~\ref{sec:cronograma} apresenta as atividades a serem executadas e o cronograma 
+previsto para um projeto de iniciação científica com duração de $7$ meses.
+
+
+%%%%%%%%%%%%%%%% Related works %%%%%%%%%%%%%%%%%%%%%
+\section{Trabalhos Relacionados}\label{sec:trabalhosrelac}
+
+Existe na literatura alguns trabalhos na mesma vertente desta proposta de projeto.
+\citet{Vieira2006}, por exemplo, utilizaram dados das eleições municipais de Portugal no ano de 1999 
+em uma comparação entre as técnicas de agrupamento hierárquico e as redes neurais de Kohonen,
+conhecidas como \textit{Self-Organizing Maps} (SOM)~\cite{Kohonen:2001:SM}.
+O resultado com ambos métodos mostrou a formação de três grupos: um apontando o Partido Socialista (PS) como partido mais votado, 
+sendo este grupo bem maior que os demais; um grupo dominado por partidos de direita; 
+e outro grupo que se concentra na região de Alentejo, sendo dominado por partidos de esquerda.
+
+Outro trabalho que pode ser mencionado é o de \citet{Carneiro2008},
+o qual busca observar como as disputas eleitorais nos municípios são influenciadas pela disputa nas esferas estaduais e nacional.
+Entre as conclusões apresentadas neste trabalho, destacam-se: 
+a votação para governador é a variável que causa maior efeito nas eleições de deputado federal e estadual; 
+e a votação para prefeito é a que tem maior efeito para a eleição de vereadores.
+Os autores afirmam que é extremamente difícil a observação da organização partidária, 
+devido à grande quantidade de municípios em que se encontram partidos políticos.
+
+Um último exemplo que vale ser citado é o de \citet{Gormley2008}, 
+o qual busca analisar a influência de fatores sociais nos resultados eleitorais.
+Os autores utilizam modelos de mistura para evidenciar os grupos de votação no eleitorado irlandês 
+das eleições presidenciais de 1997 e determinar as características nas preferências de votação desses blocos.
+Como resultado, os autores concluem que a idade e a satisfação com o governo determinam a formação dos grupos de votação no caso estudado.
+
+Esses trabalhos, além de não serem focados em dados políticos brasileiros, também se mostraram falhos em suas análises. Por exemplo,
+\citet{Vieira2006} tiveram uma preocupação maior em comparar as técnicas utilizadas do que realmente fornecer um estudo proveitoso dos dados. 
+\citet{Carneiro2008} por sua vez, esbarraram em uma questão de complexidade computacional ao avaliar os dados de eleições de diversos municípios.
+O trabalho aqui proposto, além de se centrar em dados políticos nacionais, tem por objetivo fornecer um melhor
+entendimento dos dados em si, não somente a confecção de novas técnicas e abordagens. 
+
+A seguir essa proposta de projeto é detalhada.
+
+
+%%%%%%%%%%%%%%%%% Proposal %%%%%%%%%%%%%%%%%%%%%%%%
+\section{Proposta de Projeto}\label{sec:proposta}
+
+%%%%%%%%%%%%%%%%% Motivation %%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Motivação}\label{sec:motivacao}
+
+Atualmente, muitas empresas e instituições obtêm bons resultados com a exploração de suas bases de dados. 
+Um exemplo conhecido são os supermercados e o comércio em geral,
+que buscam extrair padrões e tendências dos dados de seus clientes de modo a obter melhores vendas.
+Muito têm se trabalhado na exploração de dados comerciais e científicos, 
+mas pouco valor têm-se dado à exploração de dados políticos e sociais.
+Talvez uma parte do descaso por esse tipo de dados, em especial no caso Brasileiro,
+seja justificada pelo pouco tempo que esses dados se encontram disponíveis.
+Entretanto, é inegável a importância de uma profunda análise desses para a sociedade em geral.
+
+Como os dados são fornecidos pelo governo, 
+sua legitimidade é garantida e não existe qualquer restrição de uso, 
+pois são constitucionalmente pertencentes à toda população~\cite{lei_12527}.
+Além disso, a base de dados a ser explorada é muito rica,
+são dados de eleições municipais, estaduais e nacionais desde 1994 até a última eleição realizada em 2010.
+Existe também uma grande precisão no detalhamento dos dados, como por exemplo,
+nível de escolaridade de um candidato, sua profissão, CPF ou CNPJ de financiadores de campanhas, entre outros.
+
+Contudo, apesar desses dados estarem livremente disponíveis, pela sua quantidade e alta complexidade (muitos atributos),
+acesso não representa subsídio para melhor entendimento da política brasileira para a população em geral. Esses precisam ser interpretados e ferramentas nesse sentido
+ainda não existem, ou são muito limitadas. Dar suporte ao entendimento desses dados é objetivo central desse projeto, detalhado a seguir.
+
+
+%%%%%%%%%%%%%%%%%% Objectives and Methodology %%%%%%%%%%%%%%%%%%%
+\subsection{Objetivos e Metodologia}\label{sec:objetivos}
+
+%Estabelecer um foco e um objetivo pode ser considerado a primeira etapa para a elaboração de um projeto de pesquisa.
+O objetivo geral deste trabalho será a exploração de dados eleitorais 
+obtidos no repositório de dados do TSE. Para estabelecer esse objetivo realizou-se um estudo das 
+possibilidades de bases de dados disponíveis, da condição dos dados presentes nessas bases e da 
+relevância dos dados para a sociedade. O seguinte parágrafo define de modo geral o objetivo 
+deste projeto de iniciação científica.
+
+\begin{quote}
+\emph{``Este projeto de iniciação científica tem como objetivo utilizar técnicas de visualização de informação para fornecer 
+interpretações mais profundas e intuitivas dos dados eleitorais fornecidos pelo governo brasileiro.
+Além disso, espera-se divulgar os resultados obtidos de modo a dar subsídios aos interessados em 
+entender melhor o cenário e processo eleitoral brasileiro.''}
+\end{quote}
+
+Como objetivos específicos desse projeto, podemos ter, por exemplo, a busca de grupos com 
+características semelhantes dentro do conjunto de eleitores ou candidatos. 
+Ou então, podemos verificar a existência de relações entre os dados, 
+como as doações recebidas por um candidato e seu desempenho em uma determinada eleição. 
+Porém, como o volume de dados disponíveis é grande, esses objetivos podem ser expandidos 
+ou modificados conforme os dados forem sendo adquiridos e processados no decorrer desse projeto.
+
+Para esse fim, técnicas de visualização de informação serão empregadas. Essas fornecem representações visuais que, aliadas à habilidade visual humana, possibilitam a extração de
+padrões e interpretação desses dentro de conjuntos de dados. \citet{Card1999} descreve a geração de uma representação visual a partir de uma série de procedimentos.
+Inicialmente, os dados brutos são processados para remover possíveis inconsistências e, em seguida,
+são representados por alguma estrutura organizada, como tabelas de um banco de dados.
+Partindo dessas tabelas, define-se as estruturas visuais responsáveis por mapear a informação contida nos dados. 
+A figura~\ref{fig:ibeb} descreve este 
+\emph{pipeline}\footnote{Um \emph{pipeline} descreve uma sequência de atividades necessárias para realizar uma determinada tarefa.} 
+proposto por \citet{Card1999} 
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=12cm]{resources/processoVisualizacao.pdf}
+	\caption[Modelo de referência de visualização]{Modelo de referência de visualização porposto por~\citet{Card1999}}
+	\label{fig:ibeb}
+\end{figure}
+
+Neste trabalho as atividades podem seguir uma sequência semelhante a proposta por \citet{Card1999}.
+Os dados brutos, obtidos no repositório de dados, devem ser processados em busca de remover redundâncias e ambiguidades,
+pois como os dados abordam diversas eleições existe a possibilidade de um mesmo grupo de indivíduos 
+estar presente em diferentes eleições.
+Assim, deve ser realizado um trabalho no sentido de identificar univocamente cada individuo com base em seus atributos.
+Elementos espúrios ou incoerentes também devem ser removidos para que a análise seja consistente, um
+processo que deve consumir bastante tempo desse projeto.
+
+A partir desse processamento inicial dos dados é possível criar um banco de dados que contenha 
+informações diversas sobre candidatos, resultados de eleições e financiamento de campanha.
+A criação desse banco de dados é uma das tarefas principais, pois sua utilidade pode extrapolar o escopo deste projeto e 
+ser uma contribuição para outros projetos. O desenvolvimento deste banco de dados deve levar em consideração questões de desempenho,
+pois devido à grande quantidade de dados, deve-se procurar manter um tempo de resposta suficientemente pequeno para as buscas realizadas.
+ 
+Uma vez criado esse banco de dados, inicialmente técnicas de visualização desenvolvidas dentro do nosso grupo 
+de pesquisa serão aplicadas, como projeções multidimensionais~\cite{Tejada2003, Paulovich2008} 
+e de desenho de grafo~\cite{fruchterman1991graph}, junto com técnicas
+clássicas, como \emph{heatmaps}~\cite{Grinstein2001}, \emph{tablelens}~\cite{Rao1994}, radvis~\cite{Hoffman1997}, entre outras. Após isso, com a melhor
+compreensão dos dados, novas técnicas podem ser sugeridas e/ou desenvolvidas para melhorar ainda mais o 
+entendimento desses dados.
+
+Além dessas análises visuais, outras baseadas em redes complexas também podem ser executadas uma vez que  o relacionamento entre entidades financiadoras de campanha e candidatos compõem um grafo. Assim, o largo ferramental de análise de grafos e redes complexas~\cite{newman2003structure, boccaletti06, Caldarelli2007complexnet}, como extração de comunidades, identificação de \emph{hubs}, etc. pode ser empregado para aumentar ainda mais o entendimento
+dos dados e auxiliar na sua exploração. 
+
+Uma vez que esses objetivos tenham sido implementados, avaliações serão conduzidas para verificar o potencial do
+que foi desenvolvido. A seguir a metodologia de avaliação é explanada.
+
+%%%%%%%%%%%%%%%%%% Results analysis %%%%%%%%%%%%%%%%%%%%
+\subsection{Forma de análise dos resultados}
+
+A avaliação dos resultados será realizada prioritariamente por meio de testes com usuários. O que pretendemos
+verificar com esses é se as visualizações geradas realmente auxiliam a tarefa de exploração e 
+entendimento dos dados sendo analisados. 
+
+Um exemplo de teste seria solicitar que usuários utilizassem a ferramenta
+para encontrar alguma informação nos dados e, em seguida, solicitasse a pesquisa por essa informação sem 
+o uso da ferramenta desenvolvida, somente usando os recursos de análise providos pelo TSE. A ideia seria verificar
+se, não somente os tempos de busca e interpretação diminuem, mas também se as análises são
+mais precisas.
+
+Outras formas de análise com usuário serão planejadas conforme os dados sejam 
+melhor entendidos, o que faz parte das atividades propostas aqui. A seguir essas atividades são
+detalhados e o cronograma previsto para esse projeto apresentado.
+
+%%%%%%%%%%%%%%%%%% Schedule %%%%%%%%%%%%%%%%%%%
+\section{Plano de Atividades e Cronograma Previsto}\label{sec:cronograma}
+
+Propõe-se as seguintes atividades para este projeto de pesquisa:
+
+\begin{enumerate}
+  \item Coleta dos dados do repositório de dados eleitorais;
+  \item Processamento dos dados brutos
+  \begin{enumerate}
+    \item Leitura dos dados;
+    \item Remoção de redundância;
+    \item Remoção de ambiguidade;
+    \item Identificação univoca dos dados;
+  \end{enumerate}
+  \item Modelagem e construção do banco de dados;
+  \item Estudo de técnicas de visualização de informação e escolha das técnicas a serem aplicadas;
+  \item Adaptação ou implementação das técnicas selecionadas para criação de um protótipo;
+  \item Definição de casos de uso e testes das visualizações geradas;
+  \item Análise dos resultados;
+  \item Teste com usuários;
+  \item Escrita de relatórios técnicos e artigos científicos.
+\end{enumerate}
+
+O cronograma de execução das atividades é apresentado na tabela a seguir, assumindo um projeto de duração de sete meses.
+\newcommand{\x}{\color{black}\rule{30pt}{7pt}}
+\newcommand{\y}{\hspace*{30pt}}
+\renewcommand{\r}{\color{gray_c}\rule{30pt}{7pt}}
+
+\setlength{\tabcolsep}{0pt}
+
+\begin{table}[htb] 
+\label{table:atividades}
+\begin{center}
+	\begin{tabular}{|c|c|c|c|c|}
+	\cline{2-5}
+	\multicolumn{1}{l|}{} & \multicolumn{4}{c|}{2012}\\
+	\hline \ Atividade\ \ & Jun & Jul-Ago & Set-Out  & Nov-Dez \\
+	\hline \hline
+	1     &\r     &\y\y      &\y\y     &\y\y\\
+	\hline
+	2     &\x     &\x\r      &\y\y     &\y\y\\
+	\hline
+	3     &\y     &\r\x      &\y\y     &\y\y\\
+	\hline
+	4     &\y     &\y\r      &\r\y     &\y\y\\
+	\hline
+	5     &\y     &\y\y      &\x\r     &\y\y\\
+	\hline
+	6     &\y     &\y\y      &\y\r     &\y\y\\
+	\hline
+	7     &\y     &\y\y      &\y\x     &\r\r\\
+	\hline
+	8     &\y     &\y\y      &\y\y     &\x\r\\
+	\hline
+	9     &\y     &\y\y      &\y\y     &\r\x\\
+	\hline
+	\end{tabular}
+\caption[Cronograma de atividades]{Cronograma de Atividades.
+As barras em preto representam dedicação completa do período para à atividade.} 
+\end{center}
+\end{table}
+
+
+\clearpage
+\printbibliography
+
+\vspace{1.5cm}
+\begin{table}[htb]
+  \centering
+  \begin{tabular}{c}
+    \hline
+     Prof. Dr. Fernando Vieira Paulovich\\
+     Orientador
+  \end{tabular} 
+\end{table}
+
+\end{document}
+
+

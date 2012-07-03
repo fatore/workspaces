@@ -1,0 +1,123 @@
+\documentclass[a4paper,12pt]{article}
+
+% config
+\usepackage[brazil]{babel}
+%\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{subfigure}
+\usepackage{times}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage[pdftex]{graphicx}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{textfit}
+%\usepackage[numbers, sort]{natbib}
+\usepackage[natbib=true,sorting=none, firstinits=true]{biblatex}
+\usepackage{url}
+\usepackage{color}  
+\usepackage{wrapfig}
+\usepackage[top=30mm,bottom=20mm,left=30mm,right=20mm,twoside]{geometry}
+\usepackage[font=small,format=plain,labelfont=bf,up,textfont=it,up]{caption}
+
+\title{Uso de Redes Neurais e Informação Mútua na \\
+Análise de Dados Eleitorais}
+
+\author{Francisco Morgani Fatore}
+
+\date{\today}
+\begin{document}
+
+\maketitle
+
+
+\begin{abstract}
+
+Este trabalho realiza uma análise sobre os resultados das últimas eleições realizadas no Brasil. Busca-se descobrir e entender os padrões que levam um candidato a ser eleito. Criou-se uma rede neural para classificar os candidatos e possivelmente prever quais deles serão eleitos, de acordo com os atributos de entrada. Como não se sabe ao certo quais atributos são relevantes para este tipo de análise, utilizou-se a informação mútua entre os atributos para encontrar os fatores que realmente importam para o resultado das eleições.
+
+\end{abstract}
+
+\section{Introdução} \label{introducao}
+
+Algum blah blah que posso tirar do projeto FAPESP.
+
+Este trabalho busca treinar uma rede neural MLP (\textit{Multilayer Perceptron}) com dados da eleição de 2006 e testar com os dados da eleição de 2010 de modo a verificar se existem padrões nas eleições.
+
+Os dados utilizados neste trabalho são provenientes do repositório eleitoral de dados do tribunal superior eleitoral, fato que garante a integridade das informações em questão. No entanto, a base de dados contém algumas incosistências como alguns atributos em branco ou certas replicações de dados que sugerem falhas durante a etapa de inserção dos dados. De modo a contornar essa situação, um pré-processamento foi realizado e tais inconsistências foram excluidas das análises.
+
+O repositório de dados contém infomações relativas a \emph{Eleitorado, Candidatos, Resultados e Prestação de Contas}. Devido ao foco deste trabalho escolheu-se por trabalhar com os dados relativos a candidatos. Dentro dessa categoria existem as subcategorias \emph{Informações de Candidatura, Bens, Legendas e Vagas}. Decidiu-se trabalhar somente com os dados de informações de candidatura pois continham atributos suficientes para a análise proposta por este trabalho.
+
+Uma vez obtidos os dados e realizado o pré-processamento, necessita-se então determinar quais atributos serão utilizados para as análises. Nesta  etapa utiliza-se a informação mútua entre os atributos para determinar quais são mais relevantes.
+
+\section{Metodologia} \label{documentclasses}
+
+A fase de pre-processamento consistiu em criar um banco de dados a partir dos arquivos obtidos no repositório de dados. Ao término desta etapa obtem-se um banco de dados com as seguintes tabelas.
+
+\begin{itemize}
+
+    \item Eleição:
+    \begin{itemize}
+        \item Ano  
+        \item Número do Turno
+        \item Descrição
+        \item Unidade Federativa (UF)
+        \item Unidade Eleitoral (UE)
+        \item Cargo 
+    \end{itemize}
+
+    \item Candidato:
+    \begin{itemize}
+        \item Nome
+        \item Data Nacimento
+        \item UF Nascimento
+        \item Município Nascimento
+        \item Título Eleitoral
+        \item Sexo
+        \item Nacionalidade
+    \end{itemize}
+
+    \item Situação Candidato:
+    \begin{itemize}
+        \item Ocupação
+        \item Idade
+        \item Grau Instrução
+        \item Estado Civil
+    \end{itemize}
+
+    \item Candidatura:
+    \begin{itemize}
+        \item Número de Urna 
+        \item Nome de Urna
+        \item Situação da Candidatura
+        \item Despesa Máxima Estipulada
+        \item Resultado
+    \end{itemize}
+
+    \item Patido:
+    \begin{itemize}
+        \item Número 
+        \item Sigla
+        \item Nome
+    \end{itemize}
+
+
+    \item Legenda:
+    \begin{itemize}
+        \item Código
+        \item Sigla
+        \item Composição
+        \item Nome 
+    \end{itemize}
+
+\end{itemize}
+
+\section{Conclusão}\label{conclusao}
+
+\begin{thebibliography}{9}
+
+\bibitem[Doe]{doe} \emph{First and last \LaTeX{} example.},
+John Doe 50 B.C. 
+\end{thebibliography}
+
+\end{document}
+
