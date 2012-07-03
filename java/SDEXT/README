@@ -1,0 +1,19 @@
+para rodar mi eu somente preciso fazer um select atributo da tabela que quero
+
+rodar o grafico para outros estados para ver se mantem a tendencia
+
+adicionar clausula na query para buscar por um ano especifico e um uf de uma eleicao
+	- eh facik fazer isso, basta dar um join em eleicao com cr.id = e.candidature_id
+	
+
+
+A analise de um ponto de vista geral, realizada a partir da matriz de informacao mutua
+de todos os atributos, jah eh capaz de fornecer interpretacoes interessantes dos dados.
+Observou-se para esse resultado que  o sexo do candidato influencia praticamente 
+todos os outros atributos, inclusive o resultado. Esse valor nao se relaciona diretamente
+com os atributos escolaridade, nacionalidade e despesas maximas definidas para a campanha.
+Outra observacao que pode ser realizada a partir desse mesmo resultado eh a 
+relacao entre nacionalidade e o valor maximo de campanha estipulado.
+
+Uma analise mais focalizada para o atributo resultado pode fornecer mais detalhes dos
+atributos que realmente importam para a eleicao de um candidato. 
