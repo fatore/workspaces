@@ -40,7 +40,7 @@ analyseMI <- function(data) {
     result
 }
 
-prepareForMLP <- function(data, orth=c(1:6), disc=c(7:9)) {
+prepareForMLP <- function(data, orth=c(1:7), disc=c(8:11)) {
 
     mlp_data = NULL 
 
@@ -67,7 +67,7 @@ prepareForMLP <- function(data, orth=c(1:6), disc=c(7:9)) {
         disc_column = continuousToDiscrete(data[,i])
         mlp_data = cbind(mlp_data, disc_column)
     }
-    #   Set 10 values as 0 for all different than 1
+    #   Set label values as 0 for all different than 1
 
     res_col = data[,ncol(data)]
     
@@ -192,9 +192,26 @@ getProbs <- function(result, thres=0.5) {
     result[result[,1] <= 0.5] = 0
 
     sucess = length(which(result[,1] == result[,2]))
+set ts=4
     total = nrow(result)
 
     prob = (total / sucess) * 100
 
     prob
+}
+
+probWomanTotal <- function(data) {
+
+        wins = which(data[,ncol(data)] == 1);
+        
+        w_wins = which(data[wins,4] == 1)
+        m_wins = which(data[wins,4] == 0)
+
+        total = length(wins)
+        
+        w_count = length(w_wins)
+
+        prob = (w_count / total) * 100
+
+        prob
 }

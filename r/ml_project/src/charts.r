@@ -10,18 +10,18 @@ result_mis = result_mis[1:length(result_mis)-1]
 
 plot(result_mis, type="o")
 
-barplot(as.matrix(result_mis), ylab= "Mutual Information",
+barplot(as.matrix(result_mis),
         main="Mutual Information for Election Result", 
         beside=TRUE, col=rainbow(length(result_mis)));
 
 
-barplot(as.matrix(result_mis), beside=TRUE, col=rainbow(9));
+barplot(as.matrix(result_mis), beside=TRUE, col=rainbow(length(result_mis)), 
+	names.arg=c(1:length(result_mis)));
 
-
-# Write to file
+# Write to file0
 
 # direct output to a file 
 sink("myfile", append=FALSE, split=FALSE)
 
 # return output to the terminal 
-sink()
+sink()0

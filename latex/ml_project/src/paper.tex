@@ -1,7 +1,8 @@
-\documentclass[a4paper,12pt]{article}
+\documentclass[twocolumn]{article}
 
 % config
 \usepackage[brazil]{babel}
+\usepackage{multirow}
 %\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{subfigure}
@@ -33,83 +34,143 @@ Análise de Dados Eleitorais}
 
 \begin{abstract}
 
-Este trabalho realiza uma análise sobre os resultados das últimas eleições realizadas no Brasil. Busca-se descobrir e entender os padrões que levam um candidato a ser eleito. Criou-se uma rede neural para classificar os candidatos e possivelmente prever quais deles serão eleitos, de acordo com os atributos de entrada. Como não se sabe ao certo quais atributos são relevantes para este tipo de análise, utilizou-se a informação mútua entre os atributos para encontrar os fatores que realmente importam para o resultado das eleições.
+Este trabalho propõe analisar os resultados das últimas eleições realizadas no Brasil. Busca-se descobrir e entender os padrões que levam um candidato a ser eleito. Este objetivo deve ser alcançado por meio de técnicas de aprendizado de máquina e de teoria da informação. Uma rede neural deverá ser capaz de predizer se um candidato será eleito com base em informações prévias. Como não se sabe ao certo quais informações são relevantes para este tipo de análise, utilizou-se a informação mútua entre os atributos para encontrar os fatores que realmente importam para o resultado das eleições.
 
 \end{abstract}
 
 \section{Introdução} \label{introducao}
 
-Algum blah blah que posso tirar do projeto FAPESP.
+Este trabalho busca treinar uma rede neural MLP (\textit{Multilayer Perceptron}) com dados da eleição de 2006 e verificar se essa rede é capaz de prever os resultados das eleições de 2010 com base no treinamento realizado. Para isso é preciso definir quais atributos serão utilizados. Um  esforço especial será dedicado à esta etapa de seleção de atributos pois ela afeta diretamente no desempenho computacional da rede neural e também na qualidade do resultado obtido.
 
-Este trabalho busca treinar uma rede neural MLP (\textit{Multilayer Perceptron}) com dados da eleição de 2006 e testar com os dados da eleição de 2010 de modo a verificar se existem padrões nas eleições.
+Os dados utilizados neste trabalho são provenientes do repositório eleitoral de dados do tribunal superior eleitoral, fato que garante a integridade das informações em questão. No entanto, a base de dados contém algumas incosistências, como alguns atributos em branco ou certas replicações de dados que sugerem falhas durante a etapa de inserção dos dados. De modo a contornar essa situação, um pré-processamento foi realizado e tais inconsistências foram excluidas das análises.
 
-Os dados utilizados neste trabalho são provenientes do repositório eleitoral de dados do tribunal superior eleitoral, fato que garante a integridade das informações em questão. No entanto, a base de dados contém algumas incosistências como alguns atributos em branco ou certas replicações de dados que sugerem falhas durante a etapa de inserção dos dados. De modo a contornar essa situação, um pré-processamento foi realizado e tais inconsistências foram excluidas das análises.
+O repositório de dados contém infomações relativas a \emph{Eleitorado, Candidatos, Resultados e Prestação de Contas}. Devido ao foco deste trabalho escolheu-se por trabalhar com os dados relativos a candidatos. Dentro dessa categoria existem as subcategorias \emph{Informações de Candidatura, Bens, Legendas e Vagas}. Decidiu-se trabalhar somente com os dados de informações de candidatura pois continham atributos suficientes para a análise proposta.
 
-O repositório de dados contém infomações relativas a \emph{Eleitorado, Candidatos, Resultados e Prestação de Contas}. Devido ao foco deste trabalho escolheu-se por trabalhar com os dados relativos a candidatos. Dentro dessa categoria existem as subcategorias \emph{Informações de Candidatura, Bens, Legendas e Vagas}. Decidiu-se trabalhar somente com os dados de informações de candidatura pois continham atributos suficientes para a análise proposta por este trabalho.
-
-Uma vez obtidos os dados e realizado o pré-processamento, necessita-se então determinar quais atributos serão utilizados para as análises. Nesta  etapa utiliza-se a informação mútua entre os atributos para determinar quais são mais relevantes.
+Uma vez obtidos os dados e realizado o pré-processamento, necessita-se então determinar quais atributos serão utilizados para as análises. Nesta etapa utiliza-se a informação mútua entre os atributos para determinar quais são mais relevantes. Após definir os atributos é possível treinar a rede neural. 
 
 \section{Metodologia} \label{documentclasses}
 
-A fase de pre-processamento consistiu em criar um banco de dados a partir dos arquivos obtidos no repositório de dados. Ao término desta etapa obtem-se um banco de dados com as seguintes tabelas.
+A fase de pre-processamento consistiu em criar um banco de dados a partir dos arquivos obtidos no repositório de dados. Ao término desta etapa o banco de dados se encontra na situação descrita pela tabela~\ref{tab:bd}.
 
-\begin{itemize}
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|l|}
+	\hline
+	\multicolumn{2}{|c|}{\textbf{Tabelas}} \\
+	\hline
 
-    \item Eleição:
-    \begin{itemize}
-        \item Ano  
-        \item Número do Turno
-        \item Descrição
-        \item Unidade Federativa (UF)
-        \item Unidade Eleitoral (UE)
-        \item Cargo 
-    \end{itemize}
+	\multirow{6}{*}{Eleição} 
+	 & Ano  \\
+	 & Número do Turno \\
+	 & Descrição \\
+	 & Unidade Ferativa (UF) \\
+	 & Unidade Eleitoral (UE) \\
+	 & Cargo \\ 
+	\hline
 
-    \item Candidato:
-    \begin{itemize}
-        \item Nome
-        \item Data Nacimento
-        \item UF Nascimento
-        \item Município Nascimento
-        \item Título Eleitoral
-        \item Sexo
-        \item Nacionalidade
-    \end{itemize}
+	\multirow{6}{*}{Candidato} 
+	 & Nome \\
+	 & Data Nascimento\\
+	 & UF Nascimento \\
+	 & Cidade Nascimento \\
+	 & Título Eleitoral \\
+	 & Nacionalidade \\ 
+	\hline
 
-    \item Situação Candidato:
-    \begin{itemize}
-        \item Ocupação
-        \item Idade
-        \item Grau Instrução
-        \item Estado Civil
-    \end{itemize}
+	\multirow{4}{*}{Situação Candidato} 
+	 & Ocupação \\
+	 & Idade\\
+	 & Grau Instrução \\
+	 & Estado Civil \\
+	\hline
 
-    \item Candidatura:
-    \begin{itemize}
-        \item Número de Urna 
-        \item Nome de Urna
-        \item Situação da Candidatura
-        \item Despesa Máxima Estipulada
-        \item Resultado
-    \end{itemize}
+	\multirow{5}{*}{Candidatura} 
+	 & Número de Urna \\
+	 & Nome de Urna \\
+	 & Situação \\
+	 & Despesa Máxima \\
+	 & Resultado  \\
+	\hline
 
-    \item Patido:
-    \begin{itemize}
-        \item Número 
-        \item Sigla
-        \item Nome
-    \end{itemize}
+	\multirow{3}{*}{Partido} 
+	 & Número \\
+	 & Sigla \\
+	 & Nome \\
+	\hline
 
+	\multirow{4}{*}{Legenda} 
+	 & Código \\
+	 & Sigla \\
+	 & Composição \\
+	 & Nome \\
+	\hline
+\end{tabular}
+\caption{Tabelas do banco de dados.}
+\label{tab:bd}
+\end{table}
 
-    \item Legenda:
-    \begin{itemize}
-        \item Código
-        \item Sigla
-        \item Composição
-        \item Nome 
-    \end{itemize}
+Alguns desses atributos não são relevantes para a análise ou não se encontram em um formato adequado para o processamento. Deste modo, após uma etapa de seleção manual dos atributos obtém-se a tabela~\ref{tab:relev}.
 
-\end{itemize}
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|}
+	\hline
+	\multicolumn{2}{|c|}{\textbf{Atributos}} \\
+	\hline
+	1 & Cidade Natal    \\
+	\hline
+	2 & Estado Natal    \\
+	\hline
+	3 & Nacionalidade    \\
+	\hline
+	4 & Sexo    \\
+	\hline
+	5 & Partido    \\
+	\hline
+	6 & Ocupação    \\
+	\hline
+	7 & Estado Civil    \\
+	\hline
+	8 & Cargo Almejado    \\
+	\hline
+	9 & Escolaridade    \\
+	\hline
+	10 & Idade    \\
+	\hline
+	11 & Despesas Máximas   \\
+	\hline
+	12 & Resultado da Eleição    \\
+	\hline
+\end{tabular}
+\caption{Atributos selecionados manualmente.}
+\label{tab:relev}
+\end{table}
+
+Os atributos de 1 a 7 são valores discretos equivalentes aos identificadores dos campos na base de dados. Os atributos de 8 a 11 são valores continuos que devem ser dividos em intervalos para se adequarem ao processamento. Essa divisão em intervalos foi realizada por meio da criação de um histograma, onde cada valor contínuo foi representado pelo intervalo do histograma o qual pertence. O valor 12 é o \textit{label} que indica se o candidato foi eleito ou não. Todos os atributos foram normalizados entre 0 e 1 para garantir uma maior uniformidade nos cálculos.
+
+Criando uma matriz $p~x~p$, onde $p$ indica o número de atributos e cada elemento $m(i,j)$ indica a informação mutua do atributo $i$ com o atributo $j$, obtem-se uma relação de todos os valores de informação mútua entre todos elementos. Ao analisar os valores dessa matriz é possível identificar os atributos com maior dependência.
+
+\section{Resultados}\label{resultados}
+
+Inicialmente trabalhou-se com os dados referentes à eleição de 2010. Havia ao todo, 19210 elementos na base de dados, porém 286 desses continham atributos em branco ou inválidos e por isso foram descartados. Calculou-se então a matriz de informação mútua para esses dados e obteve-se o resultado apresentado na figura~\ref{fig:matriz}.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=9cm]{images/brasil_2010_map.jpg}
+	\caption{Matriz dos valores de informação mútua para todos os atributos. Valores maiores representam maior dependência entre os atributos. A diagonal deve ser ignorada.}
+	\label{fig:matriz}
+\end{figure}
+
+Uma análise de um ponto de vista geral, realizada a partir da matriz de informação mútua é capaz de fornecer interpretações interessantes dos dados. Por exemplo, nota-se que o atributo sexo (4) influencia praticamente todos os outros atributos, inclusive o resultado da eleição. Essa suposição pode ser confirmada estatisticamente, pois dos 1424 candidatos eleitos em 2010, apenas 168 eram do sexo feminino, ou seja, mais de $88\%$ dos cargos foram ocupados por pessoas do sexo masculino.
+
+Nota-se também que o resultado apresenta relação com a maioria dos atributos. Para uma melhor análise criou-se um gráfico~\ref{fig:bar} com as informações mútuas dos atributos em relação ao resultado da eleição.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=9cm]{images/brasil_2010_bar.jpg}
+	\caption{Matriz dos valores de informação mútua para todos os atributos. Valores maiores representam maior dependência entre os atributos. A diagonal deve ser ignorada.}
+	\label{fig:bar}
+\end{figure}
 
 \section{Conclusão}\label{conclusao}
 

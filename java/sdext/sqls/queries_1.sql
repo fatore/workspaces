@@ -20,4 +20,5 @@ SELECT
 			election e on cr.election_id = e.id
 		) join schooling sch on s.schooling_id = sch.id
 		
-	where e.uf = 'SP' ;
+	
+	;
