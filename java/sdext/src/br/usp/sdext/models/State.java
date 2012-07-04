@@ -1,4 +1,4 @@
-package br.usp.sdext.models.candidate;
+package br.usp.sdext.models;
 
 import java.io.Serializable;
 
@@ -9,7 +9,7 @@ import br.usp.sdext.core.Model;
 import br.usp.sdext.util.Misc;
 
 @Entity
-public class BirthState extends Model implements Serializable {
+public class State extends Model implements Serializable {
 	
 	private static final long serialVersionUID = 6358274013517612742L;
 
@@ -18,9 +18,9 @@ public class BirthState extends Model implements Serializable {
 	
 	private String label;
 	
-	public BirthState() {}
+	public State() {}
 	
-	public BirthState( String label) {
+	public State( String label) {
 		
 		this.id = null;
 		this.label = label;
@@ -50,7 +50,7 @@ public class BirthState extends Model implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BirthState other = (BirthState) obj;
+		State other = (State) obj;
 		if (label == null) {
 			if (other.label != null)
 				return false;
@@ -59,10 +59,10 @@ public class BirthState extends Model implements Serializable {
 		return true;
 	}
 
-	public static BirthState parse(String[] pieces) {
+	public static State parse(String[] pieces) {
 		
 		String uf = Misc.parseStr(pieces[36]);
 		
-		return new BirthState(uf);
+		return new State(uf);
 	}
 }

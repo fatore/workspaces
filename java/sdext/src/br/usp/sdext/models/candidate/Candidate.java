@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import br.usp.sdext.core.Model;
+import br.usp.sdext.models.State;
 import br.usp.sdext.util.Misc;
 
 
@@ -36,7 +37,7 @@ public class Candidate extends Model implements  Serializable {
 	private BirthTown birthTown;
 	
 	@ManyToOne
-	private BirthState birthState;
+	private State birthState;
 	
 	@ManyToOne
 	private Citizenship citizenship;
@@ -60,7 +61,7 @@ public class Candidate extends Model implements  Serializable {
 	public Sex getSex() {return sex;}
 	public Date getBirthDate() {return birthDate;}
 	public BirthTown getBirthTown() {return birthTown;}
-	public BirthState getBirthState() {return birthState;}	
+	public State getBirthState() {return birthState;}	
 	public Long getVoterID() {return voterID;}
 	public String getName() {return name;}
 	public Citizenship getCitizenship() {return citizenship;}
@@ -70,7 +71,7 @@ public class Candidate extends Model implements  Serializable {
 	public void setId(Long id) {this.id = id;}
 	public void setSex(Sex sex) {this.sex = sex;}
 	public void setBirthDate(Date birthDate) {this.birthDate = birthDate;}
-	public void setBirthState(BirthState birthState) {this.birthState = birthState;}
+	public void setBirthState(State birthState) {this.birthState = birthState;}
 	public void setBirthTown(BirthTown birthTown) {this.birthTown = birthTown;}
 	public void setVoterID(Long voterID) {this.voterID = voterID;}
 	public void setName(String name) {this.name = name;}

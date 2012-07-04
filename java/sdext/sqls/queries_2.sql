@@ -1,16 +1,16 @@
 SELECT 	
 
 
-
+	-- discretos
 	c.birthtown_id as cidade_natal,
 	c.birthstate_id as uf_natal,
 	c.citizenship_id as cidadania,
 	c.sex_id as sexo,
 	p.id as partido,
-	
 	s.job_id as ocupacao,
 	s.maritalstatus_id as estado_civil,
 	
+	-- continuos
 	e.postid as cargo,
 	sch.tseid as escolaridade,
 	s.age as idade,
@@ -24,5 +24,7 @@ SELECT
 			election e on cr.election_id = e.id
 		) join schooling sch on s.schooling_id = sch.id)
 		join party p on cr.party_id = p.id
+		
+	where e.uf = 'SP'
 		
 	;

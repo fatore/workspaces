@@ -40,31 +40,37 @@ analyseMI <- function(data) {
     result
 }
 
-prepareForMLP <- function(data, orth=c(1:7), disc=c(8:11)) {
+prepareForMLP <- function(data, orth=c(2,4,5,6,7), disc=c(10:11)) {
 
     mlp_data = NULL 
 
-    #   Orthogonalize values in 1:6
+    #   Orthogonalize values in 1:7
 
     cat(sprintf("Orthogonalizing columns...\n"))
 
     for (i in orth) {
 
-        cat(sprintf("\t...column %s\n", colnames(data)[i]))
+        cat(sprintf("\t...column %s ", colnames(data)[i]))
 
         ortho_columns = orthogonalize(data[,i])
+
+        cat(sprintf("%d\n", ncol(as.matrix(ortho_columns))))
+
         mlp_data = cbind(mlp_data, ortho_columns)
     }
 
     cat(sprintf("Creating bins for continuous data...\n"))
 
-    #   Discretize values in 7:9
+    #   Discretize values in 8:11
 
     for (i in disc) {
 
-        cat(sprintf("\t...column %s\n", colnames(data)[i]))
+        cat(sprintf("\t...column %s ", colnames(data)[i]))
 
         disc_column = continuousToDiscrete(data[,i])
+
+        cat(sprintf("%d\n", ncol(as.matrix(disc_column))))
+
         mlp_data = cbind(mlp_data, disc_column)
     }
     #   Set label values as 0 for all different than 1
@@ -80,42 +86,37 @@ prepareForMLP <- function(data, orth=c(1:7), disc=c(8:11)) {
 
 orthogonalize <- function(vec) {
 
-    len = length(unique(vec))
+        temp = sort(unique(vec))
 
-    vec = sort(vec)
+        len = length(temp)
 
-    last_value = vec[1]
+        result = NULL
 
-    cur_pos = 1
+        if (len < 3) {
 
-    result = NULL; 
+                result = vec
 
-    for (i in 1:length(vec)) {
+        } else {
 
-        ortho_value = rep(0,len)
+                for (i in 1:length(vec)) {
 
-        cur_value = vec[i]
+                        orth_vec = rep(0, len)
 
-        if (cur_value != last_value) {
+                        ind = which(temp == vec[i])
 
-            cur_pos = cur_pos + 1
-        }
+                        orth_vec[ind] = 1
 
-        ortho_value[cur_pos] = 1
-
-        last_value = cur_value
-
-        result = rbind(result, ortho_value)
-    }
-
-    result
+                        result = rbind(result, orth_vec)
+                }
+        }      
+        result
 }
 
 cleanLabel <- function(data) {
 
-    label_col = data[,ncol(data)]
+        label_col = data[,ncol(data)]
 
-    label_col[label_col != 1] = 0
+        label_col[label_col != 1] = 0
 
     data[,ncol(data)] = label_col
 
@@ -192,7 +193,6 @@ getProbs <- function(result, thres=0.5) {
     result[result[,1] <= 0.5] = 0
 
     sucess = length(which(result[,1] == result[,2]))
-set ts=4
     total = nrow(result)
 
     prob = (total / sucess) * 100
@@ -215,3 +215,56 @@ probWomanTotal <- function(data) {
 
         prob
 }
+
+probOnesAndZeros<- function(data, col) {
+
+        wins = which(data[,ncol(data)] == 1);
+        
+        one_wins = which(data[wins,col] == 1)
+        zero_wins = which(data[wins,col] == 0)
+
+        total = length(wins)
+        
+        one_count = length(one_wins)
+
+        prob = (one_count / total) * 100
+
+        prob
+}
+
+plotBarMI <- function(mi) {
+
+        result = mi$output
+
+        result = result[1:length(result)-1]
+
+        barplot(as.matrix(result), beside=TRUE, col=rainbow(length(result)),
+                names.arg = c(1:length(result)));
+}
+
+catOcup <- function(data, ocups=c(10, 180, 163, 143, 167, 100, 179, 4, 18), col=6) {
+
+        ocupations = data[,col]
+        ocupations[ocupations %in% ocups] = -1
+        ocupations[ocupations > 0] = 0
+        ocupations[ocupations < 0] = 1
+       
+        data[,col] = ocupations;
+
+        data
+}
+
+
+catState <- function(data, state=4, col=2) {
+
+        states = data[,col]
+
+        states[states == state] = -1
+        states[states > 0] = 0
+        states[states < 0] = 1
+        
+        data[,col] = states
+
+        data
+}
+

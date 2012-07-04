@@ -5,13 +5,14 @@
 \usepackage{multirow}
 %\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{subfigure}
 \usepackage{times}
 \usepackage{hyperref}
 \usepackage{amssymb}
 \usepackage[pdftex]{graphicx}
 \usepackage{setspace}
 \usepackage{indentfirst}
+\usepackage{graphicx}
+\usepackage{subcaption}
 \usepackage{textfit}
 %\usepackage[numbers, sort]{natbib}
 \usepackage[natbib=true,sorting=none, firstinits=true]{biblatex}
@@ -19,7 +20,6 @@
 \usepackage{color}  
 \usepackage{wrapfig}
 \usepackage[top=30mm,bottom=20mm,left=30mm,right=20mm,twoside]{geometry}
-\usepackage[font=small,format=plain,labelfont=bf,up,textfont=it,up]{caption}
 
 \title{Uso de Redes Neurais e Informação Mútua na \\
 Análise de Dados Eleitorais}
@@ -40,13 +40,15 @@ Este trabalho propõe analisar os resultados das últimas eleições realizadas no B
 
 \section{Introdução} \label{introducao}
 
-Este trabalho busca treinar uma rede neural MLP (\textit{Multilayer Perceptron}) com dados da eleição de 2006 e verificar se essa rede é capaz de prever os resultados das eleições de 2010 com base no treinamento realizado. Para isso é preciso definir quais atributos serão utilizados. Um  esforço especial será dedicado à esta etapa de seleção de atributos pois ela afeta diretamente no desempenho computacional da rede neural e também na qualidade do resultado obtido.
+Este trabalho busca treinar uma rede neural MLP (\textit{Multilayer Perceptron}) com uma parcela dos dados da eleição de 2010 e verificar se essa rede é capaz de prever a outra parcela dos dados com base no treinamento realizado. Para isso é preciso definir quais atributos serão utilizados. Um esforço especial será dedicado à esta etapa de seleção de atributos pois ela afeta diretamente o desempenho computacional da rede neural e também a qualidade do resultado obtido.
 
 Os dados utilizados neste trabalho são provenientes do repositório eleitoral de dados do tribunal superior eleitoral, fato que garante a integridade das informações em questão. No entanto, a base de dados contém algumas incosistências, como alguns atributos em branco ou certas replicações de dados que sugerem falhas durante a etapa de inserção dos dados. De modo a contornar essa situação, um pré-processamento foi realizado e tais inconsistências foram excluidas das análises.
 
 O repositório de dados contém infomações relativas a \emph{Eleitorado, Candidatos, Resultados e Prestação de Contas}. Devido ao foco deste trabalho escolheu-se por trabalhar com os dados relativos a candidatos. Dentro dessa categoria existem as subcategorias \emph{Informações de Candidatura, Bens, Legendas e Vagas}. Decidiu-se trabalhar somente com os dados de informações de candidatura pois continham atributos suficientes para a análise proposta.
 
 Uma vez obtidos os dados e realizado o pré-processamento, necessita-se então determinar quais atributos serão utilizados para as análises. Nesta etapa utiliza-se a informação mútua entre os atributos para determinar quais são mais relevantes. Após definir os atributos é possível treinar a rede neural. 
+
+\section{Trabalhos Relacionados}\label{sec:trab-rel}
 
 \section{Metodologia} \label{documentclasses}
 
@@ -125,30 +127,38 @@ Alguns desses atributos não são relevantes para a análise ou não se encontram em
 	\hline
 	4 & Sexo    \\
 	\hline
-	5 & Partido    \\
+	5 & Partido Político   \\
 	\hline
-	6 & Ocupação    \\
+	6 & Ocupação Atual   \\
 	\hline
 	7 & Estado Civil    \\
 	\hline
-	8 & Cargo Almejado    \\
+	8 & Nível do Cargo Almejado    \\
 	\hline
-	9 & Escolaridade    \\
+	9 & Grau de Escolaridade    \\
 	\hline
-	10 & Idade    \\
+	10 & Idade na  Eleição   \\
 	\hline
-	11 & Despesas Máximas   \\
+	11 & Despesas de Campanha Estipulada \\
 	\hline
-	12 & Resultado da Eleição    \\
+	12 & Resultado da Eleição   \\
+
 	\hline
 \end{tabular}
 \caption{Atributos selecionados manualmente.}
 \label{tab:relev}
 \end{table}
 
-Os atributos de 1 a 7 são valores discretos equivalentes aos identificadores dos campos na base de dados. Os atributos de 8 a 11 são valores continuos que devem ser dividos em intervalos para se adequarem ao processamento. Essa divisão em intervalos foi realizada por meio da criação de um histograma, onde cada valor contínuo foi representado pelo intervalo do histograma o qual pertence. O valor 12 é o \textit{label} que indica se o candidato foi eleito ou não. Todos os atributos foram normalizados entre 0 e 1 para garantir uma maior uniformidade nos cálculos.
+Os atributos de 1 a 7 são valores discretos equivalentes aos identificadores dos campos na base de dados. Os atributos de 8 a 11 são valores continuos que devem ser dividos em intervalos para se adequarem ao processamento. Essa divisão em intervalos foi realizada por meio da criação de um histograma, onde cada valor contínuo foi representado pelo intervalo do histograma o qual pertence. Métodos mais adeuqados poderiam ser utilizados, como por exemplo o proposto por Darbellay e Vadja. O valor 12 é o \textit{label} que indica se o candidato foi eleito ou não. Todos os atributos foram normalizados entre 0 e 1 para garantir uma maior uniformidade nos cálculos.
 
 Criando uma matriz $p~x~p$, onde $p$ indica o número de atributos e cada elemento $m(i,j)$ indica a informação mutua do atributo $i$ com o atributo $j$, obtem-se uma relação de todos os valores de informação mútua entre todos elementos. Ao analisar os valores dessa matriz é possível identificar os atributos com maior dependência.
+
+
+A análise da informação mútua traz algumas hipóteses para os dados em questão. No entanto, sua utilidade pode ser extendida no sentido de escolher quais atributos são mais relevantes para a determinação do resultado da eleição. Pode ser utilizada também para verificar atributos redundantes.
+
+Assim, ao se realizar essa seleção de atributos, resta apenas preparar os dados para serem processados pela rede neural. Isso é necessário pois os valores discretos (atributos 1 a 7) não apresentam um fluxo de dados, ou seja, não se pode por exemplo dizer que uma cidade representada pelo código $x$ esta geográficamente próxima de uma representada pelo código $x + 1$. Para contornar essa situação basta ortogonalizar os valores, por exemplo se o valor sexo era representado por 0 e 1, passa a ser representando por $[1,0]$ e $[0,1]$. Os valores contínuos já foram processados na etapa anterior e não requerem mais nenhum tipo de tratamento para serem processados pela rede.
+
+O critério de parada e a taxa de aprendizado da MLP serão definidos empiricamente de acordo com os rescursos computacionais disponíveis. Os resultados são apresentados a seguir~\ref{resultados}.
 
 \section{Resultados}\label{resultados}
 
@@ -161,23 +171,106 @@ Inicialmente trabalhou-se com os dados referentes à eleição de 2010. Havia ao to
 	\label{fig:matriz}
 \end{figure}
 
-Uma análise de um ponto de vista geral, realizada a partir da matriz de informação mútua é capaz de fornecer interpretações interessantes dos dados. Por exemplo, nota-se que o atributo sexo (4) influencia praticamente todos os outros atributos, inclusive o resultado da eleição. Essa suposição pode ser confirmada estatisticamente, pois dos 1424 candidatos eleitos em 2010, apenas 168 eram do sexo feminino, ou seja, mais de $88\%$ dos cargos foram ocupados por pessoas do sexo masculino.
+Uma análise de um ponto de vista geral, realizada a partir da matriz de informação mútua é capaz de fornecer interpretações interessantes dos dados. Por exemplo, nota-se que o atributo sexo (4) influencia praticamente todos os outros atributos, inclusive o resultado da eleição (12). Essa suposição pode ser confirmada estatisticamente, pois dos 1424 candidatos eleitos em 2010, apenas 168 eram do sexo feminino, ou seja, mais de $88\%$ dos cargos foram ocupados por pessoas do sexo masculino.
 
 Nota-se também que o resultado apresenta relação com a maioria dos atributos. Para uma melhor análise criou-se um gráfico~\ref{fig:bar} com as informações mútuas dos atributos em relação ao resultado da eleição.
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=9cm]{images/brasil_2010_bar.jpg}
-	\caption{Matriz dos valores de informação mútua para todos os atributos. Valores maiores representam maior dependência entre os atributos. A diagonal deve ser ignorada.}
+	\caption{Gráfico da informação mútua de todos atributos em relação ao resultado da eleição.}
 	\label{fig:bar}
 \end{figure}
 
+Observa-se que os atributos correspondentes ao sexo (4)  e a ocupação (6) do candidato são os que mais influenciam no resultado da eleição. Existe também uma certa influência causada pelo local de nascimento do candidato (1 e 2). Um fato interessante é que o valor estipulado para despesas na campanha (11) não apresenta uma grande relação com o resultado da eleição. 
+
+Uma hipótese que pode ser avaliada é se existe uma variação desses valores se for realizada uma análise mais detalhada dos dados. Uma possibilidade é realizar uma análise individual para cada estado. Como o Brasil apresenta diversos estados optou-se por escolher somente os mais representativos de cada região. 
+
+\begin{figure}
+		\begin{subfigure}[b]{0.3\textwidth}
+				\centering
+				\includegraphics[width=5.0cm]{images/rs_2010_bar.jpg}
+				\caption{RS}
+		\end{subfigure}~\begin{subfigure}[b]{0.3\textwidth}
+				\centering
+				\includegraphics[width=5.0cm]{images/sp_2010_bar.jpg}
+				\caption{SP}
+		\end{subfigure}
+		\begin{subfigure}[b]{0.3\textwidth}
+				\centering
+				\includegraphics[width=5.0cm]{images/ba_2010_bar.jpg}
+				\caption{BA}
+		\end{subfigure}~\begin{subfigure}[b]{0.3\textwidth}
+				\centering
+				\includegraphics[width=5.0cm]{images/ma_2010_bar.jpg}
+				\caption{MA}
+		\end{subfigure}
+		\begin{subfigure}[b]{0.3\textwidth}
+				\centering
+				\includegraphics[width=5.0cm]{images/go_2010_bar.jpg}
+				\caption{GO}
+		\end{subfigure}~\begin{subfigure}[b]{0.3\textwidth}
+				\centering
+				\includegraphics[width=5.0cm]{images/am_2010_bar.jpg}
+				\caption{AM}
+		\end{subfigure}
+
+		\caption{Informação mútua calculada individualmente para os estados.}
+		\label{fig:bars}
+\end{figure}
+
+Observa-se pela figura~\ref{fig:bras} que alguns estados apresentam uma distribuição distinta de valores de informação mútua e diferentes atributos influenciam no resultado da eleição. Nota-se por exemplo que as eleições no Rio Grande do Sul são mais influenciadas pelo estado natal do candidato do que em outras partes do Brasil. Nota-se quem em São Paulo o valor definido para despesas de campanha é o atributo mais significativo. O restante dos estados segue a tendência nacional com uma certa variação em alguns atributos.
+
+Dessa última análise pode-se concluir que o treinamento da rede neural deve ser realizado individualmente para cada estado devido à variãncia da informação mútua dos atributos. Assim, a abordagem seria criar uma rede neural para cada estado, treina-las com os dados de 2006 e testa-las com os dados de 2010 para verificar sua precisão.
+
+
+Neste momento é necessário avaliar as questões de desempenho computacional. Supõe-se o processamento da rede no pior caso, ou seja, o caso com o maior número de elementos, que trata-se da eleição no estado de São Paulo. Nesta situação cada elemento é representado por um vetor de $1310$ posições. Isso ocorre pois na etapa de ortogonalização dos atributos como por exemplo cidade natal, que possui para este caso 1087 possibilidades, transforma-se o atributo em um vetor de $1097$ posições (dimensões), assim cada cidade será representada por um vetor ortogonal. O elevado número de elementos dificulta tanto a convergência da rede neural quanto a qualidade do treinamento obtido. Assim, requere-se uma simplificação dessa representação.
+
+Uma possibilidade para essa simplificação é ignorar o atributo cidade natal (1), pois o atributo estado natal (2) já é capaz de representar essa noção de localidade. Os atributos correspondetes a cidadania (3), nivel do cargo almejado (8) e escolaridade (9) não são cruciais pois, de acordo com a figura~\ref{fig:bar}, não apresentam grande relação com o resultado da eleição e por isso podem ser descartados. Assim, no caso do estado de São Paulo por exemplo, há uma redução de $1102$ dimensões, resultando em um vetor de $208$ dimensões.
+
+No entanto, $208$ ainda é um número elevado de dimensões. O atributo ocupação (6) representa $147$ dessas dimensões. Uma tentativa para reduzir ainda mais o número de dimensões seria ignorar esse atributo, no entanto como já foi observado, existe uma grande relação entre a ocupação de um candidato e o resultado da eleição. Outra abordagem seria utilizar o senso comum como hipótese para a criação de uma categoria de ocupação, isto é, espera-se que candidatos que se encontram envolvidos com política devem apresentar um desempenho na campanha diferente de candidatos que não estão envolvidos.
+
+Para a criação dessa categoria foram selecionados manualmente do conjunto de ocupações aquelas que pareciam pertinentes ao grupo de pessoas envolvidas com política. A tabela~\ref{tab:ocup} representa os elementos que compõem esta categoria.
+
+\begin{table}[h!]
+        \centering
+        \begin{tabular}{|l|}
+                \hline
+                \multicolumn{1}{|c|}{\textbf{Ocupações}} \\
+                \hline
+                Vereadores \\\hline
+                Deputados \\\hline
+                Prefeitos \\\hline
+                Diplomatas \\\hline
+                Governadores \\\hline
+                Ministros \\\hline
+                Membros do Ministério \\ Público	\\\hline
+                Ocupantes de cargos \\ em comissões\\\hline
+                Senadores \\\hline
+        \end{tabular}
+        \caption{Categoria de ocupações relacionadas à política.}
+        \label{tab:ocup}
+\end{table}
+
+Uma vez construida essa categoria, basta utilizar um único valor binário para indicar quando o candidato se encontra nesta categoria ou não. Uma análise estatistica sobre os dados  referentes às eleições no estado de São Paulo revela que $49.66\%$ dos candidados que obtiveram sucesso em suas eleições pertencem à esta categoria de ocupações. Sabendo que existe na base de dados $209$ ocupações cadastradas é possível dizer que esse percentual representa um quantia considerável.
+
+A mesma ideia de criação de uma categoria pode ser utilizada para o atributo estado natal. Usando o senso comum infere-se que um candidato tem maior propensão a ser eleito se candidatando no estado em que nasceu do que em outros estados. Assim o valor estado natal, que é representado por um vetor de $26$ posições, passa a ser representado por um único valor booleano que indica se o candidato nasceu no estado em que concorre ou não. 
+
+Uma análise estatistica pode fundamentar esta última hipótese. Realizando um levantamento das eleições em São Paulo constatou-se que $72.85\%$ das pessoas eleitas nasceram no estado de São Paulo. O gráfico de informação mútua apresentado na figura~\ref{fig:bars}-a mostrou que o Rio Grande do Sul sofria maior influência desta questão de localidade do que outros estados. Um levantamento dos resultados das eleições neste estado revelou que $96.15\%$ dos eleitos nasceram no Rio Grande do Sul.
+
+Com todas as devidas reduções de dimensionalidade atinge-se o número de $38$ dimensões para o caso das eleições no estado de São Paulo. A rede neural deve ser capaz de processar essa quantidade de dimensões.
+
 \section{Conclusão}\label{conclusao}
+
+A informação mútua foi capaz de fornecer uma serie de hipóteses em relação aos dados e foi possível compreender os atributos que afetam o resultado das eleições. Algumas inferencias se mostram verdadeiras de acordo com dados estatisticos.
+
+A rede neural foi capaz ...
+
+Em trabalhos futuros deverá ser estudado se o fato de atributos, como partido político, serem representados por $n$ dimensões e outros atributos, como o atributo sexo, ser representado por somente uma dimensão pode interferir no desempenho da rede neural. Além disso, pretende-se construir a seção~\ref{sec:trab-rel}, onde será explicado com mais detalhes a informação mútua, a rede neural utilizada e os métodos para discretização de valores contínuos.
 
 \begin{thebibliography}{9}
 
-\bibitem[Doe]{doe} \emph{First and last \LaTeX{} example.},
-John Doe 50 B.C. 
+        [EM CONSTRUÇÃO]
 \end{thebibliography}
 
 \end{document}

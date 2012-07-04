@@ -14,7 +14,7 @@ import br.usp.sdext.models.Coalition;
 import br.usp.sdext.models.Election;
 import br.usp.sdext.models.Log;
 import br.usp.sdext.models.Party;
-import br.usp.sdext.models.candidate.BirthState;
+import br.usp.sdext.models.State;
 import br.usp.sdext.models.candidate.BirthTown;
 import br.usp.sdext.models.candidate.Candidate;
 import br.usp.sdext.models.candidate.Citizenship;
@@ -33,8 +33,9 @@ public class CandidaturesParser extends AbstractParser {
 	private HashMap<Model, Model> sexMap = new HashMap<>();
 	private HashMap<Model, Model> ctzsMap = new HashMap<>();
 	private HashMap<Model, Model> townsMap = new HashMap<>();
-	private HashMap<Model, Model> statesMap = new HashMap<>();
 	private Long numCandidates;
+	
+	private HashMap<Model, Model> statesMap = new HashMap<>();
 
 	private ArrayList<Model> duppersList = new ArrayList<>();
 
@@ -138,7 +139,7 @@ public class CandidaturesParser extends AbstractParser {
 		Sex sex = (Sex) Model.fetchAndSave(Sex.parse(pieces), sexMap);
 		Citizenship ctz = (Citizenship) Model.fetchAndSave(Citizenship.parse(pieces), ctzsMap);
 		BirthTown town = (BirthTown) Model.fetch(BirthTown.parse(pieces),townsMap);
-		BirthState state = (BirthState) Model.fetchAndSave(BirthState.parse(pieces),statesMap);
+		State state = (State) Model.fetchAndSave(State.parse(pieces),statesMap);
 
 		candidate.setSex(sex);
 		candidate.setBirthTown(town);
