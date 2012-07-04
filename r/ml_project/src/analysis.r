@@ -189,15 +189,21 @@ normalizeMatrix <- function(mat, col=0) {
 
 getProbs <- function(result, thres=0.5) {
 
-    result[result[,1] > 0.5] = 1
-    result[result[,1] <= 0.5] = 0
+        result = as.matrix(result)
 
-    sucess = length(which(result[,1] == result[,2]))
-    total = nrow(result)
+        values = result[,1]
+        
+        values[values > 0.5] = 1
+        values[values <= 0.5] = 0
 
-    prob = (total / sucess) * 100
+        result[,1] = values
 
-    prob
+        sucess = length(which(result[,1] == result[,2]))
+        total = nrow(result)
+
+        prob = (sucess / total) * 100
+
+        prob
 }
 
 probWomanTotal <- function(data) {
@@ -268,3 +274,7 @@ catState <- function(data, state=4, col=2) {
         data
 }
 
+getTrainMLP <- function(mlp_data) {
+
+
+}
