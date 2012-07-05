@@ -273,6 +273,7 @@ Os parâmetros da rede neural foram definidos empiricamente buscando um equilíbri
 
 Ao término do processamento a MLP foi capaz de acertar $96.07\%$ dos resultados das candidaturas. No entanto, somente a taxa de acerto não diz muito sobre a qualidade dos resultados obtidos. Uma matriz de confusão~\ref{tab:conf} pode auxiliar na análise dos resultados:
 
+\begin{table}
 \noindent
 \renewcommand\arraystretch{1.5}
 \setlength\tabcolsep{0pt}
@@ -284,14 +285,18 @@ Ao término do processamento a MLP foi capaz de acertar $96.07\%$ dos resultados 
           & Não Eleito$'$ & \MyBox{0} & \MyBox{2568} & N$'$ \\
           & Total & P & N &
 \end{tabular}
+\label{tab:conf}
+\end{table}
+
+Observando os valores da matriz de confusão nota-se que a rede neural foi capaz de distinguir todas as condições no qual um candidato não tem chance de se eleger, pois não existem falsos positivos. No entanto, existe um número considerável de falsos negativos, o que indica uma certa falta de precisão do resultado.
 
 \section{Conclusão}\label{conclusao}
 
-A informação mútua foi capaz de fornecer uma serie de hipóteses em relação aos dados e foi possível compreender os atributos que afetam o resultado das eleições. Algumas inferencias se mostram verdadeiras de acordo com dados estatisticos.
+A informação mútua foi capaz de fornecer uma série de hipóteses em relação aos dados e foi possível compreender os atributos que afetam o resultado das eleições. Algumas inferencias se mostram verdadeiras de acordo com análises estatisticos realizadas neste trabalho.
 
-A rede neural foi capaz ...
+A rede neural forneceu resultados satisfátorios. Por falta de tempo não foi possível executar a rede para conjuntos de entrada de outros estados e também não foi possível realizar uma avaliação rebuscada dos resultados obtidos. 
 
-Em trabalhos futuros deverá ser estudado se o fato de atributos, como partido político, serem representados por $n$ dimensões e outros atributos, como o atributo sexo, ser representado por somente uma dimensão pode interferir no desempenho da rede neural. Além disso, por falta de tempo não foi possível calcular outras medidas de avaliação dos resultados da MLP.
+Em trabalhos futuros deverá ser estudado se o fato de atributos, como partido político, serem representados por $n$ dimensões e outros atributos, como o atributo sexo, serem representados por somente uma dimensão pode interferir no desempenho da rede neural.
 
 
 Pretende-se construir a seção~\ref{sec:trab-rel}, onde será explicado com mais detalhes a informação mútua, a rede neural utilizada e os métodos para discretização de valores contínuos.
