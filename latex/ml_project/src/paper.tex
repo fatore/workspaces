@@ -31,6 +31,17 @@
         }%
 }
 
+\hypersetup{
+        colorlinks=true,
+        citecolor=black,
+        filecolor=black,
+        linkcolor=black,
+        urlcolor=black
+}
+
+
+\bibliography{references}
+
 \title{Uso de Redes Neurais e Informação Mútua na \\
 Análise de Dados Eleitorais}
 
@@ -50,17 +61,42 @@ Este trabalho propõe analisar os resultados das últimas eleições realizadas no B
 
 \section{Introdução} \label{introducao}
 
-Este trabalho busca treinar uma rede neural MLP (\textit{Multilayer Perceptron}) com uma parcela dos dados da eleição de 2010 e verificar se essa rede é capaz de prever a outra parcela dos dados com base no treinamento realizado. Para isso é preciso definir quais atributos serão utilizados. Um esforço especial será dedicado à esta etapa de seleção de atributos pois ela afeta diretamente o desempenho computacional da rede neural e também a qualidade do resultado obtido.
+A capacidade de armazenamento de dados alcançada pelo atual desenvolvimento tecnológico        viabilizou a muitas empresas e instituições registrar dados relativos aos seus negócios em busca de obter melhores resultados e respostas de seus serviços. Porém, existe um longo caminho entre o armazenamento dos dados e a extração e interpretação de informações de interesse.
 
-Os dados utilizados neste trabalho são provenientes do repositório eleitoral de dados do tribunal superior eleitoral, fato que garante a integridade das informações em questão. No entanto, a base de dados contém algumas incosistências, como alguns atributos em branco ou certas replicações de dados que sugerem falhas durante a etapa de inserção dos dados. De modo a contornar essa situação, um pré-processamento foi realizado e tais inconsistências foram excluidas das análises.
+Empresas como Google e Facebook dedicam grande parte de seus esforços no sentido de explorar   esses dados e dependem desta análise para fornecer uma publicidade direcionada aos seus clientes. A exploração de grandes bases de dados não precisa estar vinculada a algum interesse comercial, mas como essa atividade é muito dispendiosa acaba ocorrendo principalmente com esse pretexto ou dentro de algum ambiente de pesquisa.
 
-O repositório de dados contém infomações relativas a \emph{Eleitorado, Candidatos, Resultados e Prestação de Contas}. Devido ao foco deste trabalho escolheu-se por trabalhar com os dados relativos a candidatos. Dentro dessa categoria existem as subcategorias \emph{Informações de Candidatura, Bens, Legendas e Vagas}. Decidiu-se trabalhar somente com os dados de informações de candidatura pois continham atributos suficientes para a análise proposta.
+Existe uma imensa quantidade de dados sem um aparente interesse financeiro que pode oferecer à população recursos para compreender melhor a sociedade em diferentes aspectos. O governo brasileiro, por exemplo, tem trabalhado junto à OGP\footnote{\url{http://www.        opengovpartnership.org/}} (Open Government Partnership) no sentido de oferecer uma maior transparência de suas atividades à população por meio da disponibilização de dados públicos.Exemplos desse esforço são os portais eletrônicos Portal da Transparência\footnote{\url{http://www.portaltransparencia.gov.br/}} e Portal Brasileiro de Dados Abertos\footnote{\url{http://beta.dados.gov.br/}}.
 
-Uma vez obtidos os dados e realizado o pré-processamento, necessita-se então determinar quais atributos serão utilizados para as análises. Nesta etapa utiliza-se a informação mútua entre os atributos para determinar quais são mais relevantes. Após definir os atributos é possível treinar a rede neural. 
+Contudo, a iniciativa do governo é muito recente, formalizada no final de 2011 pelo Decreto de 15 de setembro de 2011~\cite{decreto_15-09-11} e pela Lei de Acesso a Informação    Pública~\cite{lei_12527}, e ainda requer um amadurecimento em questões de organização e aproveitamento dos dados. Hoje, o governo se limita a disponibilizar os dados em sua forma bruta, ou seja, sem suporte a análise exploratória com intuito de extrair informações de interesse e ajudar na sua interpretação.
+
+O Portal da Transparência, mencionado anteriormente, possui uma vasta e variada base de dados,porém, em sua maioria, eles se encontram no formato de planilhas que são de difícil        interpretação. Já o segundo portal mencionado, o Portal de Dados Abertos, disponibiliza os dados em formatos que podem ser tratados em larga escala, entretanto, não possui um registro tão vasto e variado como o do Portal da Transparência.
+
+Outro recurso fornecido pelo governo, por meio do TSE (Tribunal Superior Eleitoral), trata-se  do Repositório de Dados Eleitorais\footnote{\url{http://www.tse.jus.br/eleicoes/repositorio-de-dados-eleitorais}}. Este recurso conta com uma base de dados referente a candidatos, eleitorado, resultados e prestação de contas. Os registros contém informações de eleições municipais, estaduais e nacionais de 1994 até 2010 e encontram-se em formatos adequados para o processamento computacional, configurando uma fonte valiosa para entendimento dos mecanismos de funcionamento da política nacional.
+
+Este trabalho buscou utilizar técnicas de aprendizado de máquina e teoria da informação para fornecer recursos para um aprofundamento no estudo dos dados eleitorais contidos no repositório de dados do TSE. Mais especificamente construiu-se um modelo computacional baseado em redes neurais que foi capaz de avaliar as chances de um candidato ser eleito com base nas informações de sua candidatura.
+
+Na próxima seção apresenta-se alguns poucos trabalhos que tratam dados políticos eleitorais.
 
 \section{Trabalhos Relacionados}\label{sec:trab-rel}
 
+O trabalho realizado por \citet{Battiti1994} é uma das bases teóricas deste trabalho pois trata exatamene de uma das questões mais importantes na implentação de uma rede neural, a seleção dos atributos de entrada da rede. Battiti define um método para seleção de atributos baseado em informação mútua.
+
+Existe na literatura outros trabalhos na mesma vertente deste trabalho. \citet{Vieira2006}, por exemplo, utilizaram dados das eleições municipais de Portugal no ano de 1999 em uma comparação entre as técnicas de agrupamento hierárquico e as redes neurais de Kohonen, conhecidas como \textit{Self-Organizing Maps} (SOM)~\cite{Kohonen:2001:SM}. O resultado com ambos métodos mostrou a formação de três grupos: um apontando o Partido Socialista (PS) como partido mais votado, sendo este grupo bem maior que os demais; um grupo dominado por partidos de direita; e outro grupo que se concentra na região de Alentejo, sendo dominado por partidos de esquerda.
+
+Outro trabalho que pode ser mencionado é o de \citet{Carneiro2008}, o qual busca observar como as disputas eleitorais nos municípios são influenciadas pela disputa nas esferas estaduais e nacional. Entre as conclusões apresentadas neste trabalho, destacam-se: a votação para governador é a variável que causa maior efeito nas eleições de deputado federal e estadual; e a votação para prefeito é a que tem maior efeito para a eleição de vereadores. Os autores afirmam que é extremamente difícil a observação da organização partidária, devido à grande quantidade de municípios em que se encontram partidos políticos.
+
+Um último exemplo que vale ser citado é o de \citet{Gormley2008}, o qual busca analisar a influência de fatores sociais nos resultados eleitorais. Os autores utilizam modelos de mistura para evidenciar os grupos de votação no eleitorado irlandês das eleições presidenciais de 1997 e determinar as características nas preferências de votação desses blocos. Como resultado, os autores concluem que a idade e a satisfação com o governo determinam a formação dos grupos de votação no caso estudado.
+
+Esses trabalhos, além de não serem focados em dados políticos brasileiros, também se mostraram falhos em suas análises. Por exemplo, \citet{Vieira2006} tiveram uma preocupação maior em comparar as técnicas utilizadas do que realmente fornecer um estudo proveitoso dos dados. \citet{Carneiro2008} por sua vez, esbarraram em uma questão de complexidade computacional ao avaliar os dados de eleições de diversos municípios.
+O trabalho aqui proposto centra-se em dados políticos nacionais e tem por objetivo fornecer um melhor entendimento dos dados em si.
+
 \section{Metodologia} \label{documentclasses}
+
+Este trabalho busca treinar uma rede neural MLP \cite{Ruck1990} (\textit{Multilayer Perceptron}) com os dados das eleições de um determinado ano e verificar se essa rede é capaz de prever se um candidato foi eleito.
+
+Como já foi mencionado, os dados utilizados neste trabalho são provenientes do repositório eleitoral de dados do tribunal superior eleitoral e isso garante a legitibilidade das informações. No entanto, não há garantias que a base de dados é totalmente consistente. De fato, em uma análise prévia dos dados revelou uma série de inconsistências na base, como alguns atributos em branco ou certas replicações de dados que sugerem falhas durante a etapa de inserção dos dados. Logo, foi necessário realizar um pré-processamento nos dados para diagnosticar essas falhas e removê-las.
+
+O repositório de dados contém infomações relativas a \emph{Eleitorado, Candidatos, Resultados  e Prestação de Contas}. Devido ao foco deste trabalho escolheu-se por trabalhar com os dados   relativos a candidatos. Dentro dessa categoria existem as subcategorias \emph{Informações de   Candidatura, Bens, Legendas e Vagas}. Decidiu-se trabalhar somente com os dados de informações de candidatura pois continham atributos suficientes para a análise proposta.
 
 A fase de pré-processamento consistiu em criar um banco de dados a partir dos arquivos obtidos no repositório de dados. Ao término desta etapa o banco de dados se encontra na situação descrita pela tabela~\ref{tab:bd}.
 
@@ -159,12 +195,11 @@ Alguns desses atributos não são relevantes para a análise ou não se encontram em
 \label{tab:relev}
 \end{table}
 
-Os atributos de 1 a 7 são valores discretos equivalentes aos identificadores dos campos na base de dados. Os atributos de 8 a 11 são valores continuos que devem ser dividos em intervalos para se adequarem ao processamento. Essa divisão em intervalos foi realizada por meio da criação de um histograma, onde cada valor contínuo foi representado pelo intervalo do histograma o qual pertence. Métodos mais adeuqados poderiam ser utilizados, como por exemplo o proposto por Darbellay e Vadja. O valor 12 é o \textit{label} que indica se o candidato foi eleito ou não. Todos os atributos foram normalizados entre 0 e 1 para garantir uma maior uniformidade nos cálculos.
+Os atributos de 1 a 7 são valores discretos equivalentes aos identificadores dos campos na base de dados. Os atributos de 8 a 11 são valores continuos que devem ser dividos em intervalos para se adequarem ao processamento. Essa divisão em intervalos foi realizada por meio da criação de um histograma, onde cada valor contínuo foi representado pelo intervalo do histograma o qual pertence. Métodos mais adeuqados poderiam ser utilizados, como por exemplo o proposto por \citet{Darbellay1999}. O valor 12 é o \textit{label} que indica se o candidato foi eleito ou não. Todos os atributos foram normalizados entre 0 e 1 para garantir uma maior uniformidade nos cálculos.
 
-Uma matriz $p~x~p$, em que $p$ indica o número de atributos e que $m(i,j)$ indica a informação mutua do atributo $i$ com o atributo $j$, fornece uma relação da informação mútua entre todos atributos. Ao analisar os valores dessa matriz é possível identificar os atributos com maior dependência.
+Antes de processar os dados na rede neural seria interessante analisar possíveis relações entre os atributos da base de dados. Isso pode ser feito utilizando a informação mútua ente os atributos. Uma matriz $p~x~p$, em que $p$ indica o número de atributos e que $m(i,j)$ indica a informação mutua do atributo $i$ com o atributo $j$, fornece uma relação da informação mútua entre todos atributos. Ao analisar os valores dessa matriz é possível identificar os atributos com maior dependência.
 
-
-A análise da informação mútua traz algumas hipóteses para os dados em questão. No entanto, sua utilidade pode ser extendida no sentido de escolher quais atributos são mais relevantes para a determinação do resultado da eleição. Pode ser utilizada também para verificar atributos redundantes.
+A análise da informação mútua traz algumas hipóteses para os dados em questão. Além disso, sua utilidade pode ser extendida no sentido de escolher quais atributos são mais relevantes para a determinação do resultado da eleição. Pode ser utilizada também para verificar atributos redundantes.
 
 Assim, ao se realizar essa seleção de atributos, resta apenas preparar os dados para serem processados pela rede neural. Isso é necessário pois os valores discretos (atributos 1 a 7) não apresentam um fluxo de dados, ou seja, não se pode, por exemplo, dizer que uma cidade representada pelo código $x$ esta geográficamente próxima de uma representada pelo código $x + 1$. Para contornar essa situação basta ortogonalizar os valores, por exemplo se o valor sexo era representado por 0 e 1, passa a ser representando por $[1,0]$ e $[0,1]$. Os valores contínuos já foram processados na etapa anterior e não requerem mais nenhum tipo de tratamento para serem processados pela rede.
 
@@ -172,7 +207,7 @@ O critério de parada e a taxa de aprendizado da MLP serão definidos empiricament
 
 \section{Resultados}\label{resultados}
 
-Trabalhou-se com os dados referentes à eleição de 2010, referente à eleições estaduais e nacionais. Havia ao todo, 19210 elementos na base de dados, porém 286 desses continham atributos em branco ou inválidos e por isso foram descartados. Calculou-se então a matriz de informação mútua para esses dados e obteve-se o resultado apresentado na figura~\ref{fig:matriz}.
+Trabalhou-se com os dados referentes às eleições estaduais e nacionais de 2010. Havia ao todo, 19210 elementos na base de dados, porém 286 desses continham atributos em branco ou inválidos e por isso foram descartados. Calculou-se então a matriz de informação mútua para esses dados e obteve-se o resultado apresentado na figura~\ref{fig:matriz}.
 
 \begin{figure}[h!]
 	\centering
@@ -285,6 +320,7 @@ Ao término do processamento a MLP foi capaz de acertar $96.07\%$ dos resultados 
           & Não Eleito$'$ & \MyBox{0} & \MyBox{2568} & N$'$ \\
           & Total & P & N &
 \end{tabular}
+\caption{Matriz de confusão construída a partir dos dados obtidos pela rede neural.}
 \label{tab:conf}
 \end{table}
 
@@ -298,13 +334,7 @@ A rede neural forneceu resultados satisfátorios. Por falta de tempo não foi poss
 
 Em trabalhos futuros deverá ser estudado se o fato de atributos, como partido político, serem representados por $n$ dimensões e outros atributos, como o atributo sexo, serem representados por somente uma dimensão pode interferir no desempenho da rede neural.
 
-
-Pretende-se construir a seção~\ref{sec:trab-rel}, onde será explicado com mais detalhes a informação mútua, a rede neural utilizada e os métodos para discretização de valores contínuos.
-
-\begin{thebibliography}{9}
-
-        [EM CONSTRUÇÃO]
-\end{thebibliography}
+\printbibliography
 
 \end{document}
 

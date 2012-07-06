@@ -1,11 +1,10 @@
 all:
-	pdflatex -output-directory=bin/ -halt-on-error src/paper.tex > temp/log.txt
-
-
-create:
-	mkdir bin/
-	mkdir temp/
-
+	pdflatex -halt-on-error src/paper.tex > log.txt
+	bibtex paper.aux > log.txt
+	pdflatex -halt-on-error src/paper.tex > log.txt
+	
+	rm *.bbl *blx.bib *.out *.run.xml *.aux *.blg *.log 
+		
 clean:
 	rmdir bin/
 	rmdir temp/

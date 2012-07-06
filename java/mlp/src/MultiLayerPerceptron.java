@@ -137,6 +137,7 @@ public class MultiLayerPerceptron {
 
 			// 1. abrir o arquivo que contem os exemplos
 			FileReader fr = new FileReader(trainFilename);
+			@SuppressWarnings("resource")
 			Scanner scanner = new Scanner(fr);
 
 			while (scanner.hasNextDouble()) {
