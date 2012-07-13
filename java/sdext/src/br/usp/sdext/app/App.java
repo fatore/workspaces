@@ -5,7 +5,7 @@ import br.usp.sdext.parsers.AccountabilityParser;
 import br.usp.sdext.parsers.CandidaturesParser;
 
 public class App {
-
+	
 	public void readData() throws Exception {
 		
 		AbstractParser parser;

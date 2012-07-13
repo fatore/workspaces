@@ -1,6 +1,7 @@
 package br.usp.sdext.models.candidate;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -13,8 +14,8 @@ public class Sex extends Model implements Serializable {
 	
 	private static final long serialVersionUID = -6132439706513863897L;
 	
-	public static final String[] VALUES = {"MASCULINO", "FEMININO"};
-
+	private static HashMap<Model, Model> map = new HashMap<>();
+	
 	@Id
 	private Long id;
 	

@@ -30,13 +30,10 @@ public class CandidaturesParser extends AbstractParser {
 	private int year;
 
 	private HashMap<Model, Model> candidatesMap = new HashMap<>();
-	private HashMap<Model, Model> sexMap = new HashMap<>();
 	private HashMap<Model, Model> ctzsMap = new HashMap<>();
 	private HashMap<Model, Model> townsMap = new HashMap<>();
 	private Long numCandidates;
 	
-	private HashMap<Model, Model> statesMap = new HashMap<>();
-
 	private ArrayList<Model> duppersList = new ArrayList<>();
 
 	private Set<Model> statusSet = new HashSet<>();
@@ -136,10 +133,10 @@ public class CandidaturesParser extends AbstractParser {
 
 		Candidate candidate = Candidate.parse(pieces);
 
-		Sex sex = (Sex) Model.fetchAndSave(Sex.parse(pieces), sexMap);
-		Citizenship ctz = (Citizenship) Model.fetchAndSave(Citizenship.parse(pieces), ctzsMap);
-		BirthTown town = (BirthTown) Model.fetch(BirthTown.parse(pieces),townsMap);
-		State state = (State) Model.fetchAndSave(State.parse(pieces),statesMap);
+		Sex sex = (Sex) Model.fetchAndSave(Sex.parse(pieces));
+		Citizenship ctz = (Citizenship) Model.fetchAndSave(Citizenship.parse(pieces));
+		BirthTown town = (BirthTown) 				Model.fetch(BirthTown.parse(pieces),townsMap);
+		State state = (State) Model.fetch(State.parse(pieces), State.getMap());
 
 		candidate.setSex(sex);
 		candidate.setBirthTown(town);

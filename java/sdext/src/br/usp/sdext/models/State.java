@@ -1,6 +1,7 @@
 package br.usp.sdext.models;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -12,6 +13,16 @@ import br.usp.sdext.util.Misc;
 public class State extends Model implements Serializable {
 	
 	private static final long serialVersionUID = 6358274013517612742L;
+	
+	private static final String[] values = {
+
+		"AC","AL","AM","AP","BA","CE","DF","ES","GO",
+		"MA","MG","MS","MT","PA","PB","PE","PI","PR",
+		"RJ","RN","RO","RR","RS","SC","SE","SP","TO",
+		"BR", "VT", "ZZ"
+	};
+	
+	private static HashMap<Model, Model> map = new HashMap<>();
 
 	@Id
 	private Long id;
@@ -25,13 +36,38 @@ public class State extends Model implements Serializable {
 		this.id = null;
 		this.label = label;
 	}
+
+	public static void init() {
+
+		if (Model.numElements(State.class) == 0) {
+
+			for (String value : values) {	
+
+				State state = new State(value);
+				state.setId(new Long(map.size()) + 1);
+				map.put(state, state);
+			}
+
+			Model.bulkSave(map.values());
+
+		} else {
+			
+			Model.findAll(State.class, map);
+		}
+	}
 	
 	public Long getId() {return id;}
 	public String getLabel() {return label;}
+	public static HashMap<Model, Model> getMap() {return map;}
 
 	public void setId(Long id) {this.id = id;}
 	public void setLabel(String label) {this.label = label;}
 	
+	@Override
+	public String toString() {
+		return id + ", " + label;
+	}
+
 	@Override
 	public int hashCode() {
 		
