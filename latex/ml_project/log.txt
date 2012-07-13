@@ -99,78 +99,74 @@ Underfull \hbox (badness 10000) in paragraph at lines 74--74
 [][][][]$\T1/pcr/m/n/8 http : / / www . tse . jus . br / eleicoes /
 [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
 
-LaTeX Warning: `!h' float specifier changed to `!ht'.
+LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[2] <images/brasil_2010_map.jpg, id=79, 481.8pt x 481.8pt>
+[2] <images/brasil_2010_map.jpg, id=82, 481.8pt x 481.8pt>
 <use images/brasil_2010_map.jpg>
-Overfull \hbox (25.05919pt too wide) in paragraph at lines 214--215
- [][] 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<images/brasil_2010_bar.jpg, id=81, 481.8pt x 481.8pt>
+[3] <images/brasil_2010_bar.jpg, id=95, 379.4175pt x 394.47375pt>
 <use images/brasil_2010_bar.jpg>
-Overfull \hbox (25.05919pt too wide) in paragraph at lines 225--226
- [][] 
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-<images/rs_2010_bar.jpg, id=82, 481.8pt x 481.8pt>
+<images/rs_2010_bar.jpg, id=96, 481.8pt x 481.8pt>
 <use images/rs_2010_bar.jpg>
-Overfull \hbox (0.65297pt too wide) in paragraph at lines 237--238
+Overfull \hbox (0.65297pt too wide) in paragraph at lines 249--250
  [][] 
-<images/sp_2010_bar.jpg, id=83, 481.8pt x 481.8pt>
+<images/sp_2010_bar.jpg, id=97, 481.8pt x 481.8pt>
 <use images/sp_2010_bar.jpg>
-Overfull \hbox (0.65297pt too wide) in paragraph at lines 241--242
+Overfull \hbox (0.65297pt too wide) in paragraph at lines 253--254
  [][] 
-<images/ba_2010_bar.jpg, id=84, 481.8pt x 481.8pt>
+<images/ba_2010_bar.jpg, id=98, 481.8pt x 481.8pt>
 <use images/ba_2010_bar.jpg>
-Overfull \hbox (0.65297pt too wide) in paragraph at lines 246--247
+Overfull \hbox (0.65297pt too wide) in paragraph at lines 258--259
  [][] 
-<images/ma_2010_bar.jpg, id=85, 481.8pt x 481.8pt>
+<images/ma_2010_bar.jpg, id=99, 481.8pt x 481.8pt>
 <use images/ma_2010_bar.jpg>
-Overfull \hbox (0.65297pt too wide) in paragraph at lines 250--251
+Overfull \hbox (0.65297pt too wide) in paragraph at lines 262--263
  [][] 
-<images/go_2010_bar.jpg, id=86, 481.8pt x 481.8pt>
+<images/go_2010_bar.jpg, id=100, 481.8pt x 481.8pt>
 <use images/go_2010_bar.jpg>
-Overfull \hbox (0.65297pt too wide) in paragraph at lines 255--256
+Overfull \hbox (0.65297pt too wide) in paragraph at lines 267--268
  [][] 
-<images/am_2010_bar.jpg, id=87, 481.8pt x 481.8pt>
+<images/am_2010_bar.jpg, id=101, 481.8pt x 481.8pt>
 <use images/am_2010_bar.jpg>
-Overfull \hbox (0.65297pt too wide) in paragraph at lines 259--260
+Overfull \hbox (0.65297pt too wide) in paragraph at lines 271--272
  [][] 
 
-Overfull \hbox (54.10603pt too wide) in paragraph at lines 235--262
+Overfull \hbox (54.10603pt too wide) in paragraph at lines 247--274
 [][] []
 
-Overfull \hbox (54.10603pt too wide) in paragraph at lines 235--262
+Overfull \hbox (54.10603pt too wide) in paragraph at lines 247--274
 [] []
 
-Overfull \hbox (54.10603pt too wide) in paragraph at lines 235--262
+Overfull \hbox (54.10603pt too wide) in paragraph at lines 247--274
 [] [] 
-[3]
-
-LaTeX Warning: Text page 4 contains only floats.
-
 [4 <./images/brasil_2010_map.jpg> <./images/brasil_2010_bar.jpg> <./images/rs_2
 010_bar.jpg> <./images/sp_2010_bar.jpg> <./images/ba_2010_bar.jpg> <./images/ma
 _2010_bar.jpg> <./images/go_2010_bar.jpg> <./images/am_2010_bar.jpg>] [5]
-Overfull \hbox (16.40135pt too wide) in paragraph at lines 316--316
+Overfull \hbox (16.40135pt too wide) in paragraph at lines 331--331
  []\T1/ptm/b/n/10 Verdadeiro
 
-Overfull \hbox (1.80666pt too wide) in paragraph at lines 312--323
+Overfull \hbox (1.80666pt too wide) in paragraph at lines 327--338
   [] 
+[6]
+Underfull \hbox (badness 1377) in paragraph at lines 359--359
+\T1/ptm/m/n/10 ba-sed on mu-tual in-for-ma-tion: cri-te-ria of max-
 
-Underfull \hbox (badness 1888) in paragraph at lines 338--338
+Underfull \hbox (badness 1132) in paragraph at lines 359--359
 []\T1/ptm/m/n/10 T. Koho-nen, M. R. Sch-ro-e-der e T. S. Hu-ang,
 
-Underfull \hbox (badness 3088) in paragraph at lines 338--338
+Underfull \hbox (badness 1509) in paragraph at lines 359--359
 \T1/ptm/m/n/10 eds. \T1/ptm/m/it/10 Self-Organizing Maps\T1/ptm/m/n/10 . 3rd. S
 e-cau-cus, NJ,
-[6] (./paper.aux) )
+[7] (./paper.aux)
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+ )
 (see the transcript file for additional information)pdfTeX warning (dest): name
 {Hfootnote.4} has been referenced but does not exist, replaced by a fixed one
 
@@ -184,10 +180,12 @@ pdfTeX warning (dest): name{Hfootnote.1} has been referenced but does not exist
 , replaced by a fixed one
 
 {/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texmf-dist/fonts
-/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fonts/type1/public/
-amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cms
-y7.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/te
-xmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/ur
-w/times/utmr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper.pdf (6 pages, 258205 bytes).
+/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+mi7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/s
+hare/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texmf-dist
+/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/time
+s/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/shar
+e/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on paper.pdf (7 pages, 285914 bytes).
 Transcript written on paper.log.

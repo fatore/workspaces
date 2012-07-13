@@ -7,6 +7,5 @@ public class Bootstrap {
 
 	static {
 		
-		State.init();
 	}
 }

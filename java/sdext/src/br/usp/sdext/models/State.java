@@ -22,8 +22,6 @@ public class State extends Model implements Serializable {
 		"BR", "VT", "ZZ"
 	};
 	
-	private static HashMap<Model, Model> map = new HashMap<>();
-
 	@Id
 	private Long id;
 	
@@ -37,7 +35,9 @@ public class State extends Model implements Serializable {
 		this.label = label;
 	}
 
-	public static void init() {
+	public static HashMap<Model, Model> init() {
+		
+		HashMap<Model, Model> map = new HashMap<>();
 
 		if (Model.numElements(State.class) == 0) {
 
@@ -54,11 +54,12 @@ public class State extends Model implements Serializable {
 			
 			Model.findAll(State.class, map);
 		}
+		
+		return map;
 	}
 	
 	public Long getId() {return id;}
 	public String getLabel() {return label;}
-	public static HashMap<Model, Model> getMap() {return map;}
 
 	public void setId(Long id) {this.id = id;}
 	public void setLabel(String label) {this.label = label;}

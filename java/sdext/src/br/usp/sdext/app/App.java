@@ -12,7 +12,7 @@ public class App {
 		String baseDir;
 		
 		parser = new CandidaturesParser();
-		baseDir = "/home/fm/data/sdext/candidatos/candidaturas/2010";
+		baseDir = "/home/fm/work/data/sdext/eleitorais/candidatos/candidaturas/2010";
 		parser.parseAndSave(baseDir);
 		
 		parser = new AccountabilityParser();

@@ -29,10 +29,14 @@ public class CandidaturesParser extends AbstractParser {
 
 	private int year;
 
+	private HashMap<Model, Model> statesMap;
+	
+	
 	private HashMap<Model, Model> candidatesMap = new HashMap<>();
+	private HashMap<Model, Model> sexMap = new HashMap<>();
 	private HashMap<Model, Model> ctzsMap = new HashMap<>();
 	private HashMap<Model, Model> townsMap = new HashMap<>();
-	private Long numCandidates;
+	private Long numCandidates = 0L;
 	
 	private ArrayList<Model> duppersList = new ArrayList<>();
 
@@ -41,19 +45,16 @@ public class CandidaturesParser extends AbstractParser {
 	private HashMap<Model, Model> mStatusMap = new HashMap<>();
 	private HashMap<Model, Model> schMap = new HashMap<>();
 
-	private HashMap<Model, Model> electionsMap;
-	private HashMap<Model, Model> partiesMap;
-	private HashMap<Model, Model> coalitionsMap;
+	private HashMap<Model, Model> electionsMap = new HashMap<>();
+	private HashMap<Model, Model> partiesMap = new HashMap<>();
+	private HashMap<Model, Model> coalitionsMap = new HashMap<>();
 
-	private Set<Model> candidaturesSet;
+	private Set<Model> candidaturesSet = new HashSet<>();
 
 	public CandidaturesParser() {
 
-		numCandidates = 0L;
-		electionsMap = new HashMap<>();
-		partiesMap = new HashMap<>();
-		coalitionsMap = new HashMap<>();
-		candidaturesSet = new HashSet<>();
+		statesMap = State.init();
+		
 	}
 
 	protected void loadFile(File file) throws Exception {
@@ -93,7 +94,7 @@ public class CandidaturesParser extends AbstractParser {
 				Log log = new Log(line,"CAUSED BY: " + exceptionMethod 
 						+ " IN CLASS: " + exceptionClass, e.getMessage());
 				log.save();
-			}
+			}new HashMap<>();
 		}
 
 		if (in != null) {
@@ -133,10 +134,10 @@ public class CandidaturesParser extends AbstractParser {
 
 		Candidate candidate = Candidate.parse(pieces);
 
-		Sex sex = (Sex) Model.fetchAndSave(Sex.parse(pieces));
-		Citizenship ctz = (Citizenship) Model.fetchAndSave(Citizenship.parse(pieces));
-		BirthTown town = (BirthTown) 				Model.fetch(BirthTown.parse(pieces),townsMap);
-		State state = (State) Model.fetch(State.parse(pieces), State.getMap());
+		Sex sex = (Sex) Model.fetchAndSave(Sex.parse(pieces), sexMap);
+		Citizenship ctz = (Citizenship) Model.fetchAndSave(Citizenship.parse(pieces), ctzsMap);
+		BirthTown town = (BirthTown) Model.fetch(BirthTown.parse(pieces),townsMap);
+		State state = (State) Model.fetch(State.parse(pieces), statesMap);
 
 		candidate.setSex(sex);
 		candidate.setBirthTown(town);
