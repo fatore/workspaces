@@ -9,6 +9,8 @@
 !*.c
 !*.cpp
 !*.glsl
+!*.properties
+!*.xml
 *~
 *.swp
 data/

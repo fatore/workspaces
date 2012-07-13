@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+    <session-factory>
+
+        <!-- Database connection settings -->
+        <property name="connection.driver_class">org.postgresql.Driver</property>
+        <property name="connection.url">jdbc:postgresql://localhost:5432/sdextdb</property>
+        <property name="connection.username">sdext</property>
+        <property name="connection.password">password</property>
+
+        <!-- JDBC connection pool (use the built-in) -->
+        <property name="connection.pool_size">1</property>
+        
+        <!-- SQL dialect -->
+        <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+
+        <!-- Enable Hibernate's automatic session context management -->
+        <property name="current_session_context_class">thread</property>
+
+        <property name="hibernate.jdbc.batch_size">50</property>
+        
+        <!-- Disable the second-level cache  -->
+        <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
+
+        <!-- Echo all executed SQL to stdout -->
+        <property name="show_sql">false</property>
+
+        <!-- Drop and re-create the database schema on startup -->
+        <property name="hbm2ddl.auto">create-drop</property>
+
+	
+	<mapping class="br.usp.sdext.models.Coalition"/>
+	<mapping class="br.usp.sdext.models.Donor"/>
+	<mapping class="br.usp.sdext.models.Election"/>
+	<mapping class="br.usp.sdext.models.Log"/>
+	<mapping class="br.usp.sdext.models.Party"/>
+	<mapping class="br.usp.sdext.models.State"/>
+
+	<mapping class="br.usp.sdext.models.candidate.BirthTown"/>
+	<mapping class="br.usp.sdext.models.candidate.Candidate"/>
+	<mapping class="br.usp.sdext.models.candidate.Citizenship"/>
+	<mapping class="br.usp.sdext.models.candidate.Sex"/>
+	
+	<mapping class="br.usp.sdext.models.candidate.status.Job"/>
+	<mapping class="br.usp.sdext.models.candidate.status.MaritalStatus"/>
+	<mapping class="br.usp.sdext.models.candidate.status.Schooling"/>
+	<mapping class="br.usp.sdext.models.candidate.status.Status"/>
+	
+	<mapping class="br.usp.sdext.models.candidature.Candidature"/>
+	<mapping class="br.usp.sdext.models.candidature.Income"/>
+	
+	<mapping class="br.usp.sdext.models.ghosts.GhostCandidate"/>
+
+    </session-factory>
+
+</hibernate-configuration>
