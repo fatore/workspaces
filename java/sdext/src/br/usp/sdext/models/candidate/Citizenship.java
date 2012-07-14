@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import br.usp.sdext.core.Model;
-import br.usp.sdext.util.Misc;
 
 @Entity
 public class Citizenship extends Model implements Serializable {
@@ -22,7 +21,11 @@ public class Citizenship extends Model implements Serializable {
 	
 	public Citizenship() {}
 	
-	public Citizenship(Long tseId, String label) {
+	public Citizenship(Long tseId, String label) throws Exception {
+		
+		if (tseId == null) {
+			throw new Exception();
+		}
 		
 		this.tseId = tseId;
 		this.label = label;
@@ -65,17 +68,7 @@ public class Citizenship extends Model implements Serializable {
 
 	@Override
 	public String toString() {
-		return id + ", " + tseId + ", " + label;
-	}
-
-	public static Citizenship parse(String[] pieces) throws Exception {
-		
-		Long citizenshipID = Misc.parseLong(pieces[34]);
-		String citizenship = Misc.parseStr(pieces[35]);
-		
-		if (citizenshipID == null) {
-			throw new Exception();
-		}
-		return new Citizenship(citizenshipID, citizenship);
+		return "Citizenship [id=" + id + ", label=" + label + ", tseId="
+				+ tseId + "]";
 	}
 }

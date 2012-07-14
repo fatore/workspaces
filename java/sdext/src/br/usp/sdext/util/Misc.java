@@ -1,5 +1,6 @@
 package br.usp.sdext.util;
 
+import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -97,14 +98,18 @@ public class Misc {
 	}
 	
 	public static String parseStr(String str) {
-		
+
+		str = Normalizer.normalize(str, Normalizer.Form.NFD);
+
+		str = str.replaceAll("[^\\p{ASCII}]", "");
+
 		Pattern pattern = Pattern.compile("\\s+");
 		
 		Matcher matcher = pattern.matcher(str);
 		
 		str = matcher.replaceAll(" ");
 		
-		pattern = Pattern.compile("\\bNÃO\\b");
+		pattern = Pattern.compile("\\bNAO\\b");
 		
 		matcher = pattern.matcher(str);
 		

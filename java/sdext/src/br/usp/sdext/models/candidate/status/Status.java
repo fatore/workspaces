@@ -41,7 +41,16 @@ public class Status extends Model implements Serializable {
 	
 	public Status() {}
 	
-	public Status(Integer year, Integer age, Long tseID) {
+	public Status(Integer year, Integer age, Date birthDate, Long tseID) 
+			throws Exception {
+		
+		if (tseID == null) {
+			throw new Exception();
+		}
+		
+		if (age == null) {
+			age = Misc.getAge(birthDate);
+		}
 		
 		this.year = year;
 		this.age = age;
@@ -101,30 +110,11 @@ public class Status extends Model implements Serializable {
 
 	@Override
 	public String toString() {
-		
-		return year + ", "	+ age + ", " + job.toString() + ", " + schooling.toString() 
-				+ ", " + maritalStatus.toString() + ", " + tseID ;
-	}
-
-	public static Status parse(String[] pieces, Integer year) throws Exception {
-
-		Integer age = Misc.parseInt(pieces[27]);
-		
-		if (age == null) {
-			Date birthDate = Misc.parseDate(pieces[25]);
-			age = Misc.getAge(birthDate);
-		}
-		
-		Long tseID = Misc.parseLong(pieces[11]);
-		
-		return new Status(year, age, tseID);
+		return "Status [candidate=" + candidate + ", year=" + year + ", age="
+				+ age + ", tseID=" + tseID + ", job=" + job + ", schooling="
+				+ schooling + ", maritalStatus=" + maritalStatus + "]";
 	}
 }
-
-
-
-
-
 
 
 

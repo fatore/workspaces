@@ -65,7 +65,7 @@ public class Job extends Model implements Serializable {
 
 	@Override
 	public String toString() {
-		return id + ", " + tseId + ", " + label;
+		return "Job [id=" + id + ", tseId=" + tseId + ", label=" + label + "]";
 	}
 
 	public static Job parse(String[] pieces) throws Exception {

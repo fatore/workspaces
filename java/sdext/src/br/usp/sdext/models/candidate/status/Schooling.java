@@ -66,7 +66,8 @@ public class Schooling extends Model implements Serializable {
 
 	@Override
 	public String toString() {
-		return id + ", " + tseId + ", " + label;
+		return "Schooling [id=" + id + ", tseId=" + tseId + ", label=" + label
+				+ "]";
 	}
 
 	public static Schooling parse(String[] pieces) throws Exception {

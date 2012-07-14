@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import br.usp.sdext.core.Model;
-import br.usp.sdext.util.Misc;
 
 @Entity
 public class Coalition extends Model implements Serializable {
@@ -23,7 +22,12 @@ public class Coalition extends Model implements Serializable {
 	
 	public Coalition() {}
 	
-	public Coalition(Long code, String acronym, String name, String composition) {
+	public Coalition(Long code, String acronym, String name, 
+			String composition) throws Exception {
+		
+		if (code == null) {
+			throw new Exception();
+		}
 		
 		this.code = code;
 		this.acronym = acronym;
@@ -72,16 +76,8 @@ public class Coalition extends Model implements Serializable {
 	
 	@Override
 	public String toString() {
-		return code + ", " + acronym + ", " + name + ", " + composition;
-	}
-
-	public static Coalition parse(String[] pieces) {
-
-		Long code  = Misc.parseLong(pieces[19]);
-		String acronym = Misc.parseStr(pieces[20]);
-		String composition = Misc.parseStr(pieces[21]);
-		String name = Misc.parseStr(pieces[22]);
-		
-		return new Coalition(code, acronym, name, composition);
+		return "Coalition [id=" + id + ", code=" + code + ", acronym="
+				+ acronym + ", name=" + name + ", composition=" + composition
+				+ "]";
 	}
 }

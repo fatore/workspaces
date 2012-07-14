@@ -69,8 +69,10 @@ public class Donor extends Model implements Serializable {
 		return true;
 	}
 
+	@Override
 	public String toString() {
-		return name + ", " + uf + ", " + cpf;
+		return "Donor [id=" + id + ", cpf=" + cpf + ", name=" + name + ", uf="
+				+ uf + "]";
 	}
 	
 	public static Donor parse(String[] pieces, boolean old) {

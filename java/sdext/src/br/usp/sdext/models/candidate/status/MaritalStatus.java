@@ -65,7 +65,8 @@ public class MaritalStatus extends Model implements Serializable {
 
 	@Override
 	public String toString() {
-		return id + ", " + tseId + ", " + label;
+		return "MaritalStatus [id=" + id + ", tseId=" + tseId + ", label="
+				+ label + "]";
 	}
 
 	public static MaritalStatus parse(String[] pieces) throws Exception {

@@ -76,116 +76,99 @@ Package: `setspace' 6.7 <2000/12/01>
 Package biblatex Warning: 'babel' detected but 'csquotes' missing.
 (biblatex)                Loading 'csquotes' recommended.
 
-(./paper.aux) (/usr/share/texmf-dist/tex/latex/psnfss/t1ptm.fd)
+No file paper.aux.
+(/usr/share/texmf-dist/tex/latex/psnfss/t1ptm.fd)
 (/usr/share/texmf-dist/tex/latex/hyperref/nameref.sty
-(/usr/share/texmf-dist/tex/generic/oberdiek/gettitlestring.sty)) (./paper.out)
-(./paper.out) (/usr/share/texmf-dist/tex/context/base/supp-pdf.mkii
+(/usr/share/texmf-dist/tex/generic/oberdiek/gettitlestring.sty))
+(/usr/share/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 ) (/usr/share/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 (/usr/share/texmf-dist/tex/latex/oberdiek/grfext.sty)
-(/usr/share/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg)) (./paper.bbl
-
-Package biblatex Warning: BibTeX reported the following issues
-(biblatex)                with 'Vieira2006':
-(biblatex)                - Invalid format of field 'month'.
-
-)
+(/usr/share/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg))
+No file paper.bbl.
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd)
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd)
 (/usr/share/texmf-dist/tex/latex/psnfss/t1pcr.fd)
+
+LaTeX Warning: Citation 'decreto_15-09-11' on page 1 undefined on input line 70
+.
+
+
+LaTeX Warning: Citation 'lei_12527' on page 1 undefined on input line 70.
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 74--74
 [][][][]$\T1/pcr/m/n/8 http : / / www . tse . jus . br / eleicoes /
 [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
 
+LaTeX Warning: Citation 'Battiti1994' on page 2 undefined on input line 84.
+
+
+LaTeX Warning: Citation 'Peng2005' on page 2 undefined on input line 86.
+
+
+LaTeX Warning: Citation 'Vieira2006' on page 2 undefined on input line 88.
+
+
+LaTeX Warning: Citation 'Kohonen:2001:SM' on page 2 undefined on input line 88.
+
+
+
+LaTeX Warning: Citation 'Carneiro2008' on page 2 undefined on input line 90.
+
+
+Underfull \hbox (badness 1824) in paragraph at lines 90--91
+[]\T1/ptm/m/n/10 Outro tra-ba-lho que pode ser men-ci-o-nado é o de
+
+LaTeX Warning: Citation 'Gormley2008' on page 2 undefined on input line 92.
+
+
+Underfull \hbox (badness 2126) in paragraph at lines 92--93
+[]\T1/ptm/m/n/10 Um úl-timo exem-plo que vale ser ci-tado é o de
+
+LaTeX Warning: Citation 'Ruck1990' on page 2 undefined on input line 96.
+
+
+Underfull \hbox (badness 1325) in paragraph at lines 96--97
+[]\T1/ptm/m/n/10 Este tra-ba-lho busca trei-nar uma rede neu-ral MLP
+
+LaTeX Warning: Reference `tab:bd' on page 2 undefined on input line 102.
+
+
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-LaTeX Warning: `!h' float specifier changed to `!ht'.
+LaTeX Warning: Reference `tab:relev' on page 2 undefined on input line 161.
 
-[2] <images/brasil_2010_map.jpg, id=82, 481.8pt x 481.8pt>
-<use images/brasil_2010_map.jpg>
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[3] <images/brasil_2010_bar.jpg, id=95, 379.4175pt x 394.47375pt>
-<use images/brasil_2010_bar.jpg>
-<images/rs_2010_bar.jpg, id=96, 481.8pt x 481.8pt>
-<use images/rs_2010_bar.jpg>
-Overfull \hbox (0.65297pt too wide) in paragraph at lines 249--250
- [][] 
-<images/sp_2010_bar.jpg, id=97, 481.8pt x 481.8pt>
-<use images/sp_2010_bar.jpg>
-Overfull \hbox (0.65297pt too wide) in paragraph at lines 253--254
- [][] 
-<images/ba_2010_bar.jpg, id=98, 481.8pt x 481.8pt>
-<use images/ba_2010_bar.jpg>
-Overfull \hbox (0.65297pt too wide) in paragraph at lines 258--259
- [][] 
-<images/ma_2010_bar.jpg, id=99, 481.8pt x 481.8pt>
-<use images/ma_2010_bar.jpg>
-Overfull \hbox (0.65297pt too wide) in paragraph at lines 262--263
- [][] 
-<images/go_2010_bar.jpg, id=100, 481.8pt x 481.8pt>
-<use images/go_2010_bar.jpg>
-Overfull \hbox (0.65297pt too wide) in paragraph at lines 267--268
- [][] 
-<images/am_2010_bar.jpg, id=101, 481.8pt x 481.8pt>
-<use images/am_2010_bar.jpg>
-Overfull \hbox (0.65297pt too wide) in paragraph at lines 271--272
- [][] 
 
-Overfull \hbox (54.10603pt too wide) in paragraph at lines 247--274
-[][] []
+LaTeX Warning: Citation 'Darbellay1999' on page 2 undefined on input line 199.
 
-Overfull \hbox (54.10603pt too wide) in paragraph at lines 247--274
-[] []
+[2]
 
-Overfull \hbox (54.10603pt too wide) in paragraph at lines 247--274
-[] [] 
-[4 <./images/brasil_2010_map.jpg> <./images/brasil_2010_bar.jpg> <./images/rs_2
-010_bar.jpg> <./images/sp_2010_bar.jpg> <./images/ba_2010_bar.jpg> <./images/ma
-_2010_bar.jpg> <./images/go_2010_bar.jpg> <./images/am_2010_bar.jpg>] [5]
-Overfull \hbox (16.40135pt too wide) in paragraph at lines 331--331
- []\T1/ptm/b/n/10 Verdadeiro
+LaTeX Warning: Reference `sec:resul' on page 3 undefined on input line 205.
 
-Overfull \hbox (1.80666pt too wide) in paragraph at lines 327--338
-  [] 
-[6]
-Underfull \hbox (badness 1377) in paragraph at lines 359--359
-\T1/ptm/m/n/10 ba-sed on mu-tual in-for-ma-tion: cri-te-ria of max-
 
-Underfull \hbox (badness 1132) in paragraph at lines 359--359
-[]\T1/ptm/m/n/10 T. Koho-nen, M. R. Sch-ro-e-der e T. S. Hu-ang,
+LaTeX Warning: Citation 'Peng2005' on page 3 undefined on input line 209.
 
-Underfull \hbox (badness 1509) in paragraph at lines 359--359
-\T1/ptm/m/n/10 eds. \T1/ptm/m/it/10 Self-Organizing Maps\T1/ptm/m/n/10 . 3rd. S
-e-cau-cus, NJ,
-[7] (./paper.aux)
 
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+LaTeX Warning: Reference `fig:matriz' on page 3 undefined on input line 224.
 
- )
-(see the transcript file for additional information)pdfTeX warning (dest): name
-{Hfootnote.4} has been referenced but does not exist, replaced by a fixed one
 
-pdfTeX warning (dest): name{Hfootnote.3} has been referenced but does not exist
-, replaced by a fixed one
+LaTeX Warning: File `images/brasil_2010_map.jpg' not found on input line 228.
 
-pdfTeX warning (dest): name{Hfootnote.2} has been referenced but does not exist
-, replaced by a fixed one
 
-pdfTeX warning (dest): name{Hfootnote.1} has been referenced but does not exist
-, replaced by a fixed one
+! Package pdftex.def Error: File `images/brasil_2010_map.jpg' not found.
 
-{/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texmf-dist/fonts
-/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-dist/fonts/type1/public/
-amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cm
-mi7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/s
-hare/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texmf-dist
-/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/time
-s/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/shar
-e/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper.pdf (7 pages, 285914 bytes).
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.228 ...cs[width=8cm]{images/brasil_2010_map.jpg}
+                                                  
+!  ==> Fatal error occurred, no output PDF file produced!
 Transcript written on paper.log.

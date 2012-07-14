@@ -9,8 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import br.usp.sdext.core.Model;
-import br.usp.sdext.models.State;
-import br.usp.sdext.util.Misc;
+import br.usp.sdext.models.Town;
 
 
 @Entity
@@ -34,10 +33,7 @@ public class Candidate extends Model implements  Serializable {
 	private Sex sex;
 	
 	@ManyToOne
-	private BirthTown birthTown;
-	
-	@ManyToOne
-	private State birthState;
+	private Town birthTown;
 	
 	@ManyToOne
 	private Citizenship citizenship;
@@ -46,7 +42,11 @@ public class Candidate extends Model implements  Serializable {
 	
 	public Candidate() {}
 
-	public Candidate(Long voterID, String name, Date birthDate) {
+	public Candidate(Long voterID, String name, Date birthDate) throws Exception {
+		
+		if (name == null || birthDate == null || voterID == null) {
+			throw new Exception();
+		}		
 		
 		this.id = null;
 		
@@ -60,8 +60,7 @@ public class Candidate extends Model implements  Serializable {
 	public Long getID() {return id;}
 	public Sex getSex() {return sex;}
 	public Date getBirthDate() {return birthDate;}
-	public BirthTown getBirthTown() {return birthTown;}
-	public State getBirthState() {return birthState;}	
+	public Town getBirthTown() {return birthTown;}
 	public Long getVoterID() {return voterID;}
 	public String getName() {return name;}
 	public Citizenship getCitizenship() {return citizenship;}
@@ -71,8 +70,7 @@ public class Candidate extends Model implements  Serializable {
 	public void setId(Long id) {this.id = id;}
 	public void setSex(Sex sex) {this.sex = sex;}
 	public void setBirthDate(Date birthDate) {this.birthDate = birthDate;}
-	public void setBirthState(State birthState) {this.birthState = birthState;}
-	public void setBirthTown(BirthTown birthTown) {this.birthTown = birthTown;}
+	public void setBirthTown(Town birthTown) {this.birthTown = birthTown;}
 	public void setVoterID(Long voterID) {this.voterID = voterID;}
 	public void setName(String name) {this.name = name;}
 	public void setCitizenship(Citizenship citizenship) {this.citizenship = citizenship;}
@@ -80,8 +78,10 @@ public class Candidate extends Model implements  Serializable {
 	
 	@Override
 	public String toString() {
-		
-		return name + ", birthDate=" + birthDate + ", voterId=" + voterID;
+		return "Candidate [id=" + id + ", name=" + name + ", voterID="
+				+ voterID + ", birthDate=" + birthDate + ", sex=" + sex
+				+ ", birthTown=" + birthTown
+				+ ", citizenship=" + citizenship + ", dupper=" + dupper + "]";
 	}
 
 	@Override
@@ -121,43 +121,5 @@ public class Candidate extends Model implements  Serializable {
 			}
 		} 
 		return false;
-	}
-
-	public int validate() {
-		
-		int count = 0;
-		
-		count += (voterID != null && !voterID.equals(-1) && !voterID.equals(0)) ? 100 : 0;
-		count += (birthDate != null) ? 5 : 0;
-		count += (birthState != null) ? 3 : 0;
-		count += (sex != null) ? 1 : 0;
-		count += (citizenship != null) ? 1 : 0;
-		count += (birthTown != null) ? 3 : 0;
-		
-		count *= (name != null) ? 1 : 0;
-		return count;
-	}
-	
-	public void merge(Candidate candidate) {
-		
-		this.voterID = (candidate.voterID != null) ? candidate.voterID : voterID;
-		this.name = (candidate.name != null) ? candidate.name : name;
-		this.birthDate = (candidate.birthDate != null) ? candidate.birthDate : birthDate;
-		this.birthState = (candidate.birthState != null) ? candidate.birthState : birthState;
-		this.sex = (candidate.sex != null) ? candidate.sex : sex;
-		this.citizenship = (candidate.citizenship != null) ? candidate.citizenship : citizenship;
-		this.birthTown = (candidate.birthTown != null) ? candidate.birthTown : birthTown;
-	}
-	
-	public static Candidate parse(String[] pieces) throws Exception {
-		
-		String name = Misc.parseStr(pieces[10]);
-		Date birthDate = Misc.parseDate(pieces[25]);
-		Long voterID = Misc.parseLong(pieces[26]);
-		
-		if (name == null) {
-			throw new Exception();
-		}
-		return new Candidate(voterID, name, birthDate);
 	}
 }

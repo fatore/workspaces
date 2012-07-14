@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import br.usp.sdext.core.Model;
-import br.usp.sdext.util.Misc;
 
 @Entity
 public class State extends Model implements Serializable {
@@ -29,8 +28,11 @@ public class State extends Model implements Serializable {
 	
 	public State() {}
 	
-	public State( String label) {
+	public State(String label) throws Exception {
 		
+		if (label == null) {
+			throw new Exception();
+		}
 		this.id = null;
 		this.label = label;
 	}
@@ -43,14 +45,22 @@ public class State extends Model implements Serializable {
 
 			for (String value : values) {	
 
-				State state = new State(value);
-				state.setId(new Long(map.size()) + 1);
-				map.put(state, state);
+				try {
+					
+					State state = new State(value);
+					state.setId(new Long(map.size()));
+					map.put(state, state);
+				} 
+				catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 
 			Model.bulkSave(map.values());
 
-		} else {
+		} 
+		else {
 			
 			Model.findAll(State.class, map);
 		}
@@ -66,7 +76,7 @@ public class State extends Model implements Serializable {
 	
 	@Override
 	public String toString() {
-		return id + ", " + label;
+		return "State [id=" + id + ", label=" + label + "]";
 	}
 
 	@Override
@@ -94,12 +104,5 @@ public class State extends Model implements Serializable {
 		} else if (!label.equals(other.label))
 			return false;
 		return true;
-	}
-
-	public static State parse(String[] pieces) {
-		
-		String uf = Misc.parseStr(pieces[36]);
-		
-		return new State(uf);
 	}
 }

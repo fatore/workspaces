@@ -160,20 +160,6 @@ public class Candidature extends Model implements Serializable {
 		return candidature;
 	}
 
-	public static Candidature parse(String[] pieces) {
-		
-		Integer ballotNo = Misc.parseInt(pieces[12]);
-		String ballotName = Misc.parseStr(pieces[13]);
-		Long situationID = Misc.parseLong(pieces[14]);
-		String situation = Misc.parseStr(pieces[15]);
-		Float maxExpenses = Misc.parseFloat(pieces[39]);
-		Long resultID = Misc.parseLong(pieces[40]);
-		String result = Misc.parseStr(pieces[41]);
-		
-		return new Candidature(ballotName, ballotNo,  situationID, situation, 
-				maxExpenses, resultID, result);
-	}
-	
 	public static void addIncome(Binding binding ) {
 		
 		addIncome(binding.income, binding.pieces, binding.year, binding.old);

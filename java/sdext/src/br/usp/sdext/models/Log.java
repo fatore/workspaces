@@ -41,4 +41,10 @@ public class Log extends Model implements Serializable {
 	public void setLine(String line) {this.line = line;}
 	public void setCause(String error) {this.cause = error;}
 	public void setMessage(String message) {this.message = message;}
+
+	@Override
+	public String toString() {
+		return "Log [id=" + id + ", line=" + line + ", cause=" + cause
+				+ ", message=" + message + "]";
+	}
 }

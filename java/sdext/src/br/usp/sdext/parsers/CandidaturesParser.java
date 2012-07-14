@@ -10,12 +10,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import br.usp.sdext.core.Model;
+import br.usp.sdext.models.Town;
 import br.usp.sdext.models.Coalition;
 import br.usp.sdext.models.Election;
 import br.usp.sdext.models.Log;
 import br.usp.sdext.models.Party;
 import br.usp.sdext.models.State;
-import br.usp.sdext.models.candidate.BirthTown;
 import br.usp.sdext.models.candidate.Candidate;
 import br.usp.sdext.models.candidate.Citizenship;
 import br.usp.sdext.models.candidate.Sex;
@@ -24,20 +24,21 @@ import br.usp.sdext.models.candidate.status.MaritalStatus;
 import br.usp.sdext.models.candidate.status.Schooling;
 import br.usp.sdext.models.candidate.status.Status;
 import br.usp.sdext.models.candidature.Candidature;
+import br.usp.sdext.util.Misc;
 
 public class CandidaturesParser extends AbstractParser { 
 
 	private int year;
+	private Long numCandidates = 0L;
+	private int incompleteCandidates = 0;
 
 	private HashMap<Model, Model> statesMap;
-	
-	
+	private HashMap<Model, Model> townsMap;
+
 	private HashMap<Model, Model> candidatesMap = new HashMap<>();
 	private HashMap<Model, Model> sexMap = new HashMap<>();
 	private HashMap<Model, Model> ctzsMap = new HashMap<>();
-	private HashMap<Model, Model> townsMap = new HashMap<>();
-	private Long numCandidates = 0L;
-	
+
 	private ArrayList<Model> duppersList = new ArrayList<>();
 
 	private Set<Model> statusSet = new HashSet<>();
@@ -54,7 +55,7 @@ public class CandidaturesParser extends AbstractParser {
 	public CandidaturesParser() {
 
 		statesMap = State.init();
-		
+		townsMap = new HashMap<>();
 	}
 
 	protected void loadFile(File file) throws Exception {
@@ -82,9 +83,9 @@ public class CandidaturesParser extends AbstractParser {
 			} catch (Exception e) {
 				String exceptionClass = null;
 				String exceptionMethod = null;
-				
+
 				for (StackTraceElement element : e.getStackTrace()) {
-					
+
 					if (element.getClassName().contains("br.usp.sdext.models")) {
 						exceptionClass = element.getClassName();
 						exceptionMethod = element.getMethodName();
@@ -94,6 +95,7 @@ public class CandidaturesParser extends AbstractParser {
 				Log log = new Log(line,"CAUSED BY: " + exceptionMethod 
 						+ " IN CLASS: " + exceptionClass, e.getMessage());
 				log.save();
+				incompleteCandidates++;
 			}new HashMap<>();
 		}
 
@@ -113,10 +115,31 @@ public class CandidaturesParser extends AbstractParser {
 		}
 
 		Candidate candidate = parseCandidate(pieces);
-		Election election = (Election) Model.fetch(Election.parse(pieces), electionsMap);
-		Party party = (Party) Model.fetch(Party.parse(pieces), partiesMap);
-		Coalition coalition = (Coalition) Model.fetch(Coalition.parse(pieces), coalitionsMap);
-		Candidature candidature = Candidature.parse(pieces);
+		
+		Election election = parseElection(pieces);
+		
+		Party party = new Party(
+				Misc.parseInt(pieces[16]), // no 
+				Misc.parseStr(pieces[17]),  // acronym
+				Misc.parseStr(pieces[18])); // name
+		
+		Coalition coalition = new Coalition(
+				Misc.parseLong(pieces[19]), // code
+				Misc.parseStr(pieces[20]), // acronym
+				Misc.parseStr(pieces[22]), // name
+				Misc.parseStr(pieces[21])); // composition
+		
+		Candidature candidature = new Candidature(
+				Misc.parseStr(pieces[13]), // ballot name
+				Misc.parseInt(pieces[12]), // ballot no
+				Misc.parseLong(pieces[14]), // sit ID
+				Misc.parseStr(pieces[15]), // sit
+				Misc.parseFloat(pieces[39]), // max exp
+				Misc.parseLong(pieces[40]), // result id
+				Misc.parseStr(pieces[41])); // result
+		
+		party = (Party) Model.fetch(party, partiesMap);
+		coalition = (Coalition) Model.fetch(coalition, coalitionsMap);
 
 		// Bind objects.
 		candidature.setCandidate(candidate);
@@ -132,23 +155,44 @@ public class CandidaturesParser extends AbstractParser {
 
 	private Candidate parseCandidate(String[] pieces) throws Exception {
 
-		Candidate candidate = Candidate.parse(pieces);
-
-		Sex sex = (Sex) Model.fetchAndSave(Sex.parse(pieces), sexMap);
-		Citizenship ctz = (Citizenship) Model.fetchAndSave(Citizenship.parse(pieces), ctzsMap);
-		BirthTown town = (BirthTown) Model.fetch(BirthTown.parse(pieces),townsMap);
-		State state = (State) Model.fetch(State.parse(pieces), statesMap);
-
-		candidate.setSex(sex);
-		candidate.setBirthTown(town);
-		candidate.setBirthState(state);
-		candidate.setCitizenship(ctz);
+		// Parse data.
+		Candidate candidate = new Candidate(
+				Misc.parseLong(pieces[26]), // voterID
+				Misc.parseStr(pieces[10]), // name
+				Misc.parseDate(pieces[25])); // birth date
 
 		// Look for the candidate in map ...
 		Candidate mapCandidate = (Candidate) candidatesMap.get(candidate);
 
 		// ... if didn't find anything.
 		if (mapCandidate == null) {
+
+			Sex sex =  new Sex(
+					Misc.parseLong(pieces[28]), // tseID
+					Misc.parseStr(pieces[29])); // label 
+
+			Citizenship ctz = new Citizenship(
+					Misc.parseLong(pieces[34]), // tseID
+					Misc.parseStr(pieces[35])); // label
+
+			State birthState = new State(Misc.parseStr(pieces[36])); // label
+
+			Town birthTown = new Town(
+					Misc.parseLong(pieces[37]), // tseID
+					Misc.parseStr(pieces[38]));  // label
+
+			// Fetch data.
+			sex = (Sex) Model.fetchAndSave(sex, sexMap);
+			ctz = (Citizenship) Model.fetchAndSave(ctz, ctzsMap);
+			birthState = (State) Model.fetch(birthState, statesMap);
+
+			birthTown.setState(birthState);
+			birthTown = (Town) Model.fetch(birthTown,townsMap);
+
+			// Set data.
+			candidate.setSex(sex);
+			candidate.setBirthTown(birthTown);
+			candidate.setCitizenship(ctz);
 
 			// Set the ID for the new Candidate ...
 			candidate.setId(numCandidates++);
@@ -162,12 +206,6 @@ public class CandidaturesParser extends AbstractParser {
 			// Take a look if the objects are similar ...
 			if (mapCandidate.similar(candidate)) {
 
-				// Verify if the new candidate has more info details.
-				if (candidate.validate() > mapCandidate.validate()) {
-
-					// Set the new information to the mapped candidate
-					mapCandidate.merge(candidate);
-				} 
 				candidate = mapCandidate;
 			} 
 			// Objects aren't similar! 
@@ -187,14 +225,21 @@ public class CandidaturesParser extends AbstractParser {
 		}
 
 		// Parse Status.
-		Status status = Status.parse(pieces, year);
+		Status status = new Status(
+				year,
+				Misc.parseInt(pieces[27]), // age
+				Misc.parseDate(pieces[25]), // birth date
+				Misc.parseLong(pieces[11])); // number sequence (TSE_ID)
 
-		Job job = (Job) Model.fetch(Job.parse(pieces), jobsMap);
 
-		MaritalStatus maritalStatus = (MaritalStatus) 
-				Model.fetchAndSave(MaritalStatus.parse(pieces), mStatusMap);
+		Job job = Job.parse(pieces);
+		job = (Job) Model.fetch(job, jobsMap);
 
-		Schooling schooling = (Schooling) Model.fetchAndSave(Schooling.parse(pieces), schMap);
+		MaritalStatus maritalStatus = MaritalStatus.parse(pieces);
+		maritalStatus = (MaritalStatus) Model.fetchAndSave(maritalStatus, mStatusMap);
+
+		Schooling schooling = Schooling.parse(pieces);
+		schooling = (Schooling) Model.fetchAndSave(schooling, schMap);
 
 		status.setJob(job);
 		status.setMaritalStatus(maritalStatus);
@@ -211,6 +256,48 @@ public class CandidaturesParser extends AbstractParser {
 		return candidate;
 	}
 
+	private Election parseElection(String[] pieces) throws Exception {
+		
+		Election election = new Election(
+				Misc.parseInt(pieces[2]), // year
+				Misc.parseInt(pieces[3]), // round 
+				Misc.parseLong(pieces[8]), // posID
+				Misc.parseStr(pieces[9]), // post
+				Misc.parseStr(pieces[4]) // description
+		);
+		
+		State electionState = new State(Misc.parseStr(pieces[5]));
+		electionState = (State) State.fetch(electionState, statesMap);
+		
+		election.setState(electionState);
+
+		if ((election.getYear() - Election.FIRST_MAIN_ELECTION) % 4 != 0) {
+
+			Town electionTown = new Town(null, Misc.parseStr(pieces[7]));
+			Long ueId = Misc.parseLong(pieces[6]);
+			electionTown.setState(electionState);
+			
+			electionTown = (Town) Town.fetch(electionTown, townsMap);
+
+			if (electionTown.getUeId() == null) {
+				electionTown.setUeId(ueId);
+			} else {
+				if (!electionTown.getUeId().equals(ueId)) {
+					System.err.println("Same city different ueIds.");
+				}
+			}
+			election.setTown(electionTown);
+		} 
+		else {
+
+			election.setTown(null);
+		}
+		
+		election = (Election) Model.fetch(election, electionsMap);
+		
+		return election;
+	}
+	
 	protected void save() {
 
 		long start = System.currentTimeMillis();   
@@ -218,6 +305,7 @@ public class CandidaturesParser extends AbstractParser {
 		System.out.println("\nTotal objects loaded");
 		System.out.println("\tCandidates: " + candidatesMap.size());
 		System.out.println("\tDuplicate Candidates: " + duppersList.size());
+		System.out.println("\tIncomplete Candidates: " + incompleteCandidates);
 		System.out.println("\tElections: " + electionsMap.size());
 		System.out.println("\tParties: " + partiesMap.size());
 		System.out.println("\tCoalitions: " + coalitionsMap.size());

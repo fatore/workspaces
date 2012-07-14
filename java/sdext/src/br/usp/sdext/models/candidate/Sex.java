@@ -1,20 +1,16 @@
 package br.usp.sdext.models.candidate;
 
 import java.io.Serializable;
-import java.util.HashMap;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import br.usp.sdext.core.Model;
-import br.usp.sdext.util.Misc;
 
 @Entity
 public class Sex extends Model implements Serializable {
 	
 	private static final long serialVersionUID = -6132439706513863897L;
-	
-	private static HashMap<Model, Model> map = new HashMap<>();
 	
 	@Id
 	private Long id;
@@ -25,7 +21,11 @@ public class Sex extends Model implements Serializable {
 	
 	public Sex() {}
 	
-	public Sex(Long tseId, String label) {
+	public Sex(Long tseId, String label) throws Exception {
+		
+		if (tseId == null) {
+			throw new Exception();
+		}
 		
 		this.tseId = tseId;
 		this.label = label;
@@ -68,17 +68,6 @@ public class Sex extends Model implements Serializable {
 
 	@Override
 	public String toString() {
-		return id + ", " + tseId + ", " + label;
-	}
-
-	public static Sex parse(String[] pieces) throws Exception {
-		
-		Long sexID = Misc.parseLong(pieces[28]);
-		String sex = Misc.parseStr(pieces[29]);
-		
-		if (sexID == null) {
-			throw new Exception();
-		}
-		return new Sex(sexID, sex);
+		return "Sex [id=" + id + ", tseId=" + tseId + ", label=" + label + "]";
 	}
 }
