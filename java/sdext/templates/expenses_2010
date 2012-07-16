@@ -1,0 +1,18 @@
+0 "Data e hora";
+1 "UF";
+2 "Sigla Partido";
+3 "N¿mero candidato";
+4 "Cargo";
+5 "Nome candidato";
+6 "CPF do candidato";
+7 "Entrega em conjunto?";
+8 "Tipo do documento";
+9 "N¿mero do documento";
+10 "CPF/CNPJ do fornecedor";
+11 "Nome do fornecedor";
+12 "Data da despesa";
+13 "Valor despesa";
+14 "Tipo despesa";
+15"Fonte recurso";
+16 "Esp¿e recurso";
+17 "Descri¿ da despesa"

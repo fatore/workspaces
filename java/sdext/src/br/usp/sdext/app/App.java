@@ -12,11 +12,11 @@ public class App {
 		String baseDir;
 		
 		parser = new CandidaturesParser();
-		baseDir = "/home/fm/work/data/sdext/eleitorais/candidatos/candidaturas/2020";
+		baseDir = "/home/fm/work/data/sdext/eleitorais/candidatos/candidaturas/2010";
 		parser.parseAndSave(baseDir);
 		
 		parser = new AccountabilityParser();
-		baseDir = "data/prestacao_contas";
+		baseDir = "/home/fm/work/data/sdext/eleitorais/prestacao_contas/2012";
 //		parser.parseAndSave(baseDir);
 	}
 	

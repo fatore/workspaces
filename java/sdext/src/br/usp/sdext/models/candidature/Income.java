@@ -8,8 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import br.usp.sdext.core.Model;
-import br.usp.sdext.models.Donor;
-import br.usp.sdext.util.Misc;
 
 @Entity
 public class Income extends Model implements Serializable {
@@ -28,7 +26,12 @@ public class Income extends Model implements Serializable {
 	
 	public Income() {}
 	
-	public Income(Float value, String type, Date date) {
+	public Income(Float value, String type, Date date) throws Exception {
+		
+		if (value == null) {
+			throw new Exception();
+		}
+		
 		this.value = value;
 		this.type = type;
 		this.date = date;
@@ -48,31 +51,10 @@ public class Income extends Model implements Serializable {
 	public void setType(String type) {this.type = type;}
 	public void setDate(Date date) {this.date = date;}
 	
-	
 	@Override
 	public String toString() {
-		return donor.getName() + ", " + value + ", " + type;
-	}
-
-	public static Income parse(String[] pieces, boolean old) throws Exception {
-
-		Date date = null;
-		Float value = null;
-		String type = null;
-		
-		if (old){
-			date = Misc.parseDate(pieces[5]);
-			value = Misc.parseFloat(pieces[9]);
-			try {
-				type = Misc.parseStr(pieces[10]);
-			} catch (Exception e) {}
-		} else {
-			date = Misc.parseDate(pieces[12]);
-			value = Misc.parseFloat(pieces[13]);
-			type = Misc.parseStr(pieces[16]);
-		}
-		
-		return new Income(value, type, date);
+		return "Income [id=" + id + ", donor=" + donor + ", value=" + value
+				+ ", type=" + type + ", date=" + date + "]";
 	}
 }
 

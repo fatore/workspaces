@@ -57,6 +57,14 @@ public class Status extends Model implements Serializable {
 		this.tseID = tseID;
 	}	
 	
+	public Status(String[] pieces, int year) throws Exception {
+
+		this(year,
+				Misc.parseInt(pieces[27]), // age
+				Misc.parseDate(pieces[25]), // birth date
+				Misc.parseLong(pieces[11])); // birth date
+	}
+	
 	// getters
 	public Job getJob() {return job;}
 	public Integer getAge() {return age;}

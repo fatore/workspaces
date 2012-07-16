@@ -1,25 +1,17 @@
 package br.usp.sdext.models;
 
 import java.io.Serializable;
-import java.util.HashMap;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import br.usp.sdext.core.Model;
+import br.usp.sdext.util.Misc;
 
 @Entity
 public class State extends Model implements Serializable {
 	
 	private static final long serialVersionUID = 6358274013517612742L;
-	
-	private static final String[] values = {
-
-		"AC","AL","AM","AP","BA","CE","DF","ES","GO",
-		"MA","MG","MS","MT","PA","PB","PE","PI","PR",
-		"RJ","RN","RO","RR","RS","SC","SE","SP","TO",
-		"BR", "VT", "ZZ"
-	};
 	
 	@Id
 	private Long id;
@@ -36,38 +28,12 @@ public class State extends Model implements Serializable {
 		this.id = null;
 		this.label = label;
 	}
-
-	public static HashMap<Model, Model> init() {
-		
-		HashMap<Model, Model> map = new HashMap<>();
-
-		if (Model.numElements(State.class) == 0) {
-
-			for (String value : values) {	
-
-				try {
-					
-					State state = new State(value);
-					state.setId(new Long(map.size()));
-					map.put(state, state);
-				} 
-				catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-
-			Model.bulkSave(map.values());
-
-		} 
-		else {
-			
-			Model.findAll(State.class, map);
-		}
-		
-		return map;
-	}
 	
+	public State(String[] pieces) throws Exception {
+
+		this(Misc.parseStr(pieces[36])); // label 
+	}
+
 	public Long getId() {return id;}
 	public String getLabel() {return label;}
 

@@ -20,7 +20,8 @@ import br.usp.sdext.models.Party;
 import br.usp.sdext.models.candidate.Candidate;
 import br.usp.sdext.models.ghosts.GhostCandidate;
 import br.usp.sdext.parsers.Binding;
-import br.usp.sdext.util.Misc;
+import br.usp.sdext.parsers.ExpenseBinding;
+import br.usp.sdext.parsers.IncomeBinding;
 
 @Entity
 public class Candidature extends Model implements Serializable {
@@ -56,9 +57,10 @@ public class Candidature extends Model implements Serializable {
 	private String result;
 	
 	@OneToMany
-	private List<Income> incomes = new ArrayList<Income>(); 
+	private List<Income> incomes = new ArrayList<Income>();
 	
-	// private Expenses[] expenses
+	@OneToMany
+	private List<Expense> expenses = new ArrayList<Expense>(); 
 	
 	public Candidature() {}
 	
@@ -87,6 +89,7 @@ public class Candidature extends Model implements Serializable {
 	public String getSituation() {return situation;}
 	public Float getMaxExpenses() {return maxExpenses;}
 	public List<Income> getIncomes() {return incomes;}
+	public List<Expense> getExpenses() {return expenses;}
 	public Long getResultID() {return resultID;}
 	public String getResult() {return result;}
 
@@ -154,53 +157,56 @@ public class Candidature extends Model implements Serializable {
 				setParameter("year", year).
 				setParameter("post", post).
 				uniqueResult();
-		
+
 		session.getTransaction().commit();
-		
+
 		return candidature;
 	}
 
-	public static void addIncome(Binding binding ) {
-		
-		addIncome(binding.income, binding.pieces, binding.year, binding.old);
-	}
-	
 	@SuppressWarnings("unchecked")
-	public static void addIncome(Income income, String[] pieces, Integer year, boolean old) {
-		
-		String post = null;
-		String candidateName = null;
-		Integer ballotNo = null;
-		
-		if (old) {
-			
-			post = Misc.parseStr(pieces[2]);
-			candidateName = Misc.parseStr(pieces[3]);
-			ballotNo = Misc.parseInt(pieces[4]);
-		} 
-		else {
-			
-			post = Misc.parseStr(pieces[4]);
-			candidateName = Misc.parseStr(pieces[5]);
-			ballotNo = Misc.parseInt(pieces[3]);
-		}
-		
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		
+	private static List<Candidature> findByBinding(Session session, Binding binding) {
+
 		List<Candidature> candidatures;
 		
+		String post = binding.getPost();
+		String candidateName = binding.getCandidateName();
+		Integer ballotNo = binding.getBallotNo();
+		int year = binding.getYear();
+
 		String sql = "select CR from Candidature as CR where CR.candidate.name = :name " +
 				"and CR.ballotNo = :ballotNo and CR.election.year = :year " +
 				"and CR.election.round = 1 and CR.election.post = :post";
-		
+
 		candidatures =  (List<Candidature>) session.createQuery(sql).
 				setParameter("name", candidateName).
 				setParameter("ballotNo", ballotNo).
 				setParameter("year", year).
 				setParameter("post", post).
 				list();
+
+		if (candidatures.size() > 1){
+			System.err.println("maior que 1");
+		}
 		
+		if (candidatures.size() < 1){
+//			System.err.println("menor que 1");
+		}
+
+		return candidatures;
+	}
+	
+	public static boolean addIncome(IncomeBinding binding) {
+		
+		boolean sucess = true;
+		
+		String candidateName = binding.getCandidateName();
+		Integer ballotNo = binding.getBallotNo();
+		Income income = binding.getIncome();
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		
+		List<Candidature> candidatures = findByBinding(session, binding);
 		
 		if (candidatures.size() == 1) {
 			
@@ -208,12 +214,98 @@ public class Candidature extends Model implements Serializable {
 		} 
 		else {
 			session.save(new GhostCandidate(candidateName, ballotNo, income));
-		}
-		if (candidatures.size() > 1){
-			System.err.println("maior que 1");
+			sucess = false;
 		}
 		
 		session.getTransaction().commit();
+		
+		return sucess;
+	}
+	
+	public static boolean addIncomes(ArrayList<IncomeBinding> bindings) {
+		
+		boolean sucess = true;
+		
+		String candidateName = bindings.get(0).getCandidateName();
+		Integer ballotNo = bindings.get(0).getBallotNo();
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		
+		List<Candidature> candidatures = findByBinding(session, bindings.get(0));
+		
+		for (IncomeBinding binding : bindings) {
+			
+			if (candidatures.size() == 1) {
+
+				candidatures.get(0).getIncomes().add(binding.getIncome());
+			} 
+			else {
+				session.save(new GhostCandidate(candidateName, 
+						ballotNo, binding.getIncome()));
+				sucess = false;
+			}
+		}
+		
+		session.getTransaction().commit();
+		
+		return sucess;
+	}
+	
+	public static boolean addExpense(ExpenseBinding binding) {
+		
+		boolean sucess = true;
+		
+		String candidateName = binding.getCandidateName();
+		Integer ballotNo = binding.getBallotNo();
+		Expense expense = binding.getExpense();
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		
+		List<Candidature> candidatures = findByBinding(session, binding);
+		
+		if (candidatures.size() == 1) {
+			
+			candidatures.get(0).getExpenses().add(expense);
+		} 
+		else {
+//			session.save(new GhostCandidate(candidateName, ballotNo, expense));
+			sucess = false;
+		}
+		
+		session.getTransaction().commit();
+		
+		return sucess;
+	}
+	
+	public static boolean addExpenses(ArrayList<ExpenseBinding> bindings) {
+		
+		boolean sucess = true;
+		
+		String candidateName = bindings.get(0).getCandidateName();
+		Integer ballotNo = bindings.get(0).getBallotNo();
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		
+		List<Candidature> candidatures = findByBinding(session, bindings.get(0));
+		
+		for (ExpenseBinding binding : bindings) {
+			
+			if (candidatures.size() == 1) {
+
+				candidatures.get(0).getExpenses().add(binding.getExpense());
+			} 
+			else {
+//				session.save(new GhostCandidate(candidateName, ballotNo, binding.getIncome()));
+				sucess = false;
+			}
+		}
+		
+		session.getTransaction().commit();
+		
+		return sucess;
 	}
 }
 

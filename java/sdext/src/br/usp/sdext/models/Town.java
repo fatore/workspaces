@@ -39,6 +39,12 @@ public class Town extends Model implements Serializable {
 		this.label = label;
 	}
 	
+	public Town(String[] pieces) throws Exception {
+
+		this(Misc.parseLong(pieces[37]), // tseID
+			Misc.parseStr(pieces[38])); // label 
+	}
+	
 	public Long getId() {return id;}
 	public State getState() {return state;}
 	public Long getTseId() {return tseId;} 

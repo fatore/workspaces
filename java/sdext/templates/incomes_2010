@@ -1,0 +1,18 @@
+0  "Data e hora";
+1  "UF";
+2  "Sigla Partido";
+3  "Número candidato";
+4  "Cargo";
+5  "Nome candidato";
+6  "CPF do candidato";
+7  "Entrega em conjunto?";
+8  "Número Recibo Eleitoral";
+9  "Número do documento";
+10 "CPF/CNPJ do doador";
+11 "Nome do doador";
+12 "Data da receita";
+13 "Valor receita";
+14 "Tipo receita";
+15 "Fonte recurso";
+16 "Espécie recurso";
+17 "Descrição da receita"

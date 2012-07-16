@@ -35,7 +35,6 @@
 
 	
 	<mapping class="br.usp.sdext.models.Coalition"/>
-	<mapping class="br.usp.sdext.models.Donor"/>
 	<mapping class="br.usp.sdext.models.Election"/>
 	<mapping class="br.usp.sdext.models.Log"/>
 	<mapping class="br.usp.sdext.models.Party"/>
@@ -52,7 +51,10 @@
 	<mapping class="br.usp.sdext.models.candidate.status.Status"/>
 	
 	<mapping class="br.usp.sdext.models.candidature.Candidature"/>
+	<mapping class="br.usp.sdext.models.candidature.Donor"/>
+	<mapping class="br.usp.sdext.models.candidature.Provider"/>
 	<mapping class="br.usp.sdext.models.candidature.Income"/>
+	<mapping class="br.usp.sdext.models.candidature.Expense"/>
 	
 	<mapping class="br.usp.sdext.models.ghosts.GhostCandidate"/>
 

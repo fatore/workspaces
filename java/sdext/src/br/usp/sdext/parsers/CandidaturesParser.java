@@ -30,10 +30,10 @@ public class CandidaturesParser extends AbstractParser {
 
 	private int year;
 	private Long numCandidates = 0L;
-	private int incompleteCandidates = 0;
+	private int incompleteEntries = 0;
 
-	private HashMap<Model, Model> statesMap;
-	private HashMap<Model, Model> townsMap;
+	private HashMap<Model, Model> statesMap = new HashMap<>();
+	private HashMap<Model, Model> townsMap = new HashMap<>();
 
 	private HashMap<Model, Model> candidatesMap = new HashMap<>();
 	private HashMap<Model, Model> sexMap = new HashMap<>();
@@ -51,12 +51,6 @@ public class CandidaturesParser extends AbstractParser {
 	private HashMap<Model, Model> coalitionsMap = new HashMap<>();
 
 	private Set<Model> candidaturesSet = new HashSet<>();
-
-	public CandidaturesParser() {
-
-		statesMap = State.init();
-		townsMap = new HashMap<>();
-	}
 
 	protected void loadFile(File file) throws Exception {
 
@@ -95,8 +89,8 @@ public class CandidaturesParser extends AbstractParser {
 				Log log = new Log(line,"CAUSED BY: " + exceptionMethod 
 						+ " IN CLASS: " + exceptionClass, e.getMessage());
 				log.save();
-				incompleteCandidates++;
-			}new HashMap<>();
+				incompleteEntries++;
+			}
 		}
 
 		if (in != null) {
@@ -156,10 +150,7 @@ public class CandidaturesParser extends AbstractParser {
 	private Candidate parseCandidate(String[] pieces) throws Exception {
 
 		// Parse data.
-		Candidate candidate = new Candidate(
-				Misc.parseLong(pieces[26]), // voterID
-				Misc.parseStr(pieces[10]), // name
-				Misc.parseDate(pieces[25])); // birth date
+		Candidate candidate = new Candidate(pieces);
 
 		// Look for the candidate in map ...
 		Candidate mapCandidate = (Candidate) candidatesMap.get(candidate);
@@ -167,19 +158,10 @@ public class CandidaturesParser extends AbstractParser {
 		// ... if didn't find anything.
 		if (mapCandidate == null) {
 
-			Sex sex =  new Sex(
-					Misc.parseLong(pieces[28]), // tseID
-					Misc.parseStr(pieces[29])); // label 
-
-			Citizenship ctz = new Citizenship(
-					Misc.parseLong(pieces[34]), // tseID
-					Misc.parseStr(pieces[35])); // label
-
-			State birthState = new State(Misc.parseStr(pieces[36])); // label
-
-			Town birthTown = new Town(
-					Misc.parseLong(pieces[37]), // tseID
-					Misc.parseStr(pieces[38]));  // label
+			Sex sex =  new Sex(pieces);
+			Citizenship ctz = new Citizenship(pieces);
+			State birthState = new State(pieces);
+			Town birthTown = new Town(pieces);
 
 			// Fetch data.
 			sex = (Sex) Model.fetchAndSave(sex, sexMap);
@@ -225,12 +207,7 @@ public class CandidaturesParser extends AbstractParser {
 		}
 
 		// Parse Status.
-		Status status = new Status(
-				year,
-				Misc.parseInt(pieces[27]), // age
-				Misc.parseDate(pieces[25]), // birth date
-				Misc.parseLong(pieces[11])); // number sequence (TSE_ID)
-
+		Status status = new Status(pieces, year);
 
 		Job job = Job.parse(pieces);
 		job = (Job) Model.fetch(job, jobsMap);
@@ -305,16 +282,17 @@ public class CandidaturesParser extends AbstractParser {
 		System.out.println("\nTotal objects loaded");
 		System.out.println("\tCandidates: " + candidatesMap.size());
 		System.out.println("\tDuplicate Candidates: " + duppersList.size());
-		System.out.println("\tIncomplete Candidates: " + incompleteCandidates);
 		System.out.println("\tElections: " + electionsMap.size());
 		System.out.println("\tParties: " + partiesMap.size());
 		System.out.println("\tCoalitions: " + coalitionsMap.size());
 		System.out.println("\tCandidatures: " + candidaturesSet.size());
+		System.out.println("\tIncomplete Entries: " + incompleteEntries);
 
 		System.out.println("\nSaving objects in the database, " +
 				"this can take several minutes.");
 
 		System.out.println("\tSaving candidates...");
+		Model.bulkSave(statesMap.values());
 		Model.bulkSave(townsMap.values());
 		Model.bulkSave(candidatesMap.values());
 

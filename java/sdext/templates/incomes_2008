@@ -1,0 +1,28 @@
+Receitas Candidato
+0 - NM_CANDIDATO - Nome do candidato;
+1 - SEXO - Sexo do(a) candidato(a);
+2 - DS_CARGO - Descrição do cargo;
+3 - CD_CARGO - Código do cargo;
+4 - NR_CANDIDATO - Número do candidato;
+5 - SG_UE_SUPERIOR - Unidade da federação do candidato;
+6 - NM_UE - Nome da unidade da federação;
+7 - SG_UE - Código do município;
+8 - DS_NR_TITULO_ELEITOR - Título eleitoral;
+9 - CD_NUM_CPF - CPF do candidato;
+10 - CD_NUM_CNPJ - CNPJ de campanha;
+11 - NR_PARTIDO - Número do partido;
+12 - SG_PARTIDO - Sigla do partido;
+13 - VR_RECEITA - Valor da receita;
+14 - DT_RECEITA - Data da receita;
+15 - DS_TITULO - Tipo de receita;
+16 - CD_TITULO - Código do tipo de receita;
+17 - DS_ESP_RECURSO - Tipo de recurso (Em espécie, Cheque, Estimado, não informado);
+18 - CD_ESP_RECURSO - Código do tipo de recurso;
+19 - NM_DOADOR - Nome do doador;
+20 - CD_CPF_CNPJ_DOADOR - CPF/CNPJ doador;
+21 - SG_UE_SUPERIOR1 - Unidade da federação do doador;
+22 - NM_UE1 - Nome da unidade da federação;
+23 - SG_UE1 - Código do município;
+24 - SITUACAOCADASTRAL - Batimento Receita Federal do Brasil;
+25 - NM_ADM - Nome do administrador financeiro de campanha;
+26 - CD_CPF_ADM - CPF do administrador financeiro de campanha.

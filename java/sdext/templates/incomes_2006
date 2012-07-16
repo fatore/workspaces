@@ -1,0 +1,20 @@
+Receitas Candidato
+0- NO_CAND - Nome do candidato;
+1- DS_CARGO - Descrição do cargo;
+2- CD_CARGO - Código do cargo;
+3- NR_CAND - Número do candidato;
+4- SG_UE - Unidade da federação do candidato;
+5- NR_CNPJ - CNPJ de campanha;
+6- NR_CNPJ_1 - CNPJ de campanha;
+7- NR_PART - Número do partido;
+8- SG_PART - Sigla do partido;
+9- VR_RECEITA - Valor da receita;
+10- DT_RECEITA - Data da receita;
+11- DS_TITULO - Tipo de receita;
+12- CD_TITULO - Código do tipo de receita;
+13- RV_MEANING - Tipo de recurso (Em espécie, Cheque, Estimado, não informado);
+14- TP_RECURSO - Código do RV_MEANING;
+15- NO_DOADOR - Nome do doador;
+16- CD_CPF_CGC_DOA - CPF/CNPJ doador;
+17- NO_UE - Nome da unidade da federação do doador;
+18- SITUACAOCADASTRAL - Batimento Receita Federal do Brasil.

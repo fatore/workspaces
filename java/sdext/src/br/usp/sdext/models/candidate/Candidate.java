@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 
 import br.usp.sdext.core.Model;
 import br.usp.sdext.models.Town;
+import br.usp.sdext.util.Misc;
 
 
 @Entity
@@ -54,6 +55,13 @@ public class Candidate extends Model implements  Serializable {
 		this.name = name;
 		this.birthDate = birthDate;
 		this.dupper = false;
+	}
+
+	public Candidate(String[] pieces) throws Exception {
+
+		this(Misc.parseLong(pieces[26]), // voterID
+				Misc.parseStr(pieces[10]), // name
+				Misc.parseDate(pieces[25])); // birth date
 	}
 
 	// getters

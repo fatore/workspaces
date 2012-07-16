@@ -102,12 +102,16 @@ public abstract class Model  {
 		return list;
 	}
 	
-	public static void findAll(Class<?> target, HashMap<Model, Model> map) {
+	public static HashMap<Model, Model> findAllMap(Class<?> target) {
 	
+		HashMap<Model, Model> map = new HashMap<>();
+		
 		for (Model model : findAll(target)) {
 			
 			map.put(model, model);
 		}
+		
+		return map;
 	}
 	
 	public static void findAll(Class<?> target, Set<Model> set) {

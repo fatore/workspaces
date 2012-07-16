@@ -11,8 +11,7 @@ public class Queries {
 
 	public static void main(String[] args) {
 		
-		HashMap<Model, Model> map = new HashMap<>();
-		Model.findAll(Sex.class, map);
+		HashMap<Model, Model> map = Model.findAllMap(Sex.class);
 		
 		Candidate c = new Candidate();
 		c.setId(0L);
