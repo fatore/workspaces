@@ -11,12 +11,18 @@ public class App {
 		AbstractParser parser;
 		String baseDir;
 		
+		int year = 2010;
+		
+		boolean test = false;
+		
 		parser = new CandidaturesParser();
-		baseDir = "/home/fm/work/data/sdext/eleitorais/candidatos/candidaturas/2010";
+		baseDir = "/home/fm/work/data/sdext/eleitorais/" + ((test) ? "testes" : "") + 
+				"/candidatos/candidaturas/" + year;
 		parser.parseAndSave(baseDir);
 		
 		parser = new AccountabilityParser();
-		baseDir = "/home/fm/work/data/sdext/eleitorais/prestacao_contas/2010";
+		baseDir = "/home/fm/work/data/sdext/eleitorais/" + ((test) ? "testes" : "") + 
+				"/prestacao_contas/" + year;
 		parser.parseAndSave(baseDir);
 	}
 	

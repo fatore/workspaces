@@ -6,6 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import br.usp.sdext.models.candidature.Expense;
 import br.usp.sdext.models.candidature.Income;
 
 @Entity
@@ -17,10 +18,14 @@ public class GhostCandidate {
 	Long id;
 	String name;
 	Integer ballotNo;
+	
 	@OneToOne
 	Income income;
+	
+	@OneToOne
+	Expense expense;
 
-	public GhostCandidate(String name, Integer ballotNo, Income income) {
+	public GhostCandidate(String name, Integer ballotNo, Income income, Expense expense) {
 		this.name = name;
 		this.ballotNo = ballotNo;
 		this.income = income;

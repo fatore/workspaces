@@ -61,10 +61,10 @@ public class AccountabilityParser extends AbstractParser {
 		if (file.getName().matches(".*(?iu)txt")) {
 			csv = false;
 		}
-		
+
 		year = Integer.parseInt(file.getParentFile().getParentFile().
 				getParentFile().getName());
-		
+
 		if (csv) {
 
 			if (file.getParentFile().getParentFile().getName().matches("(?iu)candidato")) {
@@ -373,10 +373,20 @@ public class AccountabilityParser extends AbstractParser {
 				same.add(current);
 			}
 		
-			if (!Candidature.addIncomes(same)) numGhosts++;
+			try {
+				if (!Candidature.addIncomes(same)) numGhosts++;
+			} catch (Exception e) {
+				Log log = new Log(same.get(0).toString(), "addIncomes", e.getMessage());
+				log.save();
+			}
 		}
-		if (i < incBindingsList.size()) {
-			if (!Candidature.addIncome(next)) numGhosts++;
+		try {
+			if (i < incBindingsList.size()) {
+				if (!Candidature.addIncome(next)) numGhosts++;
+			}
+		} catch (Exception e) {
+			Log log = new Log(next.toString(), "addIncomes", e.getMessage());
+			log.save();
 		}
 		
 		System.out.println("\tSaving providers...");
@@ -403,10 +413,21 @@ public class AccountabilityParser extends AbstractParser {
 				same.add(ecurrent);
 			}
 		
-			if (!Candidature.addExpenses(same)) numGhosts++;
+			try {
+				if (!Candidature.addExpenses(same)) numGhosts++;
+			} catch (Exception e) {
+				Log log = new Log(same.get(0).toString(), "addIncomes", e.getMessage());
+				log.save();
+			}
 		}
-		if (i < incBindingsList.size()) {
-			if (!Candidature.addExpense(enext)) numGhosts++;
+		
+		try {
+			if (i < incBindingsList.size()) {
+				if (!Candidature.addExpense(enext)) numGhosts++;
+			}
+		} catch (Exception e) {
+			Log log = new Log(next.toString(), "addIncomes", e.getMessage());
+			log.save();
 		}
 		
 		System.out.println("\tGhost Candidates: " + numGhosts);

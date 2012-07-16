@@ -58,11 +58,13 @@ public class Candidature extends Model implements Serializable {
 	
 	@OneToMany
 	private List<Income> incomes = new ArrayList<Income>();
-	private Float realIncomes;
+	@Column(name="real_incomes")
+	private Float realIncomes = new Float(0);
 	
 	@OneToMany
 	private List<Expense> expenses = new ArrayList<Expense>(); 
-	private float realExpenses;
+	@Column(name="real_expenses")
+	private Float realExpenses = new Float(0);
 	
 	public Candidature() {}
 	
@@ -107,6 +109,28 @@ public class Candidature extends Model implements Serializable {
 	public void setMaxExpenses(Float maxExpenses) {this.maxExpenses = maxExpenses;}
 	public void setResultID(Long resultID) {this.resultID = resultID;}
 	public void setResult(String result) {this.result = result;}
+	
+	
+	public void incRealIncomes(float value) {this.realIncomes += value;}
+	public void incRealExpenses(float value) {this.realExpenses += value;}
+	
+	public void addIncome(Income income) {
+		
+		this.incomes.add(income);
+		Float value = income.getValue();
+		if (value != null) {
+			incRealIncomes(value);
+		}
+	}
+	
+	public void addExpense(Expense expense) {
+		
+		this.expenses.add(expense);
+		Float value = expense.getValue();
+		if (value != null) {
+			incRealExpenses(value);
+		}
+	}
 	
 	@Override
 	public int hashCode() {
@@ -166,7 +190,7 @@ public class Candidature extends Model implements Serializable {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static List<Candidature> findByBinding(Session session, Binding binding) {
+	private static Candidature findByBinding(Session session, Binding binding) throws Exception {
 
 		List<Candidature> candidatures;
 		
@@ -186,18 +210,20 @@ public class Candidature extends Model implements Serializable {
 				setParameter("post", post).
 				list();
 
-		if (candidatures.size() > 1){
-			System.err.println("maior que 1");
-		}
-		
-		if (candidatures.size() < 1){
-//			System.err.println("menor que 1");
-		}
+		if (candidatures.size() == 1) {
 
-		return candidatures;
+			return candidatures.get(0);
+		} 
+		if (candidatures.size() < 1){
+			return null;
+		}
+		if (candidatures.size() > 1){
+			throw new Exception("Binding resulted in more than one candidature.");
+		}
+		return null;
 	}
-	
-	public static boolean addIncome(IncomeBinding binding) {
+
+	public static boolean addIncome(IncomeBinding binding) throws Exception {
 		
 		boolean sucess = true;
 		
@@ -208,14 +234,14 @@ public class Candidature extends Model implements Serializable {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		
-		List<Candidature> candidatures = findByBinding(session, binding);
+		Candidature candidature = findByBinding(session, binding);
 		
-		if (candidatures.size() == 1) {
+		if (candidature != null) {
 			
-			candidatures.get(0).getIncomes().add(income);
+			candidature.addIncome(income);
 		} 
 		else {
-			session.save(new GhostCandidate(candidateName, ballotNo, income));
+			session.save(new GhostCandidate(candidateName, ballotNo, income, null));
 			sucess = false;
 		}
 		
@@ -224,7 +250,7 @@ public class Candidature extends Model implements Serializable {
 		return sucess;
 	}
 	
-	public static boolean addIncomes(ArrayList<IncomeBinding> bindings) {
+	public static boolean addIncomes(ArrayList<IncomeBinding> bindings) throws Exception {
 		
 		boolean sucess = true;
 		
@@ -234,17 +260,16 @@ public class Candidature extends Model implements Serializable {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		
-		List<Candidature> candidatures = findByBinding(session, bindings.get(0));
+		Candidature candidature = findByBinding(session, bindings.get(0));
 		
 		for (IncomeBinding binding : bindings) {
 			
-			if (candidatures.size() == 1) {
+			if (candidature != null) {
 
-				candidatures.get(0).getIncomes().add(binding.getIncome());
+				candidature.addIncome(binding.getIncome());
 			} 
 			else {
-				session.save(new GhostCandidate(candidateName, 
-						ballotNo, binding.getIncome()));
+				session.save(new GhostCandidate(candidateName, ballotNo, binding.getIncome(), null));
 				sucess = false;
 			}
 		}
@@ -254,7 +279,7 @@ public class Candidature extends Model implements Serializable {
 		return sucess;
 	}
 	
-	public static boolean addExpense(ExpenseBinding binding) {
+	public static boolean addExpense(ExpenseBinding binding) throws Exception {
 		
 		boolean sucess = true;
 		
@@ -265,14 +290,14 @@ public class Candidature extends Model implements Serializable {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		
-		List<Candidature> candidatures = findByBinding(session, binding);
+		Candidature candidature = findByBinding(session, binding);
 		
-		if (candidatures.size() == 1) {
+		if (candidature != null) {
 			
-			candidatures.get(0).getExpenses().add(expense);
+			candidature.addExpense(expense);
 		} 
 		else {
-//			session.save(new GhostCandidate(candidateName, ballotNo, expense));
+			session.save(new GhostCandidate(candidateName, ballotNo, null, binding.getExpense()));
 			sucess = false;
 		}
 		
@@ -281,7 +306,7 @@ public class Candidature extends Model implements Serializable {
 		return sucess;
 	}
 	
-	public static boolean addExpenses(ArrayList<ExpenseBinding> bindings) {
+	public static boolean addExpenses(ArrayList<ExpenseBinding> bindings) throws Exception {
 		
 		boolean sucess = true;
 		
@@ -291,16 +316,16 @@ public class Candidature extends Model implements Serializable {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		
-		List<Candidature> candidatures = findByBinding(session, bindings.get(0));
+		Candidature candidature = findByBinding(session, bindings.get(0));
 		
 		for (ExpenseBinding binding : bindings) {
 			
-			if (candidatures.size() == 1) {
+			if (candidature != null) {
 
-				candidatures.get(0).getExpenses().add(binding.getExpense());
+				candidature.addExpense(binding.getExpense());
 			} 
 			else {
-//				session.save(new GhostCandidate(candidateName, ballotNo, binding.getIncome()));
+				session.save(new GhostCandidate(candidateName, ballotNo, null, binding.getExpense()));
 				sucess = false;
 			}
 		}
