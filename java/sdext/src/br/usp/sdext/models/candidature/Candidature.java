@@ -58,9 +58,11 @@ public class Candidature extends Model implements Serializable {
 	
 	@OneToMany
 	private List<Income> incomes = new ArrayList<Income>();
+	private Float realIncomes;
 	
 	@OneToMany
 	private List<Expense> expenses = new ArrayList<Expense>(); 
+	private float realExpenses;
 	
 	public Candidature() {}
 	

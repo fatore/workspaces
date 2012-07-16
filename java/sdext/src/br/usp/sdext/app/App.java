@@ -16,8 +16,8 @@ public class App {
 		parser.parseAndSave(baseDir);
 		
 		parser = new AccountabilityParser();
-		baseDir = "/home/fm/work/data/sdext/eleitorais/prestacao_contas/2012";
-//		parser.parseAndSave(baseDir);
+		baseDir = "/home/fm/work/data/sdext/eleitorais/prestacao_contas/2010";
+		parser.parseAndSave(baseDir);
 	}
 	
 	public static void main(String[] args) throws Exception {

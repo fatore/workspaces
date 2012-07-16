@@ -40,6 +40,7 @@ public class ExpenseBinding extends Binding {
 		this.setPost(post);
 		this.setCandidateName(candidateName);
 		this.setBallotNo(ballotNo);
+		this.setYear(year);
 		
 		this.expense = expense;
 	}
