@@ -20,18 +20,10 @@ public class State extends Model implements Serializable {
 	
 	public State() {}
 	
-	public State(String label) throws Exception {
+	public State(String label) {
 		
-		if (label == null) {
-			throw new Exception();
-		}
 		this.id = null;
 		this.label = label;
-	}
-	
-	public State(String[] pieces) throws Exception {
-
-		this(Misc.parseStr(pieces[36])); // label 
 	}
 
 	public Long getId() {return id;}
@@ -70,5 +62,16 @@ public class State extends Model implements Serializable {
 		} else if (!label.equals(other.label))
 			return false;
 		return true;
+	}
+	
+	public static State parse(String[] pieces) throws Exception {
+		
+		String label = Misc.parseStr(pieces[36]); // label
+		
+		if (label == null) {
+			throw new Exception("State label is invalid: " + pieces[36]);
+		}
+		
+		return new State(label);
 	}
 }

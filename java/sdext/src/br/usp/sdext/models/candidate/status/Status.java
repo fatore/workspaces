@@ -18,6 +18,8 @@ public class Status extends Model implements Serializable {
 	private static final long serialVersionUID = 2324783032637391486L;
 
 	@Id
+	private Long id;
+	
 	@ManyToOne
 	private Candidate candidate;
 	
@@ -41,31 +43,15 @@ public class Status extends Model implements Serializable {
 	
 	public Status() {}
 	
-	public Status(Integer year, Integer age, Date birthDate, Long tseID) 
-			throws Exception {
-		
-		if (tseID == null) {
-			throw new Exception();
-		}
-		
-		if (age == null) {
-			age = Misc.getAge(birthDate);
-		}
+	public Status(Integer year, Integer age, Long tseID) {
 		
 		this.year = year;
 		this.age = age;
 		this.tseID = tseID;
 	}	
 	
-	public Status(String[] pieces, int year) throws Exception {
-
-		this(year,
-				Misc.parseInt(pieces[27]), // age
-				Misc.parseDate(pieces[25]), // birth date
-				Misc.parseLong(pieces[11])); // birth date
-	}
-	
 	// getters
+	public Long getId() {return id;}
 	public Job getJob() {return job;}
 	public Integer getAge() {return age;}
 	public Schooling getSchooling() {return schooling;	}
@@ -74,7 +60,7 @@ public class Status extends Model implements Serializable {
 	public Long getTseID() {return tseID;}
 
 	// setters
-	public void setId(Long id) {}
+	public void setId(Long id) {this.id = id;}
 	public void setJob(Job job) {this.job = job;}
 	public void setAge(Integer age) {this.age = age;}
 	public void setSchooling(Schooling schooling) {this.schooling = schooling;}
@@ -118,9 +104,27 @@ public class Status extends Model implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Status [candidate=" + candidate + ", year=" + year + ", age="
-				+ age + ", tseID=" + tseID + ", job=" + job + ", schooling="
-				+ schooling + ", maritalStatus=" + maritalStatus + "]";
+		return "Status [id=" + id + ", candidate=" + candidate + ", year="
+				+ year + ", age=" + age + ", tseID=" + tseID + ", job=" + job
+				+ ", schooling=" + schooling + ", maritalStatus="
+				+ maritalStatus + "]";
+	}
+	
+	public static Status parse(String[] pieces, int year) throws Exception {
+		
+		Long id = Misc.parseLong(pieces[11]); // id
+		Integer age = Misc.parseInt(pieces[27]); // age
+		
+		if (id == null) {
+			throw new Exception("Candidate TSE id is invalid: " + pieces[11]);
+		}
+		
+		if (age == null) {
+			Date birthDate = Misc.parseDate(pieces[25]); // birth date
+			age = Misc.getAge(birthDate);
+		}
+		
+		return new Status(year, age, id);
 	}
 }
 

@@ -67,15 +67,16 @@ public class Job extends Model implements Serializable {
 	public String toString() {
 		return "Job [id=" + id + ", tseId=" + tseId + ", label=" + label + "]";
 	}
-
+	
 	public static Job parse(String[] pieces) throws Exception {
 		
-		Long currentJobID = Misc.parseLong(pieces[23]);
-		String currentJob = Misc.parseStr(pieces[24]);
+		Long id = Misc.parseLong(pieces[23]); // tseID
+		String label = Misc.parseStr(pieces[24]); // label
 		
-		if (currentJobID == null) {
-			throw new Exception();
+		if (id == null) {
+			throw new Exception("Job id is invalid: " + pieces[23]);
 		}
-		else return new Job(currentJobID, currentJob);
+		
+		return new Job(id, label);
 	}
 }

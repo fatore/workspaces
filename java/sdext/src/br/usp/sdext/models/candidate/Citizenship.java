@@ -22,20 +22,10 @@ public class Citizenship extends Model implements Serializable {
 	
 	public Citizenship() {}
 	
-	public Citizenship(Long tseId, String label) throws Exception {
-		
-		if (tseId == null) {
-			throw new Exception();
-		}
+	public Citizenship(Long tseId, String label) {
 		
 		this.tseId = tseId;
 		this.label = label;
-	}
-	
-	public Citizenship(String[] pieces) throws Exception {
-
-		this(Misc.parseLong(pieces[34]), // tseID
-			Misc.parseStr(pieces[35])); // label 
 	}
 	
 	public Long getId() {return id;}
@@ -77,5 +67,17 @@ public class Citizenship extends Model implements Serializable {
 	public String toString() {
 		return "Citizenship [id=" + id + ", label=" + label + ", tseId="
 				+ tseId + "]";
+	}
+	
+	public static Citizenship parse(String[] pieces) throws Exception {
+		
+		Long id = Misc.parseLong(pieces[34]); // tseID
+		String label = Misc.parseStr(pieces[35]); // label
+		
+		if (id == null) {
+			throw new Exception("Citizenship id is invalid: " + pieces[34]);
+		}
+		
+		return new Citizenship(id, label);
 	}
 }

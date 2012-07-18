@@ -43,25 +43,13 @@ public class Candidate extends Model implements  Serializable {
 	
 	public Candidate() {}
 
-	public Candidate(Long voterID, String name, Date birthDate) throws Exception {
-		
-		if (name == null || birthDate == null || voterID == null) {
-			throw new Exception();
-		}		
+	public Candidate(Long voterID, String name, Date birthDate) {
 		
 		this.id = null;
-		
 		this.voterID = voterID;
 		this.name = name;
 		this.birthDate = birthDate;
 		this.dupper = false;
-	}
-
-	public Candidate(String[] pieces) throws Exception {
-
-		this(Misc.parseLong(pieces[26]), // voterID
-				Misc.parseStr(pieces[10]), // name
-				Misc.parseDate(pieces[25])); // birth date
 	}
 
 	// getters
@@ -129,5 +117,26 @@ public class Candidate extends Model implements  Serializable {
 			}
 		} 
 		return false;
+	}
+	
+	public static Candidate parse(String[] pieces) throws Exception {
+		
+		Long voterID = Misc.parseLong(pieces[26]); // voterID
+		String name = Misc.parseStr(pieces[10]); // name
+		Date birthDate = Misc.parseDate(pieces[25]); // birth date
+		
+		if (name == null) {
+			throw new Exception("Candidate name is invalid: " + pieces[10]);
+		}
+		
+		if (birthDate == null) {
+			throw new Exception("Candidate birth date is invalid: " + pieces[25]);
+		}
+		
+		if (voterID == null) {
+			throw new Exception("Candidate voter id is invalid: " + pieces[26]);
+		}
+		
+		return new Candidate(voterID, name, birthDate);
 	}
 }

@@ -28,21 +28,11 @@ public class Town extends Model implements Serializable {
 	
 	public Town() {}
 	
-	public Town(Long tseId, String label) throws Exception {
-		
-		if (label == null) {
-			throw new Exception();
-		}
+	public Town(Long tseId, String label) {
 		
 		this.id = null;
 		this.tseId = tseId;
 		this.label = label;
-	}
-	
-	public Town(String[] pieces) throws Exception {
-
-		this(Misc.parseLong(pieces[37]), // tseID
-			Misc.parseStr(pieces[38])); // label 
 	}
 	
 	public Long getId() {return id;}
@@ -98,13 +88,13 @@ public class Town extends Model implements Serializable {
 
 	public static Town parse(String[] pieces) throws Exception {
 		
-		Long birthTownID = Misc.parseLong(pieces[37]);
-		String birthTown = Misc.parseStr(pieces[38]);
+		Long id = Misc.parseLong(pieces[37]);
+		String label = Misc.parseStr(pieces[38]);
 		
-		if (birthTown == null) {
-			throw new Exception();
+		if (label == null) {
+			throw new Exception("Town label is invalid: " + pieces[38]);
 		}
 		
-		return new Town(birthTownID, birthTown);
+		return new Town(id, label);
 	}
 }

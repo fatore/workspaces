@@ -98,33 +98,73 @@ public class Misc {
 	}
 	
 	public static String parseStr(String str) {
+		
+		str = parseString(str);
+		
+		if (str != null) {
+			str =  str.replace("-", " "); 
+		}
+		return str;
+	}
+	
+	private static String parseString(String str) {
 
 		str = Normalizer.normalize(str, Normalizer.Form.NFD);
-
 		str = str.replaceAll("[^\\p{ASCII}]", "");
 
 		Pattern pattern = Pattern.compile("\\s+");
-		
 		Matcher matcher = pattern.matcher(str);
-		
 		str = matcher.replaceAll(" ");
 		
-		pattern = Pattern.compile("\\bNAO\\b");
 		
+		
+		// Check for NAO
+		pattern = Pattern.compile("^(\\bNAO\\b)$");
 		matcher = pattern.matcher(str);
+		if (matcher.find()) return null;
 		
+		pattern = Pattern.compile("^(\\bNAO\\b) (\\bINFORMAD[A,O]\\b).*$");
+		matcher = pattern.matcher(str);
+		if (matcher.find()) return null;
+		
+		pattern = Pattern.compile("^(\\bNAO\\b) (\\bCONHECIMENTO\\b).*$");
+		matcher = pattern.matcher(str);
+		if (matcher.find()) return null;
+		
+		pattern = Pattern.compile("^(\\bNAO\\b) (\\bCONSTA\\b).*$");
+		matcher = pattern.matcher(str);
+		if (matcher.find()) return null;
+	
+		// Check for SIM
+		pattern = Pattern.compile("^\\bSIM\\b$");
+		matcher = pattern.matcher(str);
 		if (matcher.find()) return null;
 		
 		if (str.contains("#")) return null;
 				
 		if (str.equals("#NE#") || str.equals("#NI#") || str.equals("")) return null;
 		
+		// Debug
+//		if (!str.equals("NAO ELEITO") && !str.equals("NAO ME TOQUE") && !str.contains("PARAR")) {
+//
+//			pattern = Pattern.compile("\\bNAO\\b");
+//			matcher = pattern.matcher(str);
+//			if (matcher.find()) {
+//				System.err.println(str);
+//			}
+//			pattern = Pattern.compile("\\bSIM\\b");
+//			matcher = pattern.matcher(str);
+//			if (matcher.find()){
+//				System.err.println(str);
+//			}
+//		}
+		
 		return str.trim().toUpperCase();
 	}
 	
 	public static Long parseLong(String str) {
 		
-		if ((str = parseStr(str)) == null) return null;
+		if ((str = parseString(str)) == null) return null;
 		
 		str = str.replace(" ", "");
 		
@@ -150,7 +190,7 @@ public class Misc {
 	
 	public static Integer parseInt(String str) {
 		
-		if ((str = parseStr(str)) == null) return null;
+		if ((str = parseString(str)) == null) return null;
 		
 		str = str.replace(" ", "");
 		
@@ -163,7 +203,7 @@ public class Misc {
 	
 	public static Float parseFloat(String str) {
 		
-		if ((str = parseStr(str)) == null) return null;
+		if ((str = parseString(str)) == null) return null;
 		
 		str = str.replace(" ", "");
 		
@@ -211,4 +251,26 @@ public class Misc {
 
 		return age;
 	}
+	
+	public static void main(String[] args) {
+		
+		String teste1 = "NAO CONSTA";
+		String teste2 = "NAO CONSTA NO DOCUMENTO";
+		String teste3 = "NAO-ME-TOQUE";
+		
+		String teste4 = "NAO NAO";
+		String teste5 = "JOAO SIMPSON NAO DA SALIA";
+		String teste6 = "NAO JOÃO SIM TO MUITO";
+		
+		System.out.println(parseStr(teste1));
+		System.out.println(parseStr(teste2));
+		System.out.println(parseStr(teste3));
+		
+		System.out.println();
+//		
+		System.out.println(parseStr(teste4));
+		System.out.println(parseStr(teste5));
+		System.out.println(parseStr(teste6));
+	}
+	
 }

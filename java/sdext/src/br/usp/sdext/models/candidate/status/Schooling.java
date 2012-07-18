@@ -76,8 +76,9 @@ public class Schooling extends Model implements Serializable {
 		String schooling = Misc.parseStr(pieces[31]);
 		
 		if (schoolingID == null) {
-			throw new Exception();
+			throw new Exception("Schooling id is invalid: " + pieces[30]);
 		}
-		else return new Schooling(schoolingID, schooling);
+		
+		return new Schooling(schoolingID, schooling);
 	}
 }

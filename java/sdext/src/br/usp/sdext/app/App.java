@@ -1,8 +1,7 @@
 package br.usp.sdext.app;
 
 import br.usp.sdext.parsers.AbstractParser;
-import br.usp.sdext.parsers.AccountabilityParser;
-import br.usp.sdext.parsers.CandidaturesParser;
+import br.usp.sdext.parsers.MainParser;
 
 public class App {
 	
@@ -11,19 +10,21 @@ public class App {
 		AbstractParser parser;
 		String baseDir;
 		
-		int year = 2010;
+		int year = 2012;
 		
 		boolean test = false;
 		
-		parser = new CandidaturesParser();
-		baseDir = "/home/fm/work/data/sdext/eleitorais/" + ((test) ? "testes" : "") + 
-				"/candidatos/candidaturas/" + year;
-		parser.parseAndSave(baseDir);
+		parser = new MainParser();
 		
-		parser = new AccountabilityParser();
-		baseDir = "/home/fm/work/data/sdext/eleitorais/" + ((test) ? "testes" : "") + 
-				"/prestacao_contas/" + year;
-		parser.parseAndSave(baseDir);
+		baseDir = "/home/fm/work/data/sdext/eleitorais/" + ((test) ? "testes/" : "") + 
+				"candidatos/candidaturas/" + 2006;
+//		parser.parse(baseDir);
+		
+		baseDir = "/home/fm/work/data/sdext/eleitorais/" + ((test) ? "testes/" : "") + 
+				"candidatos/candidaturas/" + 2010;
+		parser.parse(baseDir);
+		
+		parser.save();
 	}
 	
 	public static void main(String[] args) throws Exception {

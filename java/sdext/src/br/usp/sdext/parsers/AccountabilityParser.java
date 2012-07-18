@@ -334,7 +334,7 @@ public class AccountabilityParser extends AbstractParser {
 		expBindingsList.add(binding);
 	}
 
-	protected void save() {
+	public void save() {
 
 		long start = System.currentTimeMillis();
 		

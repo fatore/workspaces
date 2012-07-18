@@ -18,6 +18,7 @@ public abstract class Model  {
 	
 	abstract public void setId(Long id);
 	
+	@Deprecated
 	public static Model fetchAndSave(Model model, HashMap<Model, Model> map) {
 		
 		if (model == null) {

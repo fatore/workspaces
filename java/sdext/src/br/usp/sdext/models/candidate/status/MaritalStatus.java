@@ -75,8 +75,9 @@ public class MaritalStatus extends Model implements Serializable {
 		String marital = Misc.parseStr(pieces[33]);
 		
 		if (maritalID == null) {
-			throw new Exception();
+			throw new Exception("Marital status id is invalid: " + pieces[32]);
 		}
-		else return new MaritalStatus(maritalID, marital);
+		
+		return new MaritalStatus(maritalID, marital);
 	}
 }

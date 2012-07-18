@@ -22,20 +22,10 @@ public class Sex extends Model implements Serializable {
 	
 	public Sex() {}
 	
-	public Sex(Long tseId, String label) throws Exception {
-		
-		if (tseId == null) {
-			throw new Exception();
-		}
+	public Sex(Long tseId, String label) {
 		
 		this.tseId = tseId;
 		this.label = label;
-	}
-	
-	public Sex(String[] pieces) throws Exception {
-
-		this(Misc.parseLong(pieces[28]), // tseID
-			Misc.parseStr(pieces[29])); // label 
 	}
 	
 	public Long getId() {return id;}
@@ -76,5 +66,17 @@ public class Sex extends Model implements Serializable {
 	@Override
 	public String toString() {
 		return "Sex [id=" + id + ", tseId=" + tseId + ", label=" + label + "]";
+	}
+	
+	public static Sex parse(String[] pieces) throws Exception {
+		
+		Long id = Misc.parseLong(pieces[28]); // tseID
+		String label = Misc.parseStr(pieces[29]); // label
+		
+		if (id == null) {
+			throw new Exception("Sex id is invalid: " + pieces[28]);
+		}
+		
+		return new Sex(id, label);
 	}
 }

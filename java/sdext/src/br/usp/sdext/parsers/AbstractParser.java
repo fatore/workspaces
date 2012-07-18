@@ -4,7 +4,7 @@ import java.io.File;
 
 public abstract class AbstractParser { 
 	
-	public void parseAndSave(String baseDirStr) throws Exception {
+	public void parse(String baseDirStr) throws Exception {
 		
 		File baseDir = null;
 		
@@ -21,8 +21,6 @@ public abstract class AbstractParser {
 		}
 		
 		load(baseDir);
-		
-		save();
 	}
 	
 	protected void load(File file) throws Exception {
@@ -36,6 +34,6 @@ public abstract class AbstractParser {
 	}
 	
 	protected abstract void loadFile(File file) throws Exception;
-	protected abstract void save() throws Exception;
+	public abstract void save() throws Exception;
 	
 }
