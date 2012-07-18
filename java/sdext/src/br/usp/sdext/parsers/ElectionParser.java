@@ -24,20 +24,20 @@ public class ElectionParser extends ModelParser {
 	@Override
 	public Model parse(String[] pieces) throws Exception {
 		
-		Election election = new Election(
-				Misc.parseInt(pieces[2]), // year
-				Misc.parseInt(pieces[3]), // round 
-				Misc.parseLong(pieces[8]), // posID
-				Misc.parseStr(pieces[9]), // post
-				Misc.parseStr(pieces[4]) // description
-		);
+		Election election = Election.parse(pieces);
 		
-		State electionState = new State(Misc.parseStr(pieces[5]));
+		State electionState = State.parse(pieces);
 		electionState = (State) State.fetch(electionState, miscParser.getStatesMap());
 		
 		election.setState(electionState);
 
 		if ((election.getYear() - Election.FIRST_MAIN_ELECTION) % 4 != 0) {
+			
+			String townLabel = Misc.parseStr(pieces[7]);
+			
+			if (townLabel == null) {
+				throw new Exception("Town label is invalid: " + pieces[7]);
+			}
 
 			Town electionTown = new Town(null, Misc.parseStr(pieces[7]));
 			Long ueId = Misc.parseLong(pieces[6]);

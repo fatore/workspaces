@@ -10,8 +10,6 @@ public class App {
 		AbstractParser parser;
 		String baseDir;
 		
-		int year = 2012;
-		
 		boolean test = false;
 		
 		parser = new MainParser();

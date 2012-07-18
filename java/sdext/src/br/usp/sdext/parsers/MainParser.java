@@ -4,8 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
 
 import br.usp.sdext.core.Model;
 import br.usp.sdext.models.Coalition;
@@ -23,10 +22,10 @@ public class MainParser extends AbstractParser {
 	private ElectionParser electionParser;
 	private PartyParser partyParser;
 	private CoalitionParser coalitionParser;
+	private HashMap<Model, Model> candidatureMap = new HashMap<>();
 
 	private int incompleteEntries = 0;
 
-	private Set<Model> candidaturesSet = new HashSet<>();
 	
 	public MainParser() {
 		
@@ -114,10 +113,18 @@ public class MainParser extends AbstractParser {
 		candidature.setElection(election);
 		candidature.setParty(party);
 		candidature.setCoalition(coalition);
+		
+		Candidature mappedCandidature = (Candidature) candidatureMap.get(candidature);
 
-		// Add candidature if does not exists already
-		if (!candidaturesSet.contains(candidature)) {
-			candidaturesSet.add(candidature);
+		if (mappedCandidature == null) {
+			
+			candidature.setId(new Long(candidatureMap.size()));
+			candidatureMap.put(candidature, candidature);
+			
+		} else {
+			
+			System.err.println("something is wrong");
+			throw new Exception();
 		}
 	}
 
@@ -131,7 +138,7 @@ public class MainParser extends AbstractParser {
 		System.out.println("\tElections: " + electionParser.getElectionsMap().size());
 		System.out.println("\tParties: " + partyParser.getPartiesMap().size());
 		System.out.println("\tCoalitions: " + coalitionParser.getCoalitionsMap().size());
-		System.out.println("\tCandidatures: " + candidaturesSet.size());
+		System.out.println("\tCandidatures: " + candidatureMap.size());
 		System.out.println("\tIncomplete Entries: " + incompleteEntries);
 
 		System.out.println("\nSaving objects in the database, " +
@@ -145,7 +152,7 @@ public class MainParser extends AbstractParser {
 		
 
 		System.out.println("\tSaving candidatures...");
-		Model.bulkSave(candidaturesSet);
+		Model.bulkSave(candidatureMap.values());
 
 		long elapsedTime = System.currentTimeMillis() - start;
 

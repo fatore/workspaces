@@ -29,10 +29,11 @@ public class Candidature extends Model implements Serializable {
 	private static final long serialVersionUID = 2324783032637391486L;
 
 	@Id
+	private Long id;
+	
 	@ManyToOne
 	private Candidate candidate;
 	
-	@Id
 	@ManyToOne
 	private Election election;
 	
@@ -82,7 +83,7 @@ public class Candidature extends Model implements Serializable {
 	}	
 	
 	// getters
-	public void setId(Long id) {}
+	public Long getID() {return id;}
 	public Election getElection() {return election;}
 	public Candidate getCandidate() {return candidate;}
 	public Coalition getCoalition() {return coalition;}
@@ -98,6 +99,7 @@ public class Candidature extends Model implements Serializable {
 	public String getResult() {return result;}
 
 	// setters
+	public void setId(Long id) {this.id = id;}
 	public void setElection(Election election) {this.election = election;}
 	public void setCandidate(Candidate candidate) {this.candidate = candidate;}
 	public void setCoalition(Coalition coalition) {this.coalition = coalition;}
@@ -131,40 +133,86 @@ public class Candidature extends Model implements Serializable {
 			incRealExpenses(value);
 		}
 	}
-	
+	@Override
+	public String toString() {
+		return "Candidature [id=" + id + ", candidate=" + candidate
+				+ ", election=" + election + ", party=" + party
+				+ ", coalition=" + coalition + ", ballotName=" + ballotName
+				+ ", ballotNo=" + ballotNo + ", situationID=" + situationID
+				+ ", situation=" + situation + ", maxExpenses=" + maxExpenses
+				+ ", resultID=" + resultID + ", result=" + result
+				+ ", incomes=" + incomes + ", realIncomes=" + realIncomes
+				+ ", expenses=" + expenses + ", realExpenses=" + realExpenses
+				+ "]";
+	}
+
 	@Override
 	public int hashCode() {
 		
 		final int prime = 31;
 		int result = 1;
-		result = prime * result	+ ((candidate == null) ? 0 : candidate.getID().hashCode());
-		result = prime * result	+ ((election == null) ? 0 : election.getID().hashCode());
+		result = prime * result + ((ballotNo == null) ? 0 : ballotNo.hashCode());
+		result = prime * result + ((candidate.getName() == null) ? 0 : candidate.getName().hashCode());
+		result = prime * result + ((election.getPost() == null) ? 0 : election.getPost().hashCode());
+		result = prime * result + ((election.getYear() == null) ? 0 : election.getYear().hashCode());
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
+		
 		Candidature other = (Candidature) obj;
-		if (candidate == null) {
-			if (other.candidate != null)
+		
+		if (ballotNo == null) {
+			if (other.ballotNo != null) {
 				return false;
-		} else if (!candidate.getID().equals(other.candidate.getID()))
+			}
+		} else if (!ballotNo.equals(other.ballotNo)) {
 			return false;
-		if (election == null) {
-			if (other.election != null)
+		}
+		
+		if (candidate.getName() == null) {
+			if (other.candidate.getName() != null) {
 				return false;
-		} else if (!election.getID().equals(other.election.getID()))
+			}
+		} else if (!candidate.getName().equals(other.candidate.getName())) {
 			return false;
+		}
+		
+		if (election.getPost() == null) {
+			if (other.election.getPost() != null) {
+				return false;
+			}
+		} else if (!election.getPost().equals(other.election.getPost())) {
+			return false;
+		}
+		
+		if (election.getYear() == null) {
+			if (other.election.getYear() != null) {
+				return false;
+			}
+		} else if (!election.getYear().equals(other.election.getYear())) {
+			return false;
+		}
+		
 		return true;
 	}
-	
+
 	public static Candidature findByBasic(String candidateName, Integer ballotNo, 
 			Integer year, String post) {
 		
