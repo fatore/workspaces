@@ -7,7 +7,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import br.usp.sdext.core.Model;
-import br.usp.sdext.util.Misc;
 
 @Entity
 public class Town extends Model implements Serializable {
@@ -84,17 +83,5 @@ public class Town extends Model implements Serializable {
 	public String toString() {
 		return "Town [id=" + id + ", state=" + state + ", tseId=" + tseId
 				+ ", ueID=" + ueID + ", label=" + label + "]";
-	}
-
-	public static Town parse(String[] pieces) throws Exception {
-		
-		Long id = Misc.parseLong(pieces[37]);
-		String label = Misc.parseStr(pieces[38]);
-		
-		if (label == null) {
-			throw new Exception("Town label is invalid: " + pieces[38]);
-		}
-		
-		return new Town(id, label);
 	}
 }

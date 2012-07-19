@@ -15,26 +15,31 @@ import br.usp.sdext.models.candidate.Candidate;
 import br.usp.sdext.models.candidature.Candidature;
 import br.usp.sdext.util.Misc;
 
-public class MainParser extends AbstractParser {
+public class CandidatureParser extends AbstractParser {
 	
 	private MiscParser miscParser;
 	private CandidateParser candidateParser;
 	private ElectionParser electionParser;
 	private PartyParser partyParser;
 	private CoalitionParser coalitionParser;
+	
 	private HashMap<Model, Model> candidatureMap = new HashMap<>();
+	private HashMap<Binding, Model> candidaturesBindings = new HashMap<>();
 
 	private int incompleteEntries = 0;
-
 	
-	public MainParser() {
+	public CandidatureParser(MiscParser miscParser) {
 		
-		miscParser = new MiscParser();
+		this.miscParser = miscParser;
+		
 		candidateParser = new CandidateParser(miscParser);
 		electionParser = new ElectionParser(miscParser);
 		partyParser = new PartyParser();
 		coalitionParser = new CoalitionParser();
 	}
+	
+	public HashMap<Model, Model> getCandidatureMap() {return candidatureMap;}
+	public HashMap<Binding, Model> getCandidaturesBindings() {return candidaturesBindings;}
 
 	protected void loadFile(File file) throws Exception {
 
@@ -42,7 +47,7 @@ public class MainParser extends AbstractParser {
 
 		if (file.getName().matches("([^\\s]+(\\.(?i)txt))")) {
 
-			System.out.println("Parsing file " + file.getName());
+			System.out.println("Parsing candidatures from " + file.getName());
 			parseFile(file);
 		}
 	}
@@ -64,7 +69,7 @@ public class MainParser extends AbstractParser {
 
 				for (StackTraceElement element : e.getStackTrace()) {
 
-					if (element.getClassName().contains("br.usp.sdext.models")) {
+					if (element.getClassName().contains("br.usp.sdext.parsers")) {
 						exceptionClass = element.getClassName();
 						exceptionMethod = element.getMethodName();
 						break;
@@ -93,7 +98,6 @@ public class MainParser extends AbstractParser {
 		}
 
 		Candidate candidate = (Candidate) candidateParser.parse(pieces);
-		
 		Election election = (Election) electionParser.parse(pieces);
 		Party party = (Party) partyParser.parse(pieces);
 		Coalition coalition = (Coalition) coalitionParser.parse(pieces);
@@ -107,7 +111,6 @@ public class MainParser extends AbstractParser {
 				Misc.parseLong(pieces[40]), // result id
 				Misc.parseStr(pieces[41])); // result
 
-		
 		// Bind objects.
 		candidature.setCandidate(candidate);
 		candidature.setElection(election);
@@ -120,11 +123,11 @@ public class MainParser extends AbstractParser {
 			
 			candidature.setId(new Long(candidatureMap.size()));
 			candidatureMap.put(candidature, candidature);
+			candidaturesBindings.put(new Binding(candidature), candidature); 
 			
 		} else {
-			
-			System.err.println("something is wrong");
-			throw new Exception();
+
+			throw new Exception("Candidature already exists.");
 		}
 	}
 
@@ -144,7 +147,6 @@ public class MainParser extends AbstractParser {
 		System.out.println("\nSaving objects in the database, " +
 				"this can take several minutes.");
 		
-		miscParser.save();
 		candidateParser.save();
 		electionParser.save();
 		partyParser.save();

@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import br.usp.sdext.core.Model;
-import br.usp.sdext.util.Misc;
 
 @Entity
 public class Party extends Model implements Serializable {
@@ -68,18 +67,5 @@ public class Party extends Model implements Serializable {
 	public String toString() {
 		return "Party [id=" + id + ", no=" + no + ", acronym=" + acronym
 				+ ", name=" + name + "]";
-	}
-	
-	public static Party parse(String[] pieces) throws Exception {
-		
-		Integer no = Misc.parseInt(pieces[16]); // no 
-		String acronym = Misc.parseStr(pieces[17]);  // acronym
-		String name = Misc.parseStr(pieces[18]); // name
-		
-		if (no == null) {
-			throw new Exception("Party number is invalid: " + pieces[16]);
-		}
-		
-		return new Party(no, acronym, name);
 	}
 }

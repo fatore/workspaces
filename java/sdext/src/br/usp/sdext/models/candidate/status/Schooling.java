@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import br.usp.sdext.core.Model;
-import br.usp.sdext.util.Misc;
 
 @Entity
 public class Schooling extends Model implements Serializable {
@@ -68,17 +67,5 @@ public class Schooling extends Model implements Serializable {
 	public String toString() {
 		return "Schooling [id=" + id + ", tseId=" + tseId + ", label=" + label
 				+ "]";
-	}
-
-	public static Schooling parse(String[] pieces) throws Exception {
-		
-		Long schoolingID = Misc.parseLong(pieces[30]);
-		String schooling = Misc.parseStr(pieces[31]);
-		
-		if (schoolingID == null) {
-			throw new Exception("Schooling id is invalid: " + pieces[30]);
-		}
-		
-		return new Schooling(schoolingID, schooling);
 	}
 }

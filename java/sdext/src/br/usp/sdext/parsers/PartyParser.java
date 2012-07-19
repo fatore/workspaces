@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import br.usp.sdext.core.Model;
 import br.usp.sdext.models.Party;
+import br.usp.sdext.util.Misc;
 
 public class PartyParser extends ModelParser {
 
@@ -11,11 +12,15 @@ public class PartyParser extends ModelParser {
 
 	public HashMap<Model, Model> getPartiesMap() {return partiesMap;}
 	
-	@Override
 	public Model parse(String[] pieces) throws Exception {
 		
-		Party party =  Party.parse(pieces);
+		Integer no = Misc.parseInt(pieces[16]); // no 
+		String acronym = Misc.parseStr(pieces[17]);  // acronym
+		String name = Misc.parseStr(pieces[18]); // name
+		if (no == null) {throw new Exception("Party number is invalid: " + pieces[16]);}
+		Party party = new Party(no, acronym, name);
 		party = (Party) Model.fetch(party, partiesMap);
+		
 		return party;
 	}
 

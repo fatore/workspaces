@@ -8,7 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import br.usp.sdext.core.Model;
-import br.usp.sdext.util.Misc;
 
 @Entity
 public class Election extends Model implements Serializable {
@@ -89,11 +88,13 @@ public class Election extends Model implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Election other = (Election) obj;
+		
 		if (postID == null) {
 			if (other.postID != null)
 				return false;
 		} else if (!postID.equals(other.postID))
 			return false;
+		
 		if (round == null) {
 			if (other.round != null)
 				return false;
@@ -123,32 +124,5 @@ public class Election extends Model implements Serializable {
 				+ description + ", round=" + round + ", state=" + state
 				+ ", town=" + town + ", postID=" + postID + ", post=" + post
 				+ "]";
-	}
-	
-	public static Election parse(String[] pieces) throws Exception {
-		
-		Integer year = Misc.parseInt(pieces[2]); // year
-		Integer round = Misc.parseInt(pieces[3]); // round 
-		Long postID = Misc.parseLong(pieces[8]); // posID
-		String postLabel = Misc.parseStr(pieces[9]); // post
-		String description = Misc.parseStr(pieces[4]); // description
-		
-		if (year == null) {
-			throw new Exception("Election year is invalid: " + pieces[2]);
-		}
-		
-		if (round == null) {
-			throw new Exception("Election round is invalid: " + pieces[3]);
-		}
-		
-		if (postID == null) {
-			throw new Exception("Election post id is invalid: " + pieces[8]);
-		}
-		
-		if (postLabel == null) {
-			throw new Exception("Election post label is invalid: " + pieces[9]);
-		}
-		
-		return new Election(year, round, postID, postLabel, description);
 	}
 }

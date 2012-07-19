@@ -14,7 +14,6 @@ public class CoalitionParser extends ModelParser {
 		return coalitionsMap;
 	}
 
-	@Override
 	public Model parse(String[] pieces) throws Exception {
 		
 		Coalition coalition =  new Coalition(

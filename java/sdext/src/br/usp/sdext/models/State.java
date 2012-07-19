@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import br.usp.sdext.core.Model;
-import br.usp.sdext.util.Misc;
 
 @Entity
 public class State extends Model implements Serializable {
@@ -62,16 +61,5 @@ public class State extends Model implements Serializable {
 		} else if (!label.equals(other.label))
 			return false;
 		return true;
-	}
-	
-	public static State parse(String[] pieces) throws Exception {
-		
-		String label = Misc.parseStr(pieces[36]); // label
-		
-		if (label == null) {
-			throw new Exception("State label is invalid: " + pieces[36]);
-		}
-		
-		return new State(label);
 	}
 }

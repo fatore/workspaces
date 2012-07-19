@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import br.usp.sdext.core.Model;
-import br.usp.sdext.util.Misc;
 
 @Entity
 public class MaritalStatus extends Model implements Serializable {
@@ -67,17 +66,5 @@ public class MaritalStatus extends Model implements Serializable {
 	public String toString() {
 		return "MaritalStatus [id=" + id + ", tseId=" + tseId + ", label="
 				+ label + "]";
-	}
-
-	public static MaritalStatus parse(String[] pieces) throws Exception {
-		
-		Long maritalID = Misc.parseLong(pieces[32]);
-		String marital = Misc.parseStr(pieces[33]);
-		
-		if (maritalID == null) {
-			throw new Exception("Marital status id is invalid: " + pieces[32]);
-		}
-		
-		return new MaritalStatus(maritalID, marital);
 	}
 }

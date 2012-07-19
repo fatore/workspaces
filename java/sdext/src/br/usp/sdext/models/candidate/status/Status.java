@@ -1,7 +1,6 @@
 package br.usp.sdext.models.candidate.status;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +9,6 @@ import javax.persistence.ManyToOne;
 
 import br.usp.sdext.core.Model;
 import br.usp.sdext.models.candidate.Candidate;
-import br.usp.sdext.util.Misc;
 
 @Entity
 public class Status extends Model implements Serializable {
@@ -108,23 +106,6 @@ public class Status extends Model implements Serializable {
 				+ year + ", age=" + age + ", tseID=" + tseID + ", job=" + job
 				+ ", schooling=" + schooling + ", maritalStatus="
 				+ maritalStatus + "]";
-	}
-	
-	public static Status parse(String[] pieces, int year) throws Exception {
-		
-		Long id = Misc.parseLong(pieces[11]); // id
-		Integer age = Misc.parseInt(pieces[27]); // age
-		
-		if (id == null) {
-			throw new Exception("Candidate TSE id is invalid: " + pieces[11]);
-		}
-		
-		if (age == null) {
-			Date birthDate = Misc.parseDate(pieces[25]); // birth date
-			age = Misc.getAge(birthDate);
-		}
-		
-		return new Status(year, age, id);
 	}
 }
 

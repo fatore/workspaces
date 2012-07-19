@@ -21,23 +21,34 @@ public class ElectionParser extends ModelParser {
 	
 	public HashMap<Model, Model> getElectionsMap() {return electionsMap;}
 	
-	@Override
 	public Model parse(String[] pieces) throws Exception {
 		
-		Election election = Election.parse(pieces);
+		Integer year = Misc.parseInt(pieces[2]); // year
+		if (year == null) {throw new Exception("Election year is invalid: " + pieces[2]);}
 		
-		State electionState = State.parse(pieces);
+		Integer round = Misc.parseInt(pieces[3]); // round 
+		if (round == null) {throw new Exception("Election round is invalid: " + pieces[3]);}
+		
+		Long postID = Misc.parseLong(pieces[8]); // posID
+		if (postID == null) {throw new Exception("Election post id is invalid: " + pieces[8]);}
+		
+		String postLabel = Misc.parseStr(pieces[9]); // post
+		if (postLabel == null) {throw new Exception("Election post label is invalid: " + pieces[9]);}
+		
+		String description = Misc.parseStr(pieces[4]); // description
+		
+		Election election = new Election(year, round, postID, postLabel, description);
+		
+		String stateLabel = Misc.parseStr(pieces[5]); // label
+		if (stateLabel == null) {throw new Exception("State label is invalid: " + pieces[5]);}
+		State electionState =  new State(stateLabel);
 		electionState = (State) State.fetch(electionState, miscParser.getStatesMap());
-		
 		election.setState(electionState);
 
 		if ((election.getYear() - Election.FIRST_MAIN_ELECTION) % 4 != 0) {
 			
 			String townLabel = Misc.parseStr(pieces[7]);
-			
-			if (townLabel == null) {
-				throw new Exception("Town label is invalid: " + pieces[7]);
-			}
+			if (townLabel == null) {throw new Exception("Town label is invalid: " + pieces[7]);}
 
 			Town electionTown = new Town(null, Misc.parseStr(pieces[7]));
 			Long ueId = Misc.parseLong(pieces[6]);

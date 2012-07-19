@@ -18,14 +18,12 @@ public class MiscParser extends ModelParser {
 	public HashMap<Model, Model> getTownsMap() {return townsMap;}
 	
 	@Override
-	public Model parse(String[] pieces) throws Exception {
-		return null;
-	}
-	
-	@Override
 	public void save() {
 
 		Model.bulkSave(statesMap.values());
+		System.out.println("\tSaving states...");
+		
+		System.out.println("\tSaving towns...");
 		Model.bulkSave(townsMap.values());
 	}
 }

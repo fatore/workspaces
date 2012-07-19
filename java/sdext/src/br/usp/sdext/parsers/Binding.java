@@ -1,48 +1,99 @@
 package br.usp.sdext.parsers;
 
+import br.usp.sdext.models.State;
+import br.usp.sdext.models.Town;
+import br.usp.sdext.models.candidature.Candidature;
 
 public class Binding {
-
+	
 	private String post;
-	private String candidateName;
+	private State electionState; 
+	private Town electionTown;
+	private Integer electionYear;
 	private Integer ballotNo;
 	
-	private Integer year;
-	
-	public Binding() {}
-	
-	public Binding(String post, String name, int ballotNo, Integer year) {
-
-		this.post = post;
-		this.candidateName = name;
-		this.ballotNo = ballotNo;
-		this.year = year;
-	}
-	
-	public String getPost() {return post;}
-	public String getCandidateName() {return candidateName;}
-	public Integer getBallotNo() {return ballotNo;}
-	public Integer getYear() {return year;}
-
-	public void setPost(String post) {this.post = post;}
-	public void setCandidateName(String candidateName) {
-		this.candidateName = candidateName;
-	}
-	public void setBallotNo(Integer ballotNo) {this.ballotNo = ballotNo;}
-	public void setYear(Integer year) {this.year = year;}
-
-	public boolean hasSameCandidature(Binding other) {
-
-		if (!this.candidateName.equals(other.candidateName)) return false;
-		if (!this.ballotNo.equals(other.ballotNo)) return false;
-		if (!this.year.equals(other.year)) return false;
-		if (!this.post.equals(other.post)) return false;
+	public Binding(String post, State electionState, Town electionTown,
+			Integer electionYear, Integer ballotNo) {
 		
+		this.post = post;
+		this.electionState = electionState;
+		this.electionTown = electionTown;
+		this.electionYear = electionYear;
+		this.ballotNo = ballotNo;
+	}
+
+	public Binding(Candidature candidature) {
+		
+		this(candidature.getElection().getPost(),
+				candidature.getElection().getState(),
+				candidature.getElection().getTown(),
+				candidature.getElection().getYear(),
+				candidature.getBallotNo());
+	}
+
+	@Override
+	public int hashCode() {
+		
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((ballotNo == null) ? 0 : ballotNo.hashCode());
+		result = prime * result + ((electionState == null) ? 0 : electionState.hashCode());
+		result = prime * result + ((electionTown == null) ? 0 : electionTown.hashCode());
+		result = prime * result + ((electionYear == null) ? 0 : electionYear.hashCode());
+		result = prime * result + ((post == null) ? 0 : post.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Binding other = (Binding) obj;
+		if (ballotNo == null) {
+			if (other.ballotNo != null) {
+				return false;
+			}
+		} else if (!ballotNo.equals(other.ballotNo)) {
+			return false;
+		}
+		if (electionState == null) {
+			if (other.electionState != null) {
+				return false;
+			}
+		} else if (!electionState.equals(other.electionState)) {
+			return false;
+		}
+		if (electionTown == null) {
+			if (other.electionTown != null) {
+				return false;
+			}
+		} else if (!electionTown.equals(other.electionTown)) {
+			return false;
+		}
+		if (electionYear == null) {
+			if (other.electionYear != null) {
+				return false;
+			}
+		} else if (!electionYear.equals(other.electionYear)) {
+			return false;
+		}
+		if (post == null) {
+			if (other.post != null) {
+				return false;
+			}
+		} else if (!post.equals(other.post)) {
+			return false;
+		}
 		return true;
 	}
-	@Override
-	public String toString() {
-		return "Binding [post=" + post + ", candidateName=" + candidateName
-				+ ", ballotNo=" + ballotNo + ", year=" + year + "]";
-	}
+	
+	
 }

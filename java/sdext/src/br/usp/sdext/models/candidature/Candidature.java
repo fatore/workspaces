@@ -18,10 +18,6 @@ import br.usp.sdext.models.Coalition;
 import br.usp.sdext.models.Election;
 import br.usp.sdext.models.Party;
 import br.usp.sdext.models.candidate.Candidate;
-import br.usp.sdext.models.ghosts.GhostCandidate;
-import br.usp.sdext.parsers.Binding;
-import br.usp.sdext.parsers.ExpenseBinding;
-import br.usp.sdext.parsers.IncomeBinding;
 
 @Entity
 public class Candidature extends Model implements Serializable {
@@ -151,65 +147,37 @@ public class Candidature extends Model implements Serializable {
 		
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((ballotNo == null) ? 0 : ballotNo.hashCode());
-		result = prime * result + ((candidate.getName() == null) ? 0 : candidate.getName().hashCode());
-		result = prime * result + ((election.getPost() == null) ? 0 : election.getPost().hashCode());
-		result = prime * result + ((election.getYear() == null) ? 0 : election.getYear().hashCode());
+		result = prime * result + ((candidate == null) ? 0 : candidate.hashCode());
+		result = prime * result + ((election == null) ? 0 : election.hashCode());
 		return result;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
-		
 		if (this == obj) {
 			return true;
 		}
-		
 		if (obj == null) {
 			return false;
 		}
-		
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		
 		Candidature other = (Candidature) obj;
-		
-		if (ballotNo == null) {
-			if (other.ballotNo != null) {
+		if (candidate == null) {
+			if (other.candidate != null) {
 				return false;
 			}
-		} else if (!ballotNo.equals(other.ballotNo)) {
+		} else if (!candidate.equals(other.candidate)) {
 			return false;
 		}
-		
-		if (candidate.getName() == null) {
-			if (other.candidate.getName() != null) {
+		if (election == null) {
+			if (other.election != null) {
 				return false;
 			}
-		} else if (!candidate.getName().equals(other.candidate.getName())) {
+		} else if (!election.equals(other.election)) {
 			return false;
 		}
-		
-		if (election.getPost() == null) {
-			if (other.election.getPost() != null) {
-				return false;
-			}
-		} else if (!election.getPost().equals(other.election.getPost())) {
-			return false;
-		}
-		
-		if (election.getYear() == null) {
-			if (other.election.getYear() != null) {
-				return false;
-			}
-		} else if (!election.getYear().equals(other.election.getYear())) {
-			return false;
-		}
-		
 		return true;
 	}
 
@@ -235,152 +203,6 @@ public class Candidature extends Model implements Serializable {
 		session.getTransaction().commit();
 
 		return candidature;
-	}
-
-	@SuppressWarnings("unchecked")
-	private static Candidature findByBinding(Session session, Binding binding) throws Exception {
-
-		List<Candidature> candidatures;
-		
-		String post = binding.getPost();
-		String candidateName = binding.getCandidateName();
-		Integer ballotNo = binding.getBallotNo();
-		int year = binding.getYear();
-
-		String sql = "select CR from Candidature as CR where CR.candidate.name = :name " +
-				"and CR.ballotNo = :ballotNo and CR.election.year = :year " +
-				"and CR.election.round = 1 and CR.election.post = :post";
-
-		candidatures =  (List<Candidature>) session.createQuery(sql).
-				setParameter("name", candidateName).
-				setParameter("ballotNo", ballotNo).
-				setParameter("year", year).
-				setParameter("post", post).
-				list();
-
-		if (candidatures.size() == 1) {
-
-			return candidatures.get(0);
-		} 
-		if (candidatures.size() < 1){
-			return null;
-		}
-		if (candidatures.size() > 1){
-			throw new Exception("Binding resulted in more than one candidature.");
-		}
-		return null;
-	}
-
-	public static boolean addIncome(IncomeBinding binding) throws Exception {
-		
-		boolean sucess = true;
-		
-		String candidateName = binding.getCandidateName();
-		Integer ballotNo = binding.getBallotNo();
-		Income income = binding.getIncome();
-		
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		
-		Candidature candidature = findByBinding(session, binding);
-		
-		if (candidature != null) {
-			
-			candidature.addIncome(income);
-		} 
-		else {
-			session.save(new GhostCandidate(candidateName, ballotNo, income, null));
-			sucess = false;
-		}
-		
-		session.getTransaction().commit();
-		
-		return sucess;
-	}
-	
-	public static boolean addIncomes(ArrayList<IncomeBinding> bindings) throws Exception {
-		
-		boolean sucess = true;
-		
-		String candidateName = bindings.get(0).getCandidateName();
-		Integer ballotNo = bindings.get(0).getBallotNo();
-		
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		
-		Candidature candidature = findByBinding(session, bindings.get(0));
-		
-		for (IncomeBinding binding : bindings) {
-			
-			if (candidature != null) {
-
-				candidature.addIncome(binding.getIncome());
-			} 
-			else {
-				session.save(new GhostCandidate(candidateName, ballotNo, binding.getIncome(), null));
-				sucess = false;
-			}
-		}
-		
-		session.getTransaction().commit();
-		
-		return sucess;
-	}
-	
-	public static boolean addExpense(ExpenseBinding binding) throws Exception {
-		
-		boolean sucess = true;
-		
-		String candidateName = binding.getCandidateName();
-		Integer ballotNo = binding.getBallotNo();
-		Expense expense = binding.getExpense();
-		
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		
-		Candidature candidature = findByBinding(session, binding);
-		
-		if (candidature != null) {
-			
-			candidature.addExpense(expense);
-		} 
-		else {
-			session.save(new GhostCandidate(candidateName, ballotNo, null, binding.getExpense()));
-			sucess = false;
-		}
-		
-		session.getTransaction().commit();
-		
-		return sucess;
-	}
-	
-	public static boolean addExpenses(ArrayList<ExpenseBinding> bindings) throws Exception {
-		
-		boolean sucess = true;
-		
-		String candidateName = bindings.get(0).getCandidateName();
-		Integer ballotNo = bindings.get(0).getBallotNo();
-		
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		
-		Candidature candidature = findByBinding(session, bindings.get(0));
-		
-		for (ExpenseBinding binding : bindings) {
-			
-			if (candidature != null) {
-
-				candidature.addExpense(binding.getExpense());
-			} 
-			else {
-				session.save(new GhostCandidate(candidateName, ballotNo, null, binding.getExpense()));
-				sucess = false;
-			}
-		}
-		
-		session.getTransaction().commit();
-		
-		return sucess;
 	}
 }
 

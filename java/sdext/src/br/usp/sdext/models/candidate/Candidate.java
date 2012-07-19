@@ -10,7 +10,6 @@ import javax.persistence.ManyToOne;
 
 import br.usp.sdext.core.Model;
 import br.usp.sdext.models.Town;
-import br.usp.sdext.util.Misc;
 
 
 @Entity
@@ -117,26 +116,5 @@ public class Candidate extends Model implements  Serializable {
 			}
 		} 
 		return false;
-	}
-	
-	public static Candidate parse(String[] pieces) throws Exception {
-		
-		Long voterID = Misc.parseLong(pieces[26]); // voterID
-		String name = Misc.parseStr(pieces[10]); // name
-		Date birthDate = Misc.parseDate(pieces[25]); // birth date
-		
-		if (name == null) {
-			throw new Exception("Candidate name is invalid: " + pieces[10]);
-		}
-		
-		if (birthDate == null) {
-			throw new Exception("Candidate birth date is invalid: " + pieces[25]);
-		}
-		
-		if (voterID == null) {
-			throw new Exception("Candidate voter id is invalid: " + pieces[26]);
-		}
-		
-		return new Candidate(voterID, name, birthDate);
 	}
 }

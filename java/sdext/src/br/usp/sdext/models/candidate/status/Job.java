@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import br.usp.sdext.core.Model;
-import br.usp.sdext.util.Misc;
 
 @Entity
 public class Job extends Model implements Serializable {
@@ -66,17 +65,5 @@ public class Job extends Model implements Serializable {
 	@Override
 	public String toString() {
 		return "Job [id=" + id + ", tseId=" + tseId + ", label=" + label + "]";
-	}
-	
-	public static Job parse(String[] pieces) throws Exception {
-		
-		Long id = Misc.parseLong(pieces[23]); // tseID
-		String label = Misc.parseStr(pieces[24]); // label
-		
-		if (id == null) {
-			throw new Exception("Job id is invalid: " + pieces[23]);
-		}
-		
-		return new Job(id, label);
 	}
 }

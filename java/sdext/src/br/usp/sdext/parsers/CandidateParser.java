@@ -1,6 +1,7 @@
 package br.usp.sdext.parsers;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import br.usp.sdext.core.Model;
@@ -13,6 +14,7 @@ import br.usp.sdext.models.candidate.status.Job;
 import br.usp.sdext.models.candidate.status.MaritalStatus;
 import br.usp.sdext.models.candidate.status.Schooling;
 import br.usp.sdext.models.candidate.status.Status;
+import br.usp.sdext.util.Misc;
 
 public class CandidateParser extends ModelParser {
 	
@@ -37,7 +39,6 @@ public class CandidateParser extends ModelParser {
 	}
 
 	public Long getNumElements() {return numElements;}
-	public MiscParser getMiscParser() {return miscParser;}
 	public HashMap<Model, Model> getCandidatesMap() {return candidatesMap;}
 	public HashMap<Model, Model> getSexMap() {return sexMap;}
 	public HashMap<Model, Model> getCtzsMap() {return ctzsMap;}
@@ -49,31 +50,57 @@ public class CandidateParser extends ModelParser {
 
 	public Model parse(String[] pieces) throws Exception {
 
-		Candidate candidate = Candidate.parse(pieces);
-
+		// Name.
+		String name = Misc.parseStr(pieces[10]); // name
+		if (name == null) {throw new Exception("Candidate name is invalid: " + pieces[10]);}
+		
+		// Birth date
+		Date birthDate = Misc.parseDate(pieces[25]); // birth date
+		if (birthDate == null) {throw new Exception("Candidate birth date is invalid: " + pieces[25]);}
+		
+		// Voter-ID
+		Long candidateVoterID = Misc.parseLong(pieces[26]); // voterID
+		if (candidateVoterID == null) {throw new Exception("Candidate voter id is invalid: " + pieces[26]);}
+		
+		Candidate candidate = new Candidate(candidateVoterID, name, birthDate);
+		
 		// Look for the candidate in map ...
 		Candidate mapCandidate = (Candidate) candidatesMap.get(candidate);
 
 		// ... if didn't find anything.
 		if (mapCandidate == null) {
-
-			Sex sex =  Sex.parse(pieces);
-			Citizenship ctz = Citizenship.parse(pieces);
-			State birthState = State.parse(pieces);
-			Town birthTown = Town.parse(pieces);
-
-			// Fetch data.
+			
+			// Sex.
+			Long sexId = Misc.parseLong(pieces[28]); // tseID
+			if (sexId == null) {throw new Exception("Sex id is invalid: " + pieces[28]);}
+			String sexLabel = Misc.parseStr(pieces[29]); // label
+			Sex sex = new Sex(sexId, sexLabel);
 			sex = (Sex) Model.fetch(sex, sexMap);
+			candidate.setSex(sex);
+			
+			// Citizenship.
+			Long ctzId = Misc.parseLong(pieces[34]); // tseID
+			if (ctzId == null) {throw new Exception("Citizenship id is invalid: " + pieces[34]);}
+			String ctzLabel = Misc.parseStr(pieces[35]); // label
+			Citizenship ctz = new Citizenship(ctzId, ctzLabel);
 			ctz = (Citizenship) Model.fetch(ctz, ctzsMap);
-			birthState = (State) Model.fetch(birthState, miscParser.getStatesMap());
+			candidate.setCitizenship(ctz);
 
+			// Birth state.
+			String stateLabel = Misc.parseStr(pieces[36]); // label
+			if (stateLabel == null) {throw new Exception("State label is invalid: " + pieces[36]);}
+			State birthState =  new State(stateLabel);
+			birthState = (State) Model.fetch(birthState, miscParser.getStatesMap());
+			
+			// Birth town.
+			Long id = Misc.parseLong(pieces[37]);
+			String label = Misc.parseStr(pieces[38]);
+			if (label == null) {throw new Exception("Town label is invalid: " + pieces[38]);}
+			Town birthTown = new Town(id, label);
 			birthTown.setState(birthState);
 			birthTown = (Town) Model.fetch(birthTown, miscParser.getTownsMap());
-
-			// Set data.
-			candidate.setSex(sex);
 			candidate.setBirthTown(birthTown);
-			candidate.setCitizenship(ctz);
+
 
 			// Set the ID for the new Candidate ...
 			candidate.setId(numElements++);
@@ -105,20 +132,38 @@ public class CandidateParser extends ModelParser {
 			}
 		}
 
-		// Parse Status.
-		Status status = Status.parse(pieces, miscParser.getYear());
+		// TSE ID.
+		Long tseId = Misc.parseLong(pieces[11]); // id
+		if (tseId == null) {throw new Exception("Candidate TSE id is invalid: " + pieces[11]);}
+		
+		// Age.
+		Integer age = Misc.parseInt(pieces[27]); // age
+		if (age == null) {age = Misc.getAge(birthDate);}
+		
+		Status status = new Status(miscParser.getYear(), age, tseId);
 
-		Job job = Job.parse(pieces);
+		// Job.
+		Long jobId = Misc.parseLong(pieces[23]); // tseID
+		if (jobId == null) {throw new Exception("Job id is invalid: " + pieces[23]);}
+		String jobLabel = Misc.parseStr(pieces[24]); // label
+		Job job = new Job(jobId, jobLabel);
 		job = (Job) Model.fetch(job, jobsMap);
-
-		MaritalStatus maritalStatus = MaritalStatus.parse(pieces);
-		maritalStatus = (MaritalStatus) Model.fetch(maritalStatus, maritalStatusMap);
-
-		Schooling schooling = Schooling.parse(pieces);
-		schooling = (Schooling) Model.fetch(schooling, schMap);
-
 		status.setJob(job);
+
+		// Marital Status
+		Long maritalId = Misc.parseLong(pieces[32]);
+		if (maritalId == null) {throw new Exception("Marital status id is invalid: " + pieces[32]);}
+		String maritalLabel = Misc.parseStr(pieces[33]);
+		MaritalStatus maritalStatus =  new MaritalStatus(maritalId, maritalLabel);
+		maritalStatus = (MaritalStatus) Model.fetch(maritalStatus, maritalStatusMap);
 		status.setMaritalStatus(maritalStatus);
+
+		// Schooling.
+		Long schoolingId = Misc.parseLong(pieces[30]);
+		if (schoolingId == null) {throw new Exception("Schooling id is invalid: " + pieces[30]);}
+		String schoolingLabel = Misc.parseStr(pieces[31]);
+		Schooling schooling = new Schooling(schoolingId, schoolingLabel);
+		schooling = (Schooling) Model.fetch(schooling, schMap);
 		status.setSchooling(schooling);
 
 		// Bind objects.
