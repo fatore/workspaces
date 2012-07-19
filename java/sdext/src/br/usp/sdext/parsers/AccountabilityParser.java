@@ -178,23 +178,46 @@ public class AccountabilityParser extends AbstractParser {
 		switch (miscParser.getYear()) {
 
 		case 2006:
+			
 			post = Misc.parseStr(pieces[1]);
+			
 			candidateName = Misc.parseStr(pieces[0]);
+			
 			ballotNo = Misc.parseInt(pieces[3]);
+			
+			electionState = new State(Misc.parseStr(pieces[4]));
+			electionState = (State) State.fetch(electionState, miscParser.getStatesMap());
+			
 			break;
 
 		case 2008:
+			
 			post = Misc.parseStr(pieces[2]);
+			
 			candidateName = Misc.parseStr(pieces[0]);
+			
 			ballotNo = Misc.parseInt(pieces[4]);
+			
+			electionState = new State(Misc.parseStr(pieces[5]));
+			electionState = (State) State.fetch(electionState, miscParser.getStatesMap());
+			
+			electionTown = new Town(null, Misc.parseStr(pieces[6]));
+			electionTown.setState(electionState);
+			electionTown = (Town) Town.fetch(electionTown, miscParser.getTownsMap());
+			
 			break;
 
 		case 2010:
+			
 			post = Misc.parseStr(pieces[4]);
+			
 			candidateName = Misc.parseStr(pieces[5]);
+			
 			ballotNo = Misc.parseInt(pieces[3]);
+			
 			electionState = new State(Misc.parseStr(pieces[1]));
 			electionState = (State) State.fetch(electionState, miscParser.getStatesMap());
+			
 			break;
 
 		default:
@@ -248,23 +271,46 @@ public class AccountabilityParser extends AbstractParser {
 		switch (miscParser.getYear()) {
 
 		case 2006:
+			
 			post = Misc.parseStr(pieces[1]);
+			
 			candidateName = Misc.parseStr(pieces[0]);
+			
 			ballotNo = Misc.parseInt(pieces[3]);
+			
+			electionState = new State(Misc.parseStr(pieces[4]));
+			electionState = (State) State.fetch(electionState, miscParser.getStatesMap());
+			
 			break;
 
 		case 2008:
-			post = Misc.parseStr(pieces[1]);
+			
+			post = Misc.parseStr(pieces[2]);
+			
 			candidateName = Misc.parseStr(pieces[0]);
-			ballotNo = Misc.parseInt(pieces[3]);
+			
+			ballotNo = Misc.parseInt(pieces[4]);
+			
+			electionState = new State(Misc.parseStr(pieces[5]));
+			electionState = (State) State.fetch(electionState, miscParser.getStatesMap());
+			
+			electionTown = new Town(null, Misc.parseStr(pieces[6]));
+			electionTown.setState(electionState);
+			electionTown = (Town) Town.fetch(electionTown, miscParser.getTownsMap());
+			
 			break;
 
 		case 2010:
+			
 			post = Misc.parseStr(pieces[4]);
+			
 			candidateName = Misc.parseStr(pieces[5]);
+			
 			ballotNo = Misc.parseInt(pieces[3]);
+			
 			electionState = new State(Misc.parseStr(pieces[1]));
 			electionState = (State) State.fetch(electionState, miscParser.getStatesMap());
+			
 			break;
 
 		default:

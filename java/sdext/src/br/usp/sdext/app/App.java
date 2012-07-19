@@ -9,9 +9,9 @@ public class App {
 	public void readData() throws Exception {
 		
 		String baseDir;
-		boolean test = false;
+		boolean test = true;
 		
-		int year = 2008;
+		int year = 2010;
 		
 		MiscParser miscParser = new MiscParser();
 		
@@ -22,14 +22,13 @@ public class App {
 		baseDir = "/home/fm/work/data/sdext/eleitorais/" + ((test) ? "testes/" : "") + 
 				"candidatos/candidaturas/" + year;
 		candidatureParser.parse(baseDir);
+		miscParser.save();
+		candidatureParser.save();
 		
-		baseDir = "/home/fm/work/data/sdext/eleitorais/" + ((test) ? "testes/" : "") + 
-				"prestacao_contas/" + year + "/candidato";
+		baseDir = "/home/fm/work/data/sdext/eleitorais/" + "prestacao_contas/" + year + "/candidato";
 		accountabilityParser.parse(baseDir);
 		
-		miscParser.save();
 		accountabilityParser.save();
-		candidatureParser.save();
 	}
 	
 	public static void main(String[] args) throws Exception {

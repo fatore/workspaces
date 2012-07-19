@@ -26,23 +26,19 @@ public class IncomeParser extends ModelParser {
 		case 2006:
 			date = Misc.parseDate(pieces[10]);
 			value = Misc.parseFloat(pieces[9]);
-			try {
-				type = Misc.parseStr(pieces[11]);
-			} catch (Exception e) {}
+			type = Misc.parseStr(pieces[11]);
 			break;
 
 		case 2008:
 			date = Misc.parseDate(pieces[14]);
 			value = Misc.parseFloat(pieces[13]);
-			try {
-				type = Misc.parseStr(pieces[15]);
-			} catch (Exception e) {}
+			type = Misc.parseStr(pieces[15]);
 			break;
 
 		case 2010:
 			date = Misc.parseDate(pieces[12]);
 			value = Misc.parseFloat(pieces[13]);
-			type = Misc.parseStr(pieces[16]);
+			type = Misc.parseStr(pieces[14]);
 			break;
 
 		default:

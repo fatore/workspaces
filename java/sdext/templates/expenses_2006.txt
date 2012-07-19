@@ -1,23 +1,22 @@
-Despesas Candidato
-0- NO_CAND - Nome do candidato;
-1- DS_CARGO - Descrição do cargo;
-2- CD_CARGO - Código do cargo;
-3- NR_CAND - Número do candidato;
-4- SG_UE - Unidade da federação do candidato;
-5- NR_CNPJ - CNPJ de campanha;
-6- NR_CNPJ_1 - CNPJ de campanha;
-7- NR_PART - Número do partido;
-8- SG_PART - Sigla do partido;
-9- VR_DESPESA - Valor da despesa;
-10- DT_DOC_DESP - Data da despesa;
-11- DS_TITULO - Tipo de despesa;
-12- CD_TITULO - Código do tipo de despesa;
-13- RV_MEANING - Forma de pagamento (EM ESPÉCIE, CHEQUE, ESTIMADO, NÃO INFORMADO);
-14- TP_RECURSO - Código da Forma de pagamento;
-15- NR_DOC_DESP - Número do documento;
-16- RV_MEANING_1 - Tipo de documento (Nota Fiscal, Recibo, Outros);
-17- CD_DOC - Código do tipo de documento;
-18- NO_FOR - Nome do fornecedor;
-19- CD_CPF_CGC - CPF/CNPJ do fornecedor;
-20- NO_UE - Unidade da federação do fornecedor;
-21- SITUACAOCADASTRAL - Batimento Receita Federal do Brasil.
+0 NO_CAND";
+1 "DS_CARGO";
+2 "CD_CARGO";
+3 "NR_CAND";
+4 "SG_UE";
+5 "NR_CNPJ";
+6 "NR_CNPJ_1";
+7 "NR_PART";
+8 "SG_PART";
+9 "VR_DESPESA";
+10 "DT_DOC_DESP";
+11 "RTRIM(LTRIM(DR.DS_TITULO))";
+12"CD_TITULO";
+13 "R V_MEANING";
+14 "TP_RECURSO";
+15 "NR_DOC_DESP";
+16 "RV_MEANING_1";
+17 "CD_DOC";
+18 "NO_FOR";
+19 "CD_CPF_CGC";
+20 "NO_UE";
+21 "SITUACAOCADASTRAL
