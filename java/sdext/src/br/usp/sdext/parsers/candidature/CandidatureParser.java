@@ -1,9 +1,10 @@
-package br.usp.sdext.parsers;
+package br.usp.sdext.parsers.candidature;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import br.usp.sdext.core.Model;
@@ -13,6 +14,9 @@ import br.usp.sdext.models.Log;
 import br.usp.sdext.models.Party;
 import br.usp.sdext.models.candidate.Candidate;
 import br.usp.sdext.models.candidature.Candidature;
+import br.usp.sdext.parsers.AbstractParser;
+import br.usp.sdext.parsers.Binding;
+import br.usp.sdext.parsers.MiscParser;
 import br.usp.sdext.util.Misc;
 
 public class CandidatureParser extends AbstractParser {
@@ -26,7 +30,7 @@ public class CandidatureParser extends AbstractParser {
 	private HashMap<Model, Model> candidatureMap = new HashMap<>();
 	private HashMap<Binding, Model> candidaturesBindings = new HashMap<>();
 
-	private int incompleteEntries = 0;
+	private ArrayList<Model> logs = new ArrayList<>();
 	
 	public CandidatureParser(MiscParser miscParser) {
 		
@@ -40,6 +44,7 @@ public class CandidatureParser extends AbstractParser {
 	
 	public HashMap<Model, Model> getCandidatureMap() {return candidatureMap;}
 	public HashMap<Binding, Model> getCandidaturesBindings() {return candidaturesBindings;}
+	public CandidateParser getCandidateParser() {return candidateParser;}
 
 	protected void loadFile(File file) throws Exception {
 
@@ -77,8 +82,7 @@ public class CandidatureParser extends AbstractParser {
 				}
 				Log log = new Log(line,"CAUSED BY: " + exceptionMethod 
 						+ " IN CLASS: " + exceptionClass, e.getMessage());
-				log.save();
-				incompleteEntries++;
+				logs.add(log);
 			}
 		}
 
@@ -142,7 +146,7 @@ public class CandidatureParser extends AbstractParser {
 		System.out.println("\tParties: " + partyParser.getPartiesMap().size());
 		System.out.println("\tCoalitions: " + coalitionParser.getCoalitionsMap().size());
 		System.out.println("\tCandidatures: " + candidatureMap.size());
-		System.out.println("\tIncomplete Entries: " + incompleteEntries);
+		System.out.println("\tLog Entries: " + logs.size());
 
 		System.out.println("\nSaving objects in the database, " +
 				"this can take several minutes.");
@@ -155,6 +159,7 @@ public class CandidatureParser extends AbstractParser {
 
 		System.out.println("\tSaving candidatures...");
 		Model.bulkSave(candidatureMap.values());
+		Model.bulkSave(logs);
 
 		long elapsedTime = System.currentTimeMillis() - start;
 

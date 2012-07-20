@@ -1,9 +1,10 @@
-package br.usp.sdext.parsers;
+package br.usp.sdext.parsers.account;
 
 import java.util.HashMap;
 
 import br.usp.sdext.core.Model;
 import br.usp.sdext.models.candidature.Provider;
+import br.usp.sdext.parsers.ModelParser;
 import br.usp.sdext.util.Misc;
 
 public class ProviderParser extends ModelParser {
@@ -26,8 +27,8 @@ public class ProviderParser extends ModelParser {
 			break;
 
 		case 2008:
-			providerCPF = Misc.parseLong(pieces[20]);
-			providerName = Misc.parseStr(pieces[19]);
+			providerCPF = Misc.parseLong(pieces[23]);
+			providerName = Misc.parseStr(pieces[22]);
 			break;
 
 		case 2010:

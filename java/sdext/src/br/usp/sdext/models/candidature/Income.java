@@ -26,11 +26,7 @@ public class Income extends Model implements Serializable {
 	
 	public Income() {}
 	
-	public Income(Float value, String type, Date date) throws Exception {
-		
-		if (value == null) {
-			throw new Exception();
-		}
+	public Income(Float value, String type, Date date) {
 		
 		this.value = value;
 		this.type = type;

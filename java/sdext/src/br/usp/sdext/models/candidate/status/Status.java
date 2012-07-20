@@ -1,14 +1,16 @@
 package br.usp.sdext.models.candidate.status;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import br.usp.sdext.core.Model;
-import br.usp.sdext.models.candidate.Candidate;
 
 @Entity
 public class Status extends Model implements Serializable {
@@ -17,9 +19,6 @@ public class Status extends Model implements Serializable {
 
 	@Id
 	private Long id;
-	
-	@ManyToOne
-	private Candidate candidate;
 	
 	private Integer year;
 	
@@ -37,7 +36,9 @@ public class Status extends Model implements Serializable {
 	@ManyToOne
 	private MaritalStatus maritalStatus;
 	
-	// private Estate[] candidateEstate;
+	@OneToMany
+	private List<Estate> estates = new ArrayList<>();
+	public void addEstate(Estate estate) {this.estates.add(estate);}
 	
 	public Status() {}
 	
@@ -54,8 +55,8 @@ public class Status extends Model implements Serializable {
 	public Integer getAge() {return age;}
 	public Schooling getSchooling() {return schooling;	}
 	public MaritalStatus getMaritalStatus() {return maritalStatus;}
-	public Candidate getCandidate() {return candidate;}
 	public Long getTseID() {return tseID;}
+	public Integer getYear() {return year;}
 
 	// setters
 	public void setId(Long id) {this.id = id;}
@@ -63,16 +64,15 @@ public class Status extends Model implements Serializable {
 	public void setAge(Integer age) {this.age = age;}
 	public void setSchooling(Schooling schooling) {this.schooling = schooling;}
 	public void setMaritalStatus(MaritalStatus maritalStatus) {this.maritalStatus = maritalStatus;}
-	public void setCandidate(Candidate candidate) {this.candidate = candidate;}
 	public void setTseID(Long tseID) {this.tseID = tseID;}
-	
+	public void setYear(Integer year) {this.year = year;}
+
 	@Override
 	public int hashCode() {
 		
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((candidate == null) ? 0 : candidate.hashCode());
+		result = prime * result + ((tseID == null) ? 0 : tseID.hashCode());
 		result = prime * result + ((year == null) ? 0 : year.hashCode());
 		return result;
 	}
@@ -80,32 +80,39 @@ public class Status extends Model implements Serializable {
 	@Override
 	public boolean equals(Object obj) {
 		
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		Status other = (Status) obj;
-		if (candidate == null) {
-			if (other.candidate != null)
+		if (tseID == null) {
+			if (other.tseID != null) {
 				return false;
-		} else if (!candidate.equals(other.candidate))
+			}
+		} else if (!tseID.equals(other.tseID)) {
 			return false;
+		}
 		if (year == null) {
-			if (other.year != null)
+			if (other.year != null) {
 				return false;
-		} else if (!year.equals(other.year))
+			}
+		} else if (!year.equals(other.year)) {
 			return false;
+		}
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Status [id=" + id + ", candidate=" + candidate + ", year="
-				+ year + ", age=" + age + ", tseID=" + tseID + ", job=" + job
-				+ ", schooling=" + schooling + ", maritalStatus="
-				+ maritalStatus + "]";
+		return "Status [id=" + id + ", year=" + year + ", age=" + age
+				+ ", tseID=" + tseID + ", job=" + job + ", schooling="
+				+ schooling + ", maritalStatus=" + maritalStatus + ", estates="
+				+ estates + "]";
 	}
 }
 

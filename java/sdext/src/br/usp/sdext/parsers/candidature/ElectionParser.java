@@ -1,4 +1,4 @@
-package br.usp.sdext.parsers;
+package br.usp.sdext.parsers.candidature;
 
 import java.util.HashMap;
 
@@ -6,6 +6,8 @@ import br.usp.sdext.core.Model;
 import br.usp.sdext.models.Election;
 import br.usp.sdext.models.State;
 import br.usp.sdext.models.Town;
+import br.usp.sdext.parsers.MiscParser;
+import br.usp.sdext.parsers.ModelParser;
 import br.usp.sdext.util.Misc;
 
 public class ElectionParser extends ModelParser {

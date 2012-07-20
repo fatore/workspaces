@@ -1,4 +1,4 @@
-package br.usp.sdext.parsers;
+package br.usp.sdext.parsers.candidature;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,6 +14,8 @@ import br.usp.sdext.models.candidate.status.Job;
 import br.usp.sdext.models.candidate.status.MaritalStatus;
 import br.usp.sdext.models.candidate.status.Schooling;
 import br.usp.sdext.models.candidate.status.Status;
+import br.usp.sdext.parsers.MiscParser;
+import br.usp.sdext.parsers.ModelParser;
 import br.usp.sdext.util.Misc;
 
 public class CandidateParser extends ModelParser {
@@ -166,10 +168,10 @@ public class CandidateParser extends ModelParser {
 		schooling = (Schooling) Model.fetch(schooling, schMap);
 		status.setSchooling(schooling);
 
-		// Bind objects.
-		status.setCandidate(candidate);
+		status = (Status) Model.fetch(status, statusMap);
 		
-		Model.fetch(status, statusMap);
+		// Bind objects.
+		candidate.addStatus(status);
 
 		return candidate;
 	}
@@ -180,15 +182,14 @@ public class CandidateParser extends ModelParser {
 		System.out.println("\tSaving candidates...");
 		Model.bulkSave(sexMap.values());
 		Model.bulkSave(ctzsMap.values());
+		Model.bulkSave(schMap.values());
+		Model.bulkSave(maritalStatusMap.values());
+		Model.bulkSave(jobsMap.values());
+		Model.bulkSave(statusMap.values());
 		Model.bulkSave(candidatesMap.values());
 
 		System.out.println("\tSaving duppers...");
 		Model.bulkSave(duppersList);
 
-		System.out.println("\tSaving candidates status...");
-		Model.bulkSave(schMap.values());
-		Model.bulkSave(maritalStatusMap.values());
-		Model.bulkSave(jobsMap.values());
-		Model.bulkSave(statusMap.values());
 	}
 }

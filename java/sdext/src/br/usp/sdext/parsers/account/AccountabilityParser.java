@@ -1,4 +1,4 @@
-package br.usp.sdext.parsers;
+package br.usp.sdext.parsers.account;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,6 +19,9 @@ import br.usp.sdext.models.candidature.Expense;
 import br.usp.sdext.models.candidature.Income;
 import br.usp.sdext.models.candidature.Provider;
 import br.usp.sdext.models.ghosts.GhostCandidate;
+import br.usp.sdext.parsers.AbstractParser;
+import br.usp.sdext.parsers.Binding;
+import br.usp.sdext.parsers.MiscParser;
 import br.usp.sdext.util.Misc;
 
 
@@ -34,9 +37,9 @@ public class AccountabilityParser extends AbstractParser {
 	private ExpenseParser expenseParser;
 	
 	private ArrayList<Model> ghosts = new ArrayList<>();
+	private ArrayList<Model> logs = new ArrayList<>();
 
 	private int action;
-	private int incompleteEntries = 0;
 
 	private boolean csv;
 
@@ -150,8 +153,7 @@ public class AccountabilityParser extends AbstractParser {
 				}
 				Log log = new Log(line,"CAUSED BY: " + exceptionMethod 
 						+ " IN CLASS: " + exceptionClass, e.getMessage());
-				log.save();
-				incompleteEntries++;
+				logs.add(log);
 			}
 		}
 		if (in != null) {
@@ -353,7 +355,7 @@ public class AccountabilityParser extends AbstractParser {
 		System.out.println("\tIncomes: " + incomeParser.getIncomesMap().size());
 		System.out.println("\tProviders: " + providerParser.getProviderMap().size());
 		System.out.println("\tExpenses: " + expenseParser.getExpenseMap().size());
-		System.out.println("\tInvalid Entries: " + incompleteEntries);
+		System.out.println("\tLog Entries: " + logs.size());
 		System.out.println("\tInexistent Candidates: " + ghosts.size());
 
 		System.out.println("\nSaving objects in the database, " +
@@ -365,6 +367,7 @@ public class AccountabilityParser extends AbstractParser {
 		expenseParser.save();
 		
 		Model.bulkSave(ghosts);
+		Model.bulkSave(logs);
 		
 		long elapsedTime = System.currentTimeMillis() - start;
 

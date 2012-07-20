@@ -1,4 +1,4 @@
-package br.usp.sdext.parsers;
+package br.usp.sdext.parsers.account;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -6,6 +6,7 @@ import java.util.HashMap;
 import br.usp.sdext.core.Model;
 import br.usp.sdext.models.candidature.Expense;
 import br.usp.sdext.models.candidature.Provider;
+import br.usp.sdext.parsers.ModelParser;
 import br.usp.sdext.util.Misc;
 
 public class ExpenseParser extends ModelParser {
