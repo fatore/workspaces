@@ -11,6 +11,11 @@
 !*.glsl
 !*.properties
 !*.xml
+!*.jpg
+!*.jpeg
+!*.gif
+!*.png
+!*.pdf
 *~
 *.swp
 data/
