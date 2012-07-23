@@ -92,6 +92,6 @@ public class App {
 	public static void main(String[] args) throws Exception {
 		
 		App app = new App();
-		app.readData();
+		app.readAll();
 	}
 }

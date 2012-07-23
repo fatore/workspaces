@@ -35,10 +35,10 @@ public class SimpleApp extends GLOrthoApp implements KeyListener {
 
 		this.glCanvas.addKeyListener(this);
 		
-		model = new JsonModel(TEA_POT_FILE);
+		model = new JsonModel(FUNNEL_FILE);
 		
 		light = new Light(
-				new float[]{1.0f, 1.0f, 1.0f},
+				new float[]{0.0f, 0.0f, -1.0f},
 				new float[]{0.3f, 0.3f, 0.3f, 1.0f},
 				new float[]{1.0f, 1.0f, 1.0f, 1.0f},
 				new float[]{1.0f, 1.0f, 1.0f, 1.0f}, true);

@@ -12,7 +12,6 @@ public class JsonWriter  {
     private ProjectionLoader loader;
     private Triangle[] triangles;
 
-    // load mode -> 1 = smooth, 0 = normal
     public JsonWriter(String filename) throws Exception {
 
         loader = new ProjectionLoader();
@@ -27,53 +26,34 @@ public class JsonWriter  {
     	
     	PrintWriter out = new PrintWriter(new File(filename));
     	
-    	out.println("{");
+    	String positions = "\t\"vertexPositions\" : [";
     	
-    	out.print("\"vertexPositions\" : ");
-    	out.print("[");
-    	Triangle triangle;
-    	int i;
-    	for(i = 0; i < triangles.length - 1; i++) {
-    		triangle = triangles[i];
-            for (Vertex vertex : triangle.getVertices()) {
-            	out.print(vertex.getX() + "," + vertex.getEnergy() + "," + vertex.getY() + ",");
-            }
-        }
-    	triangle = triangles[i];
-    	Vertex vertex;
-        for (i = 0; i< triangle.getVertices().length - 1; i++ ){
-        	vertex = triangle.getVertices()[i];
-        	out.print(vertex.getX() + "," + vertex.getEnergy() + "," + vertex.getY() + ",");
-        }
-        vertex = triangle.getVertices()[i];
-    	out.print(vertex.getX() + "," + vertex.getEnergy() + "," + vertex.getY());
+    	int i = 0;
+    	int j = 1;
     	
-    	out.print("]");
-    	out.println();
-        
-//    	out.println("\"vertexNormals\" :");
-//    	out.print("[");
-//    	for (Triangle t : triangles) {
-//            for (Vertex v : t.getVertices()) {
-//                float[] nv = v.getNormalVector();
-//                gl.glNormal3f(-nv[0], -nv[1], -nv[2]);
-//            }
-//        }
-//    	out.print("]");
-//    	out.println();
-        
-//    	out.println("\"vertexMaterial\" :");
-//    	out.print("[");
-//    	for (Triangle t : triangles) {
-//            gl.glBegin(GL.GL_TRIANGLES);
-//            for (Vertex v : t.getVertices()) {
-//                setMaterial(drawable, v);
-//            }
-//        }
-//    	out.print("]");
-//    	out.println();
+    	Vertex vertex = triangles[0].getVertices()[0];
     	
-    	out.println("}");
+    	positions += (vertex.getX() + ", " + vertex.getEnergy() + ", " + vertex.getY());
+    	
+    	for (; i < triangles.length; i++) {
+    		Vertex[] vertices = triangles[i].getVertices();
+    		for (; j < vertices.length; j++) {
+    			
+    			vertex = vertices[0];
+    			positions += (", " + vertex.getX() + ", " + vertex.getEnergy() + ", " + vertex.getY());
+    		}
+    		j = 0;
+    	}
+    	positions += "],\n";
+    	
+    	String normals = "\t\"vertexNormals\" : [";
+    	String textCoords = "\t\"vertexTextureCoords\" : [";
+    	String indices = "\t\"indices\" : [";
+    	
+    	String output = "{\n" + positions + "}";
+    	
+    	out.print(output);
+    	
     	
     	if (out != null) {
     		out.close();
@@ -104,7 +84,7 @@ public class JsonWriter  {
 			cutString = "full";
 		}
 		
-		String folder = "../data/" + sequence + "/" + gaps + "/" + cutString + "/projections/";
+		String folder = "/home/fm/work/data/pf/" + sequence + "/" + gaps + "/" + cutString + "/projections/";
     	
     	JsonWriter jsonWriter = new JsonWriter(folder + "dynamic.prj");
     	jsonWriter.write(folder + "funnel.json");
