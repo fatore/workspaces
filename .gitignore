@@ -13,9 +13,12 @@
 !*.xml
 !*.jpg
 !*.jpeg
+!*.tga
 !*.gif
 !*.png
 !*.pdf
+!*.obj
+!*.json
 *~
 *.swp
 data/
