@@ -33,7 +33,7 @@ public class DonorParser extends ModelParser {
 
 		case 2006:
 			donorCPF = Misc.parseLong(pieces[16]);
-			donorUF = Misc.parseStr(pieces[17]);
+			donorUF = null;
 			donorName = Misc.parseStr(pieces[15]);
 			break;
 

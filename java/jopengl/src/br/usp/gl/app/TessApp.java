@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GL3;
+import javax.media.opengl.GL4;
 
 import br.usp.gl.core.GLOrthoApp;
 import br.usp.gl.core.Light;
@@ -16,8 +16,8 @@ public class TessApp extends GLOrthoApp implements KeyListener {
 
 	public static final int FPS = 60;
 	public static final String SHADERS_FOLDER = "shaders/tess/";
-	public static final String FUNNEL_FILE = "data/models/funnel.json";
-	public static final String TEA_POT_FILE = "data/models/teapot.json";
+	public static final String FUNNEL_FILE = "resources/models/funnel.json";
+	public static final String TEA_POT_FILE = "resources/models/teapot.json";
 	
 	private Light light;
 	
@@ -54,11 +54,11 @@ public class TessApp extends GLOrthoApp implements KeyListener {
 
 		gl.glClearColor(0.7f, 0.6f, 0.5f, 0.0f);
 		
-		gl.glEnable(GL3.GL_DEPTH_TEST);
+		gl.glEnable(GL4.GL_DEPTH_TEST);
 		
 		gl.glClearDepth(1.0f);
 		
-		gl.glPatchParameteri(GL3.GL_PATCH_VERTICES, 3);
+		gl.glPatchParameteri(GL4.GL_PATCH_VERTICES, 3);
 		
 		light.init(gl, shaderProgram.getUniformLocation("uLightDirection"),
 				shaderProgram.getUniformLocation("uLightAmbientColor"),
@@ -88,7 +88,7 @@ public class TessApp extends GLOrthoApp implements KeyListener {
 		gl.glUniform3f(light.getAmbientColorHandle(), 0.04f, 0.04f, 0.04f);
 	    gl.glUniform3f(light.getDiffuseColorHandle(),0f, 0.75f, 0.75f);
 		
-	    model.draw(GL3.GL_PATCHES);
+	    model.draw(GL4.GL_PATCHES);
 	}
 
 	@Override

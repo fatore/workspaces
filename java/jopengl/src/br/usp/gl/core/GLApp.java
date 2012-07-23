@@ -6,7 +6,7 @@ import java.awt.event.WindowEvent;
 import java.util.Calendar;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GL3;
+import javax.media.opengl.GL4;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
@@ -21,7 +21,7 @@ import com.jogamp.opengl.util.FPSAnimator;
 public abstract class GLApp implements GLEventListener {
 
 	// OpenGL Pipeline Object
-	protected GL3 gl;
+	protected GL4 gl;
 
 	// Constants
 	public static final int INITIAL_WINDOW_WIDTH = 800;
@@ -93,7 +93,7 @@ public abstract class GLApp implements GLEventListener {
 	@Override
 	public void init(GLAutoDrawable drawable) {
 
-		gl = drawable.getGL().getGL3();
+		gl = drawable.getGL().getGL4();
 
 		System.out.println("OpenGL Version: " + gl.glGetString(GL.GL_VERSION) + "\n");
 

@@ -19,8 +19,15 @@ public class State extends Model implements Serializable {
 	
 	public State() {}
 	
-	public State(String label) {
-		
+	public State(String label) throws Exception 
+	{
+		if (label != null) 
+		{ 
+			if (label.length() > 2) 
+			{
+				throw new Exception("State label is larger than 2.");
+			}
+		}
 		this.id = null;
 		this.label = label;
 	}

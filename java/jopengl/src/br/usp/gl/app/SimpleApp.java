@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GL3;
+import javax.media.opengl.GL4;
 
 import br.usp.gl.core.GLOrthoApp;
 import br.usp.gl.core.Light;
@@ -17,8 +17,8 @@ public class SimpleApp extends GLOrthoApp implements KeyListener {
 
 	public static final int FPS = 60;
 	public static final String SHADERS_FOLDER = "shaders/simple/";
-	public static final String FUNNEL_FILE = "data/models/funnel.json";
-	public static final String TEA_POT_FILE = "data/models/teapot.json";
+	public static final String FUNNEL_FILE = "resources/models/funnel.json";
+	public static final String TEA_POT_FILE = "resources/models/teapot.json";
 
 	private Light light;
 	private Material material;
@@ -56,7 +56,7 @@ public class SimpleApp extends GLOrthoApp implements KeyListener {
 
 		gl.glClearColor(0.7f, 0.6f, 0.5f, 0.0f);
 		
-		gl.glEnable(GL3.GL_DEPTH_TEST);
+		gl.glEnable(GL4.GL_DEPTH_TEST);
 		
 		light.init(gl, shaderProgram.getUniformLocation("uLightDirection"),
 				shaderProgram.getUniformLocation("uLightAmbientColor"),
@@ -82,9 +82,9 @@ public class SimpleApp extends GLOrthoApp implements KeyListener {
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 		
 	    if (wireframe) {
-	    	gl.glPolygonMode(GL3.GL_FRONT_AND_BACK, GL3.GL_LINE);
+	    	gl.glPolygonMode(GL4.GL_FRONT_AND_BACK, GL4.GL_LINE);
 	    } else {
-	    	gl.glPolygonMode(GL3.GL_FRONT_AND_BACK, GL3.GL_FILL);
+	    	gl.glPolygonMode(GL4.GL_FRONT_AND_BACK, GL4.GL_FILL);
 	    }
 	    
 	    gl.glUniform1i(pancakeHandle, (pancake) ? 1 : 0);
@@ -95,7 +95,7 @@ public class SimpleApp extends GLOrthoApp implements KeyListener {
 	    material.bind();
 	    
 		model.bind();
-	    model.draw(GL3.GL_TRIANGLES);
+	    model.draw(GL4.GL_TRIANGLES);
 	}
 
 	@Override

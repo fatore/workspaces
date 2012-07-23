@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 import javax.imageio.ImageIO;
-import javax.media.opengl.GL3;
+import javax.media.opengl.GL4;
 
 import com.jogamp.opengl.util.awt.ImageUtil;
 import com.jogamp.opengl.util.texture.Texture;
@@ -21,13 +21,22 @@ public class Texture2D extends Effect {
 	private int no;
 	
 	private int wrapAction;
+	private int magFilter;
+	private int minFilter;
 	
 	public Texture2D(String imageFile, int id, int no) {
 		
-		this(imageFile, id, no, GL3.GL_REPEAT);
+		this(imageFile, id, no, GL4.GL_REPEAT);
 	}
 	
 	public Texture2D(String imageFile, int id, int no, int wrapAction) {
+		
+		this(imageFile, id, no, wrapAction, 
+				GL4.GL_LINEAR, GL4.GL_LINEAR_MIPMAP_NEAREST);
+	}
+	
+	public Texture2D(String imageFile, int id, int no, int wrapAction,
+			int magFilter, int minFilter) {
 		
 		try {
 			image = ImageIO.read(new File(imageFile)); 
@@ -42,20 +51,23 @@ public class Texture2D extends Effect {
 		this.no = no;
 		
 		this.wrapAction = wrapAction;
+		
+		this.magFilter = magFilter;
+		this.minFilter = minFilter;
 	}
 	
 	@Override
-	public void init(GL3 gl, int handle) {
+	public void init(GL4 gl, int handle) {
 		
 		super.init(gl, handle);
 		
 		texture = AWTTextureIO.newTexture(gl.getGLProfile(), image, true);
 		
 		texture.bind(gl);
-		gl.glTexParameteri(GL3.GL_TEXTURE_2D, GL3.GL_TEXTURE_MAG_FILTER, GL3.GL_LINEAR);
-		gl.glTexParameteri(GL3.GL_TEXTURE_2D, GL3.GL_TEXTURE_MIN_FILTER, GL3.GL_LINEAR_MIPMAP_NEAREST);
-		gl.glTexParameteri(GL3.GL_TEXTURE_2D, GL3.GL_TEXTURE_WRAP_S, wrapAction);
-		gl.glTexParameteri(GL3.GL_TEXTURE_2D, GL3.GL_TEXTURE_WRAP_T, wrapAction);
+		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MAG_FILTER, magFilter);
+		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MIN_FILTER, minFilter);
+		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_S, wrapAction);
+		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_T, wrapAction);
 	}
 	
 	@Override

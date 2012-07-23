@@ -1,7 +1,7 @@
 package br.usp.gl.app.nopper;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GL3;
+import javax.media.opengl.GL4;
 
 import br.usp.gl.core.GLApp;
 import br.usp.gl.core.Light;
@@ -16,8 +16,7 @@ public class Example10 extends GLApp {
 
 	public static final int FPS = 60;
 	public static final String SHADERS_FOLDER = "shaders/nopper/10/";
-	public static final String TEXTURES_FOLDER = "data/textures/";
-	public static final String MODELS_FOLDER = "data/models/";
+	public static final String TEXTURES_FOLDER = "resources/textures/";
 	
 	private ShaderProgram shaderProgram;
 	
@@ -97,7 +96,7 @@ public class Example10 extends GLApp {
 	@Override
 	public void display() {
 
-		gl.glClear(GL3.GL_COLOR_BUFFER_BIT | GL3.GL_DEPTH_BUFFER_BIT);
+		gl.glClear(GL4.GL_COLOR_BUFFER_BIT | GL4.GL_DEPTH_BUFFER_BIT);
 		
 		light.setDirOrPos(new float[]{0.0f, 0.5f, 2.0f});
 		light.setDirOrPos(Matrix4.multiplyPoint3(viewMatrix.getMatrix(), light.getDirOrPos()));
@@ -105,7 +104,7 @@ public class Example10 extends GLApp {
 		light.bind();
 		
 		model.bind();
-		model.draw(GL3.GL_TRIANGLES);
+		model.draw(GL4.GL_TRIANGLES);
 		
 		gl.glFlush();
 	}

@@ -1,6 +1,6 @@
 package br.usp.gl.core;
 
-import javax.media.opengl.GL3;
+import javax.media.opengl.GL4;
 
 import br.usp.gl.vectors.Vector3;
 import br.usp.gl.vectors.Vector4;
@@ -9,7 +9,7 @@ import com.jogamp.common.nio.Buffers;
 
 public class Light {
 	
-	private GL3 gl;
+	private GL4 gl;
 	
 	private Vector3 dirOrPos;
 	private boolean positional;
@@ -78,7 +78,7 @@ public class Light {
 	public void turnOff() {this.on = false;}
 	public void switchOn() {this.on = !this.on;}
 
-	public void init(GL3 gl, int directionHandle, int ambientColorHandle,
+	public void init(GL4 gl, int directionHandle, int ambientColorHandle,
 			int diffuseColorHandle, int specularColorHandle) {
 		
 		this.gl = gl;

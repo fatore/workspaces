@@ -2,7 +2,7 @@ package br.usp.gl.matrices;
 
 import java.util.Stack;
 
-import javax.media.opengl.GL3;
+import javax.media.opengl.GL4;
 
 import br.usp.gl.vectors.Vector3;
 
@@ -11,7 +11,7 @@ public class Matrix4 extends Matrix {
 	
 	protected Stack<float[]> stack;
 	
-	private GL3 gl;
+	private GL4 gl;
 	
 	private int handle;
 	
@@ -22,7 +22,7 @@ public class Matrix4 extends Matrix {
 		loadIdentity();
 	}
 	
-	public void init(final GL3 gl, int handle) {
+	public void init(final GL4 gl, int handle) {
 
 		this.gl = gl;
 		this.handle = handle;

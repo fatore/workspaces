@@ -1,6 +1,6 @@
 package br.usp.gl.app.nopper;
 
-import javax.media.opengl.GL3;
+import javax.media.opengl.GL4;
 
 import br.usp.gl.core.GLApp;
 import br.usp.gl.models.Model;
@@ -39,9 +39,9 @@ public class Example02 extends GLApp {
 	@Override
 	public void display() {
 
-		gl.glClear(GL3.GL_COLOR_BUFFER_BIT);
+		gl.glClear(GL4.GL_COLOR_BUFFER_BIT);
 			
-		model.draw(GL3.GL_TRIANGLES);
+		model.draw(GL4.GL_TRIANGLES);
 		
 		gl.glFlush();
 	}

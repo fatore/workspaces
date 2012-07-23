@@ -12,7 +12,7 @@ public class App {
 		String baseDir;
 		boolean test = false;
 		
-		int year = 2010;
+		int year = 2006;
 		
 		MiscParser miscParser = new MiscParser();
 		
@@ -23,11 +23,11 @@ public class App {
 		
 		baseDir = "/home/fm/work/data/sdext/eleitorais/" + ((test) ? "testes/" : "") + 
 				"candidatos/candidaturas/" + year;
-		candidatureParser.parse(baseDir);
+//		candidatureParser.parse(baseDir);
 		
 		baseDir = "/home/fm/work/data/sdext/eleitorais/" + ((test) ? "testes/" : "") + 
 				"bens_candidatos/" + year;
-		estateParser.parse(baseDir);
+//		estateParser.parse(baseDir);
 		
 		baseDir = "/home/fm/work/data/sdext/eleitorais/" + "prestacao_contas/" + year + "/candidato";
 		accountabilityParser.parse(baseDir);
@@ -92,6 +92,6 @@ public class App {
 	public static void main(String[] args) throws Exception {
 		
 		App app = new App();
-		app.readAll();
+		app.readData();
 	}
 }

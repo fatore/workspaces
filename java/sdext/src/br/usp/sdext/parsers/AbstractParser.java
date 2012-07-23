@@ -21,6 +21,7 @@ public abstract class AbstractParser {
 		}
 		
 		load(baseDir);
+		printResults();
 	}
 	
 	protected void load(File file) throws Exception {
@@ -34,6 +35,7 @@ public abstract class AbstractParser {
 	}
 	
 	protected abstract void loadFile(File file) throws Exception;
+	protected abstract void printResults();
 	public abstract void save() throws Exception;
 	
 }

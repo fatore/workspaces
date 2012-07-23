@@ -3,7 +3,7 @@ package br.usp.gl.app.nopper;
 import java.util.Calendar;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GL3;
+import javax.media.opengl.GL4;
 
 import br.usp.gl.core.GLApp;
 import br.usp.gl.effects.CubeMap;
@@ -20,8 +20,7 @@ public class Example08 extends GLApp {
 
 	public static final int FPS = 60;
 	public static final String SHADERS_FOLDER = "shaders/nopper/8/";
-	public static final String TEXTURES_FOLDER = "data/textures/";
-	public static final String MODELS_FOLDER = "data/models/";
+	public static final String TEXTURES_FOLDER = "resources/textures/";
 	
 	private ShaderProgram shaderProgram;
 	
@@ -54,7 +53,7 @@ public class Example08 extends GLApp {
 		
 		normalMatrix = new Matrix3();
 
-		cubeMap = new CubeMap(TEXTURES_FOLDER + "water_", "png", true, GL3.GL_TEXTURE0, 0);
+		cubeMap = new CubeMap(TEXTURES_FOLDER + "water_", "png", true, GL4.GL_TEXTURE0, 0);
 
 		model = new Cube(0.5f);
 	}
@@ -91,7 +90,7 @@ public class Example08 extends GLApp {
 	@Override
 	public void display() {
 
-		gl.glClear(GL3.GL_COLOR_BUFFER_BIT | GL3.GL_DEPTH_BUFFER_BIT);
+		gl.glClear(GL4.GL_COLOR_BUFFER_BIT | GL4.GL_DEPTH_BUFFER_BIT);
 
 		// Calculate the model matrix ...
 		modelMatrix.loadIdentity();
@@ -118,7 +117,7 @@ public class Example08 extends GLApp {
 		cubeMap.bind();
 		
 		model.bind();
-		model.draw(GL3.GL_TRIANGLES);
+		model.draw(GL4.GL_TRIANGLES);
 		
 		gl.glFlush();
 		

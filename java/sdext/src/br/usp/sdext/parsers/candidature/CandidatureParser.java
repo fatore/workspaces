@@ -139,15 +139,6 @@ public class CandidatureParser extends AbstractParser {
 
 		long start = System.currentTimeMillis();   
 
-		System.out.println("\nTotal objects loaded");
-		System.out.println("\tCandidates: " + candidateParser.getCandidatesMap().size());
-		System.out.println("\tDuplicate Candidates: " + candidateParser.getDuppersList().size());
-		System.out.println("\tElections: " + electionParser.getElectionsMap().size());
-		System.out.println("\tParties: " + partyParser.getPartiesMap().size());
-		System.out.println("\tCoalitions: " + coalitionParser.getCoalitionsMap().size());
-		System.out.println("\tCandidatures: " + candidatureMap.size());
-		System.out.println("\tLog Entries: " + logs.size());
-
 		System.out.println("\nSaving objects in the database, " +
 				"this can take several minutes.");
 		
@@ -165,5 +156,18 @@ public class CandidatureParser extends AbstractParser {
 
 		System.out.printf("Finished saving after %d mins and %d secs\n",
 				+  (int) (elapsedTime / 60000),(int) (elapsedTime % 60000) / 1000);
+	}
+
+	@Override
+	protected void printResults() {
+		
+		System.out.println("\nTotal objects loaded");
+		System.out.println("\tCandidates: " + candidateParser.getCandidatesMap().size());
+		System.out.println("\tDuplicate Candidates: " + candidateParser.getDuppersList().size());
+		System.out.println("\tElections: " + electionParser.getElectionsMap().size());
+		System.out.println("\tParties: " + partyParser.getPartiesMap().size());
+		System.out.println("\tCoalitions: " + coalitionParser.getCoalitionsMap().size());
+		System.out.println("\tCandidatures: " + candidatureMap.size());
+		System.out.println("\tLog Entries: " + logs.size());
 	}
 }

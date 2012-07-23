@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GL3;
+import javax.media.opengl.GL4;
 
 import com.jogamp.common.util.IOUtil;
 import com.jogamp.opengl.util.texture.Texture;
@@ -37,7 +37,7 @@ public class CubeMap extends Effect {
 	
 	public CubeMap(String basename, String suffix, boolean mipmapped,int id, int no) {
 		
-		this(basename, suffix, mipmapped, id, no, GL3.GL_REPEAT);
+		this(basename, suffix, mipmapped, id, no, GL4.GL_REPEAT);
 	}
 	
 	public CubeMap(String basename, String suffix, boolean mipmapped, 
@@ -52,7 +52,7 @@ public class CubeMap extends Effect {
 		this.wrapAction = wrapAction;
 	}
 	
-	public void init(GL3 gl, int handle)  {
+	public void init(GL4 gl, int handle)  {
 		
 		super.init(gl, handle);
 		
@@ -78,16 +78,16 @@ public class CubeMap extends Effect {
 			}
 		}
 		
-		gl.glTexParameteri(GL3.GL_TEXTURE_2D, GL3.GL_TEXTURE_MAG_FILTER, GL3.GL_LINEAR);
-		gl.glTexParameteri(GL3.GL_TEXTURE_2D, GL3.GL_TEXTURE_MIN_FILTER, GL3.GL_LINEAR_MIPMAP_NEAREST);
-		gl.glTexParameteri(GL3.GL_TEXTURE_2D, GL3.GL_TEXTURE_WRAP_S, wrapAction);
-		gl.glTexParameteri(GL3.GL_TEXTURE_2D, GL3.GL_TEXTURE_WRAP_T, wrapAction);
+		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MAG_FILTER, GL4.GL_LINEAR);
+		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MIN_FILTER, GL4.GL_LINEAR_MIPMAP_NEAREST);
+		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_S, wrapAction);
+		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_T, wrapAction);
 	}
 	
 	@Override
 	public void bind() {
 		
-		gl.glEnable(GL3.GL_TEXTURE_CUBE_MAP);
+		gl.glEnable(GL4.GL_TEXTURE_CUBE_MAP);
 
 		gl.glUniform1i(handle, no);
 		gl.glActiveTexture(id);

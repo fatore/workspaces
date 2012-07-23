@@ -120,10 +120,6 @@ public class EstateParser extends AbstractParser {
 
 		long start = System.currentTimeMillis();   
 
-		System.out.println("\nTotal objects loaded");
-		System.out.println("\tEstates: " + estateList.size());
-		System.out.println("\tLog Entries: " + logs.size());
-
 		System.out.println("\nSaving objects in the database, " +
 				"this can take several minutes.");
 		
@@ -135,5 +131,13 @@ public class EstateParser extends AbstractParser {
 
 		System.out.printf("Finished saving after %d mins and %d secs\n",
 				+  (int) (elapsedTime / 60000),(int) (elapsedTime % 60000) / 1000);
+	}
+
+	@Override
+	protected void printResults() {
+		
+		System.out.println("\nTotal objects loaded");
+		System.out.println("\tEstates: " + estateList.size());
+		System.out.println("\tLog Entries: " + logs.size());
 	}
 }
