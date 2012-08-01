@@ -1,10 +1,10 @@
-package br.usp.sdext.parsers;
+package br.usp.sdext.parsers.account;
 
 import br.usp.sdext.models.State;
 import br.usp.sdext.models.Town;
 import br.usp.sdext.models.candidature.Candidature;
 
-public class Binding {
+public class AccountabilityBinding {
 	
 	private String post;
 	private State electionState; 
@@ -12,7 +12,7 @@ public class Binding {
 	private Integer electionYear;
 	private Integer ballotNo;
 	
-	public Binding(String post, State electionState, Town electionTown,
+	public AccountabilityBinding(String post, State electionState, Town electionTown,
 			Integer electionYear, Integer ballotNo) {
 		
 		this.post = post;
@@ -22,7 +22,7 @@ public class Binding {
 		this.ballotNo = ballotNo;
 	}
 
-	public Binding(Candidature candidature) {
+	public AccountabilityBinding(Candidature candidature) {
 		
 		this(candidature.getElection().getPost(),
 				candidature.getElection().getState(),
@@ -56,7 +56,7 @@ public class Binding {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		Binding other = (Binding) obj;
+		AccountabilityBinding other = (AccountabilityBinding) obj;
 		if (ballotNo == null) {
 			if (other.ballotNo != null) {
 				return false;

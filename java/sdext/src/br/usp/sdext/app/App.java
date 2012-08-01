@@ -17,17 +17,18 @@ public class App {
 		MiscParser miscParser = new MiscParser();
 		
 		CandidatureParser candidatureParser = new CandidatureParser(miscParser);
-		EstateParser estateParser = new EstateParser(candidatureParser.getCandidateParser().getStatusMap());
+		EstateParser estateParser = new EstateParser(candidatureParser.
+				getCandidateParser().getBindings());
 		AccountabilityParser accountabilityParser = 
 				new AccountabilityParser(miscParser, candidatureParser.getCandidaturesBindings());
 		
 		baseDir = "/home/fm/work/data/sdext/eleitorais/" + ((test) ? "testes/" : "") + 
 				"candidatos/candidaturas/" + year;
-//		candidatureParser.parse(baseDir);
+		candidatureParser.parse(baseDir);
 		
 		baseDir = "/home/fm/work/data/sdext/eleitorais/" + ((test) ? "testes/" : "") + 
-				"bens_candidatos/" + year;
-//		estateParser.parse(baseDir);
+				"candidatos/bens/" + year;
+		estateParser.parse(baseDir);
 		
 		baseDir = "/home/fm/work/data/sdext/eleitorais/" + "prestacao_contas/" + year + "/candidato";
 		accountabilityParser.parse(baseDir);
@@ -46,7 +47,8 @@ public class App {
 		MiscParser miscParser = new MiscParser();
 		
 		CandidatureParser candidatureParser = new CandidatureParser(miscParser);
-		EstateParser estateParser = new EstateParser(candidatureParser.getCandidateParser().getStatusMap());
+		EstateParser estateParser = new EstateParser(candidatureParser.
+				getCandidateParser().getBindings());
 		AccountabilityParser accountabilityParser = 
 				new AccountabilityParser(miscParser, candidatureParser.getCandidaturesBindings());
 		
@@ -92,6 +94,6 @@ public class App {
 	public static void main(String[] args) throws Exception {
 		
 		App app = new App();
-		app.readAll();
+		app.readData();
 	}
 }

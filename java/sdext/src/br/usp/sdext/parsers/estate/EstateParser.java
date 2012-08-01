@@ -17,13 +17,13 @@ import br.usp.sdext.util.Misc;
 
 public class EstateParser extends AbstractParser {
 	
-	private HashMap<Model, Model> statusMap = new HashMap<>();
+	private HashMap<EstateBinding, Status> bindings = new HashMap<>();
 	private ArrayList<Model> estateList = new ArrayList<>();
 	private ArrayList<Model> logs = new ArrayList<>();
 	
-	public EstateParser(HashMap<Model, Model> statusMap) {
+	public EstateParser(HashMap<EstateBinding, Status> bindings) {
 		
-		this.statusMap = statusMap;
+		this.bindings = bindings;
 	}
 	
 	protected void loadFile(File file) throws Exception {
@@ -101,7 +101,7 @@ public class EstateParser extends AbstractParser {
 		status.setTseID(candidateTseId);
 		status.setYear(year);
 		
-		Status mappedStatus = (Status) statusMap.get(status);
+		Status mappedStatus = (Status) bindings.get(new EstateBinding(status));
 		
 		if (mappedStatus == null) {
 			

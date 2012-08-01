@@ -1,19 +1,15 @@
 package br.usp.sdext.models.candidate;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 import br.usp.sdext.core.Model;
 import br.usp.sdext.models.Town;
-import br.usp.sdext.models.candidate.status.Status;
 
 
 @Entity
@@ -42,10 +38,6 @@ public class Candidate extends Model implements  Serializable {
 	@ManyToOne
 	private Citizenship citizenship;
 	
-	@OneToMany
-	private List<Status> status = new ArrayList<>();
-	public void addStatus(Status status) {this.status.add(status);}
-	
 	private boolean dupper;
 	
 	public Candidate() {}
@@ -61,7 +53,6 @@ public class Candidate extends Model implements  Serializable {
 
 	// getters
 	public Long getID() {return id;}
-	public List<Status> getStatus() {return status;}
 	public Sex getSex() {return sex;}
 	public Date getBirthDate() {return birthDate;}
 	public Town getBirthTown() {return birthTown;}

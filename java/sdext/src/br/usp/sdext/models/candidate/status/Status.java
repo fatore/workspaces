@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import br.usp.sdext.core.Model;
+import br.usp.sdext.models.candidate.Candidate;
 
 @Entity
 public class Status extends Model implements Serializable {
@@ -39,6 +40,11 @@ public class Status extends Model implements Serializable {
 	@OneToMany
 	private List<Estate> estates = new ArrayList<>();
 	public void addEstate(Estate estate) {this.estates.add(estate);}
+	
+	@ManyToOne
+	private Candidate candidate;
+	public void setCandidate(Candidate candidate) {this.candidate = candidate;}
+	public Candidate getCandidate() {return candidate;}
 	
 	public Status() {}
 	
@@ -72,7 +78,7 @@ public class Status extends Model implements Serializable {
 		
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((tseID == null) ? 0 : tseID.hashCode());
+		result = prime * result + ((candidate == null) ? 0 : candidate.hashCode());
 		result = prime * result + ((year == null) ? 0 : year.hashCode());
 		return result;
 	}
@@ -80,30 +86,23 @@ public class Status extends Model implements Serializable {
 	@Override
 	public boolean equals(Object obj) {
 		
-		if (this == obj) {
+		if (this == obj)
 			return true;
-		}
-		if (obj == null) {
+		if (obj == null)
 			return false;
-		}
-		if (getClass() != obj.getClass()) {
+		if (getClass() != obj.getClass())
 			return false;
-		}
 		Status other = (Status) obj;
-		if (tseID == null) {
-			if (other.tseID != null) {
+		if (candidate == null) {
+			if (other.candidate != null)
 				return false;
-			}
-		} else if (!tseID.equals(other.tseID)) {
+		} else if (!candidate.equals(other.candidate))
 			return false;
-		}
 		if (year == null) {
-			if (other.year != null) {
+			if (other.year != null)
 				return false;
-			}
-		} else if (!year.equals(other.year)) {
+		} else if (!year.equals(other.year))
 			return false;
-		}
 		return true;
 	}
 

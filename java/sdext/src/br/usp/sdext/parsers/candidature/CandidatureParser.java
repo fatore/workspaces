@@ -15,8 +15,8 @@ import br.usp.sdext.models.Party;
 import br.usp.sdext.models.candidate.Candidate;
 import br.usp.sdext.models.candidature.Candidature;
 import br.usp.sdext.parsers.AbstractParser;
-import br.usp.sdext.parsers.Binding;
 import br.usp.sdext.parsers.MiscParser;
+import br.usp.sdext.parsers.account.AccountabilityBinding;
 import br.usp.sdext.util.Misc;
 
 public class CandidatureParser extends AbstractParser {
@@ -28,7 +28,7 @@ public class CandidatureParser extends AbstractParser {
 	private CoalitionParser coalitionParser;
 	
 	private HashMap<Model, Model> candidatureMap = new HashMap<>();
-	private HashMap<Binding, Model> candidaturesBindings = new HashMap<>();
+	private HashMap<AccountabilityBinding, Model> candidaturesBindings = new HashMap<>();
 
 	private ArrayList<Model> logs = new ArrayList<>();
 	
@@ -43,7 +43,7 @@ public class CandidatureParser extends AbstractParser {
 	}
 	
 	public HashMap<Model, Model> getCandidatureMap() {return candidatureMap;}
-	public HashMap<Binding, Model> getCandidaturesBindings() {return candidaturesBindings;}
+	public HashMap<AccountabilityBinding, Model> getCandidaturesBindings() {return candidaturesBindings;}
 	public CandidateParser getCandidateParser() {return candidateParser;}
 
 	protected void loadFile(File file) throws Exception {
@@ -127,7 +127,7 @@ public class CandidatureParser extends AbstractParser {
 			
 			candidature.setId(new Long(candidatureMap.size()));
 			candidatureMap.put(candidature, candidature);
-			candidaturesBindings.put(new Binding(candidature), candidature); 
+			candidaturesBindings.put(new AccountabilityBinding(candidature), candidature); 
 			
 		} else {
 
@@ -142,6 +142,8 @@ public class CandidatureParser extends AbstractParser {
 		System.out.println("\nSaving objects in the database, " +
 				"this can take several minutes.");
 		
+		Model.bulkSave(logs);
+		
 		candidateParser.save();
 		electionParser.save();
 		partyParser.save();
@@ -150,7 +152,6 @@ public class CandidatureParser extends AbstractParser {
 
 		System.out.println("\tSaving candidatures...");
 		Model.bulkSave(candidatureMap.values());
-		Model.bulkSave(logs);
 
 		long elapsedTime = System.currentTimeMillis() - start;
 

@@ -1,0 +1,74 @@
+\documentclass[twocolumn]{article}
+
+% config
+\usepackage[brazil]{babel}
+%\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{times}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage[pdftex]{graphicx}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{textfit}
+%\usepackage[numbers, sort]{natbib}
+\usepackage[natbib=true,sorting=none, firstinits=true]{biblatex}
+\usepackage{url}
+\usepackage{color}  
+\usepackage{wrapfig}
+\usepackage[top=30mm,bottom=20mm,left=30mm,right=20mm,twoside]{geometry}
+
+\usepackage{array}
+\usepackage{multirow}
+
+\newcommand\MyBox[1]{
+        \fbox{\lower0.75cm
+                \vbox to 1.7cm{\vfil
+                        \hbox to 1.7cm{\hfil\parbox{0.7cm}{#1}\hfil}
+                \vfil}%
+        }%
+}
+
+\hypersetup{
+        colorlinks=true,
+        citecolor=black,
+        filecolor=black,
+        linkcolor=black,
+        urlcolor=black
+}
+
+
+\bibliography{references}
+
+\title{}
+
+\author{Francisco Morgani Fatore}
+
+\date{\today}
+\begin{document}
+
+\maketitle
+
+
+\begin{abstract}
+
+
+
+\end{abstract}
+
+\section{Introdução}\label{sec:intro}
+
+\section{Trabalhos Relacionados}\label{sec:related}
+
+\section{Metodologia}\label{sec:metodology}
+
+\section{Resultados}\label{sec:resuls}
+
+\section{Conclusão}\label{sec:conclusion}
+
+\printbibliography
+
+\end{document}
+

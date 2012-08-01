@@ -20,7 +20,6 @@ import br.usp.sdext.models.candidature.Income;
 import br.usp.sdext.models.candidature.Provider;
 import br.usp.sdext.models.ghosts.GhostCandidate;
 import br.usp.sdext.parsers.AbstractParser;
-import br.usp.sdext.parsers.Binding;
 import br.usp.sdext.parsers.MiscParser;
 import br.usp.sdext.util.Misc;
 
@@ -29,7 +28,7 @@ public class AccountabilityParser extends AbstractParser {
 
 	private MiscParser miscParser;
 
-	private HashMap<Binding, Model> bindings;
+	private HashMap<AccountabilityBinding, Model> bindings;
 
 	private DonorParser donorParser;
 	private IncomeParser incomeParser;
@@ -43,7 +42,7 @@ public class AccountabilityParser extends AbstractParser {
 
 	private boolean csv;
 
-	public AccountabilityParser(MiscParser miscParser, HashMap<Binding, Model> bidnings) {
+	public AccountabilityParser(MiscParser miscParser, HashMap<AccountabilityBinding, Model> bidnings) {
 
 		this.miscParser = miscParser;
 
@@ -240,7 +239,7 @@ public class AccountabilityParser extends AbstractParser {
 		candidature.setCandidate(candidate);
 		candidature.setBallotNo(ballotNo);
 
-		Binding binding = new Binding(candidature);
+		AccountabilityBinding binding = new AccountabilityBinding(candidature);
 
 		Candidature mappedCandidature = (Candidature) bindings.get(binding);
 
@@ -333,7 +332,7 @@ public class AccountabilityParser extends AbstractParser {
 		candidature.setCandidate(candidate);
 		candidature.setBallotNo(ballotNo);
 
-		Binding binding = new Binding(candidature);
+		AccountabilityBinding binding = new AccountabilityBinding(candidature);
 		
 		Candidature mappedCandidature = (Candidature) bindings.get(binding);
 

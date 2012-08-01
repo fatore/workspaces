@@ -16,6 +16,7 @@ import br.usp.sdext.models.candidate.status.Schooling;
 import br.usp.sdext.models.candidate.status.Status;
 import br.usp.sdext.parsers.MiscParser;
 import br.usp.sdext.parsers.ModelParser;
+import br.usp.sdext.parsers.estate.EstateBinding;
 import br.usp.sdext.util.Misc;
 
 public class CandidateParser extends ModelParser {
@@ -33,6 +34,8 @@ public class CandidateParser extends ModelParser {
 	private HashMap<Model, Model> maritalStatusMap = new HashMap<>();
 	private HashMap<Model, Model> schMap = new HashMap<>();
 	
+	private HashMap<EstateBinding, Status> bindings = new HashMap<>();
+	
 	private Long numElements = 0L;
 	
 	public CandidateParser(MiscParser miscParser) {
@@ -48,6 +51,7 @@ public class CandidateParser extends ModelParser {
 	public HashMap<Model, Model> getJobsMap() {return jobsMap;}
 	public HashMap<Model, Model> getMaritalStatusMap() {return maritalStatusMap;}
 	public HashMap<Model, Model> getSchMap() {return schMap;}
+	public HashMap<EstateBinding, Status> getBindings() {return bindings;}
 	public ArrayList<Model> getDuppersList() {return duppersList;}
 
 	public Model parse(String[] pieces) throws Exception {
@@ -168,11 +172,12 @@ public class CandidateParser extends ModelParser {
 		schooling = (Schooling) Model.fetch(schooling, schMap);
 		status.setSchooling(schooling);
 
+		status.setCandidate(candidate);
+		
 		status = (Status) Model.fetch(status, statusMap);
 		
-		// Bind objects.
-		candidate.addStatus(status);
-
+		bindings.put(new EstateBinding(status), status);
+		
 		return candidate;
 	}
 
@@ -185,8 +190,8 @@ public class CandidateParser extends ModelParser {
 		Model.bulkSave(schMap.values());
 		Model.bulkSave(maritalStatusMap.values());
 		Model.bulkSave(jobsMap.values());
-		Model.bulkSave(statusMap.values());
 		Model.bulkSave(candidatesMap.values());
+		Model.bulkSave(statusMap.values());
 
 		System.out.println("\tSaving duppers...");
 		Model.bulkSave(duppersList);
