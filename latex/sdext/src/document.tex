@@ -1,4 +1,4 @@
-\documentclass[twocolumn]{article}
+\documentclass[a4paper,12pt]{article}
 
 % config
 \usepackage[brazil]{babel}
@@ -39,6 +39,12 @@
         urlcolor=black
 }
 
+% indentation
+\setlength{\parindent}{0pt} % no indent
+\setlength{\parskip}{2.0ex plus 0.5ex minus 0.2ex} % paragraph spacing
+\setlength{\skip\footins}{2cm} % spacing between footer and text
+\setlength{\footnotesep}{0.5cm} % space between footer itens
+\renewcommand{\baselinestretch}{1.5} % line spacing
 
 \bibliography{references}
 
@@ -63,6 +69,54 @@
 \section{Trabalhos Relacionados}\label{sec:related}
 
 \section{Metodologia}\label{sec:metodology}
+
+\subsection{Levantamento dos Dados}\label{sub:scouting}
+
+Os dados utilizados neste trabalho são provenientes do repositório de dados~\cite{www.tse-rep} do TSE (Tribunal Superior Eleitoral). O TSE é o órgão máximo da Justiça Eleitoral brasileira e atua em conjunto com os TREs (Tribunais Regionais Eleitorais), que são os responsáveis diretos pela administração do processo eleitoral dos respectivos estados e municípios os quais representam.~\cite{www.tse}
+
+O repositório de dados eleitorais é uma compilação de dados brutos das eleições desde 1994 voltada a pesquisadores, imprensa e cidadãos em geral que tenham interesse em analisar os dados de eleitorado, candidaturas, resultados e prestação de contas das eleições.
+
+Os dados são fornecidos como arquivos de texto formatados no padrão CSV~\cite{www.csv} (Comma Separated Values), que é um tipo de formatação muito utilizado devido à sua simplicidade. O conteúdo de cada arquivo é descrito por arquivos de ajuda.
+
+O TSE não se responsabiliza por qualquer consulta ou análise realizada sobre os dados, deste modo deve-se atentar para uma cuidadosa etapa de aquisição dos dados e buscar manter a consistência dos dados durante todo o decorrer do trabalho.
+
+Os arquivos do repositório estão organizados nas categorias eleitorado, candidatos, resultados e prestação de contas, como mostra a Figura~\ref{fig:rep_geral}.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=16cm]{images/rep_geral.png}
+    \caption{Repositório de dados eleitorais.}
+    \label{fig:rep_geral}
+\end{figure}
+
+\subsubsection{Eleitorado}\label{sss:eleitorado}
+
+A categoria "eleitorado" contém arquivos com informações do perfil do eleitorado de cada eleição até o grão de zona eleitoral. Um município pode conter várias zonas eleitorais e o que este arquivo descreve é a quantidade de eleitores de um determinado perfil que pertencem à estas zonas. Um perfil de eleitorado é definido pelos atributos sexo, faixa etária e grau de escolaridade. Uma observação importante deve ser feita em relação ao atributo grau escolaridade, esta informação é declarada pelo eleitor, sendo que em muitos casos o eleitor se cadastra com um determinado grau de escolaridade, por exemplo: com ensino médio aos 16 anos de idade, e não volta ao cartório eleitoral para atualizar esta informação. 
+
+\subsubsection{Candidatos}\label{sss:candidatos}
+
+Os dados pertencentes à categoria "candidatos" são subdivididos em informações de candidatura, bens dos candidatos, legendas políticas e vagas disponíveis.
+
+
+\subsubsection{Resultados}\label{sss:resultados}
+
+
+\subsubsection{Prestação de Contas}\label{sss:resultados}
+
+
+\subsection{Seleção dos Dados}\label{sub:dbselection}
+
+A tarefa de seleção dos dados é crucial para este trabalho, pois é impossível trabalhar com todos os dados do repositório de dados dentro do cronograma estipulado. 
+
+O levantamento dos dados realizado permite definir quais dados são relevantes para as análises propostas e para a conclusão dos objetivos definidos. Assim, com o intuito de manter o trabalho dentro do escopo definido, selecionou-se os dados das categorias "candidatos" e "prestação de contas".
+
+Dentro da categoria "candidatos" escolheu-se utilizar somente as informações de candidatura e bens de candidatos. Para a categoria "prestação de contas" apenas os gastos e receitas dos candidatos foram considerados.
+
+\subsection{Criação do Banco de Dados}\label{sub:dbcreation}
+
+A fase de criação do banco de dados consiste em interpretar os dados selecionados de modo que seja possível realizar consultas para analisar relações entre os dados, como por exemplo: informações de candidaturas de um determinado candidato ao longo de diferentes eleições.
+
+O banco de dados se comporta como um centralizador de toda a informação adquirida esparsamente no repositório de dados. 
 
 \section{Resultados}\label{sec:resuls}
 

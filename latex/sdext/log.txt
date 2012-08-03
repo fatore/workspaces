@@ -16,7 +16,7 @@ lovak, slovenian, spanish, swedish, turkish, turkmen, ukrainian, uppersorbian,
 welsh, loaded.
 (/usr/share/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
-(/usr/share/texmf-dist/tex/latex/base/size10.clo))
+(/usr/share/texmf-dist/tex/latex/base/size12.clo))
 (/usr/share/texmf-dist/tex/generic/babel/babel.sty
 (/usr/share/texmf-dist/tex/generic/babel/portuges.ldf
 (/usr/share/texmf-dist/tex/generic/babel/babel.def)))
@@ -75,7 +75,11 @@ Package hyperref Message: Driver (autodetected): hpdftex.
 Package biblatex Warning: 'babel' detected but 'csquotes' missing.
 (biblatex)                Loading 'csquotes' recommended.
 
-(./document.aux) (/usr/share/texmf-dist/tex/latex/psnfss/t1ptm.fd)
+(./document.aux
+
+LaTeX Warning: Label `sss:resultados' multiply defined.
+
+) (/usr/share/texmf-dist/tex/latex/psnfss/t1ptm.fd)
 (/usr/share/texmf-dist/tex/latex/hyperref/nameref.sty
 (/usr/share/texmf-dist/tex/generic/oberdiek/gettitlestring.sty))
 (./document.out) (./document.out)
@@ -88,12 +92,17 @@ Package biblatex Warning: 'babel' detected but 'csquotes' missing.
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd)
-(/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd)
+(/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd) [1{/var/lib/texmf/fonts/map/
+pdftex/updmap/pdftex.map}]
+<images/rep_geral.png, id=66, 1416.29124pt x 327.2225pt>
+<use images/rep_geral.png> [2 <./images/rep_geral.png>]
+(/usr/share/texmf-dist/tex/latex/psnfss/t1pcr.fd) [3] [4] (./document.aux)
 
-LaTeX Warning: Empty bibliography on input line 71.
+LaTeX Warning: There were multiply-defined labels.
 
-[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./document.aux) ){/usr/
-share/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texmf-dist/fonts/type1
-/urw/times/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
-Output written on document.pdf (1 page, 23254 bytes).
+ ){/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texmf-dist/fon
+ts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/ut
+mb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/te
+xmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on document.pdf (4 pages, 91013 bytes).
 Transcript written on document.log.
