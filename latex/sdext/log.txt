@@ -77,13 +77,7 @@ Package biblatex Warning: 'babel' detected but 'csquotes' missing.
 
 (./document.aux
 
-LaTeX Warning: Label `fig:rep_geral' multiply defined.
-
-
 LaTeX Warning: Label `sss:resultados' multiply defined.
-
-
-LaTeX Warning: Label `tab:eleitorado' multiply defined.
 
 ) (/usr/share/texmf-dist/tex/latex/psnfss/t1ptm.fd)
 (/usr/share/texmf-dist/tex/latex/hyperref/nameref.sty
@@ -102,27 +96,13 @@ LaTeX Warning: Label `tab:eleitorado' multiply defined.
 pdftex/updmap/pdftex.map}]
 <images/rep_geral.png, id=66, 1416.29124pt x 327.2225pt>
 <use images/rep_geral.png>
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-
-LaTeX Warning: Reference `fig:candidatos' on page 2 undefined on input line 133
-.
-
 <images/candidatos.png, id=68, 1386.17876pt x 327.2225pt>
-<use images/candidatos.png> [2 <./images/rep_geral.png>]
-
-LaTeX Warning: Reference `tab:candidaturas' on page 3 undefined on input line 1
-44.
-
+<use images/candidatos.png> [2 <./images/rep_geral.png>] [3 <./images/candidato
+s.png>]
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[3 <./images/candidatos.png>] [4]
-(/usr/share/texmf-dist/tex/latex/psnfss/t1pcr.fd) [5] (./document.aux)
-
-LaTeX Warning: There were undefined references.
-
+(/usr/share/texmf-dist/tex/latex/psnfss/t1pcr.fd) [4] [5] (./document.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
@@ -130,5 +110,5 @@ LaTeX Warning: There were multiply-defined labels.
 ts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/ut
 mb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/te
 xmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on document.pdf (5 pages, 127861 bytes).
+Output written on document.pdf (5 pages, 127613 bytes).
 Transcript written on document.log.

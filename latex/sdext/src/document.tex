@@ -95,39 +95,6 @@ A categoria "eleitorado" contém arquivos com informações do perfil do eleitorado
 
 Um perfil de eleitorado é definido pelos atributos sexo, faixa etária e grau de escolaridade. Uma observação importante deve ser feita em relação ao atributo grau escolaridade, esta informação é declarada pelo eleitor, sendo que em muitos casos o eleitor se cadastra com um determinado grau de escolaridade, por exemplo: com ensino médio aos 16 anos de idade, e não volta ao cartório eleitoral para atualizar esta informação.
 
-A Tabela~\ref{tab:eleitorado} apresenta todos os atributos que compõem o arquivo de perfil do eleitorado.
-
-\begin{table}[h!]
-    \centering
-    \begin{tabular}{|l|l|l|}
-        \hline
-        \multicolumn{3}{|c|}{\textbf{Perfil do Eleitorado}} \\
-        \hline
-        \textbf{Ordem} &  \textbf{Nome} & \textbf{Tipo}   \\
-        \hline
-        0 & Ano Eleição & Integer \\
-        \hline
-        1 & UF da Zona Eleitoral & String \\
-        \hline
-        2 & Município da Zona Eleitoral & String \\
-        \hline
-        3 & Código TSE do Município & Integer \\
-        \hline
-        4 & Número da Zona Eleitoral  & Integer \\
-        \hline
-        5 & Sexo do Perfil & String \\
-        \hline
-        6 & Faixa Etária do Perfil & String \\
-        \hline
-        7 & Grau de Escolaridade do Perfil & String \\
-        \hline
-        8 & Quantidade de Eleitores no Perfil & Integer \\
-        \hline
-    \end{tabular}
-    \caption{Atributos dos arquivos de perfil do eleitorado.}
-    \label{tab:eleitorado}
-\end{table}
-
 \subsubsection{Candidatos}\label{sss:candidatos}
 
 Os dados pertencentes à categoria "candidatos" são subdivididos em informações de candidatura, bens dos candidatos, legendas políticas e vagas disponíveis, como mostra a Figura~\ref{fig:candidatos}.
@@ -136,77 +103,11 @@ Os dados pertencentes à categoria "candidatos" são subdivididos em informações d
     \centering
     \includegraphics[width=16cm]{images/candidatos.png}
     \caption{Subcategorias da categoria "candidatos".}
-    \label{fig:rep_geral}
+    \label{fig:candidatos}
 \end{figure}
 
-Os arquivos correspondentes a informações de candidatura são os mais extensos e também os mais importantes para as análises propostas por este trabalho, pois contém informações importantes sobre os candidatos.
+Os arquivos correspondentes à informações de candidatura são os mais extensos e também os mais importantes para as análises propostas por este trabalho. Eles contêm informações importantes sobre os candidatos, como por exemplo ocupação, sexo, idade, grau de escolaridade, estado civil e um dado crucial: se o candidato foi eleito ou não ao término da eleição. Além disso, este arquivo contém informações sobre o cargo que o candidato está concorrendo e a qual partido político e coligação ele pertence.
 
-A Tabela~\ref{tab:candidaturas} apresenta a estrutura dos arquivos de informações de candidaturas.
-
-\begin{table}[h!]
-    \centering
-    \begin{tabular}{|l|l|l|}
-        \hline
-        \multicolumn{3}{|c|}{\textbf{Informações de Candidaturas}} \\
-        \hline
-        \textbf{Ordem} &  \textbf{Nome} & \textbf{Tipo}   \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-    \end{tabular}
-    \caption{Atributos dos arquivos de perfil do eleitorado.}
-    \label{tab:eleitorado}
-\end{table}
 
 
 \subsubsection{Resultados}\label{sss:resultados}
@@ -229,7 +130,111 @@ Dentro da categoria "candidatos" escolheu-se utilizar somente as informações de 
 
 A fase de criação do banco de dados consiste em interpretar os dados selecionados de modo que seja possível realizar consultas para analisar relações entre os dados, como por exemplo: informações de candidaturas de um determinado candidato ao longo de diferentes eleições.
 
-O banco de dados se comporta como um centralizador de toda a informação adquirida esparsamente no repositório de dados. Para  
+O banco de dados se comporta como um centralizador de toda a informação adquirida esparsamente no repositório de dados. Para 
+
+
+
+A Tabela~\ref{tab:eleitorado} apresenta todos os atributos que compõem o arquivo de perfil do eleitorado. O campo "código TSE do município" trata-se de um valor gerado internamente pelos sistemas do TSE que é responsável por identificar os municípios.
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|l|l|l|}
+        \hline
+        \multicolumn{3}{|c|}{\textbf{Perfil do Eleitorado}} \\
+        \hline
+        \textbf{Ordem} &  \textbf{Nome} & \textbf{Tipo}   \\
+        \hline
+        0 & Ano Eleição & Numérico \\
+        \hline
+        1 & UF da Zona Eleitoral & Caractere \\
+        \hline
+        2 & Município da Zona Eleitoral & Caractere \\
+        \hline
+        3 & Código TSE do Município & Numérico \\
+        \hline
+        4 & Número da Zona Eleitoral  & Numérico \\
+        \hline
+        5 & Sexo do Perfil & Caractere \\
+        \hline
+        6 & Faixa Etária do Perfil & Caractere \\
+        \hline
+        7 & Grau de Escolaridade do Perfil & Caractere \\
+        \hline
+        8 & Quantidade de Eleitores no Perfil & Numérico \\
+        \hline
+    \end{tabular}
+    \caption{Atributos dos arquivos de perfil do eleitorado.}
+    \label{tab:eleitorado}
+\end{table}
+
+A Tabela~\ref{tab:candidaturas} apresenta a estrutura dos arquivos de informações de candidaturas.
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|l|l|l|}
+        \hline
+        \multicolumn{3}{|c|}{\textbf{Informações de Candidaturas}} \\
+        \hline
+        \textbf{Ordem} &  \textbf{Nome} & \textbf{Tipo}   \\
+        \hline
+        0 &  & \\
+        \hline
+        & & \\
+        \hline
+        & & \\
+        \hline
+        & & \\
+        \hline
+        & & \\
+        \hline
+        & & \\
+        \hline
+        & & \\
+        \hline
+        & & \\
+        \hline
+        & & \\
+        \hline
+        & & \\
+        \hline
+        & & \\
+        \hline
+        & & \\
+        \hline
+        & & \\
+        \hline
+        & & \\
+        \hline
+        & & \\
+        \hline
+        & & \\
+        \hline
+        & & \\
+        \hline
+        & & \\
+        \hline
+        & & \\
+        \hline
+        & & \\
+        \hline
+        & & \\
+        \hline
+        & & \\
+        \hline
+        & & \\
+        \hline
+        & & \\
+        \hline
+        & & \\
+        \hline
+        & & \\
+        \hline
+    \end{tabular}
+    \caption{Atributos dos arquivos de perfil do eleitorado.}
+    \label{tab:candidaturas}
+\end{table}
+
+
 
 \section{Resultados}\label{sec:resuls}
 
