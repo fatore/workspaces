@@ -98,7 +98,7 @@ pdftex/updmap/pdftex.map}]
 <use images/rep_geral.png>
 <images/candidatos.png, id=68, 1386.17876pt x 327.2225pt>
 <use images/candidatos.png> [2 <./images/rep_geral.png>]
-<images/resultados.png, id=77, 1781.65625pt x 367.3725pt>
+<images/resultados.png, id=77, 1759.57375pt x 568.1225pt>
 <use images/resultados.png> [3 <./images/candidatos.png>] [4 <./images/resultad
 os.png>]
 
@@ -113,5 +113,5 @@ ts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texmf-dist/fonts/type1/urw/co
 urier/ucrr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/
 share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-dist/fonts/
 type1/urw/times/utmri8a.pfb>
-Output written on document.pdf (6 pages, 185392 bytes).
+Output written on document.pdf (6 pages, 200610 bytes).
 Transcript written on document.log.
