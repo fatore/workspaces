@@ -80,12 +80,12 @@ Os dados são fornecidos como arquivos de texto formatados no padrão CSV~\cite{ww
 
 O TSE não se responsabiliza por qualquer consulta ou análise realizada sobre os dados, deste modo deve-se atentar para uma cuidadosa etapa de aquisição dos dados e buscar manter a consistência dos dados durante todo o decorrer do trabalho.
 
-Os arquivos do repositório estão organizados nas categorias eleitorado, candidatos, resultados e prestação de contas, como mostra a Figura~\ref{fig:rep_geral}.
+Os arquivos do repositório estão organizados nas categorias eleitorado, candidatos, resultados e prestação de contas, como mostra a Figura~\ref{fig:rep_geral}. As subseções seguintes buscam detalhar o conteúdo de cada uma dessas categorias.
 
 \begin{figure}[htb]
     \centering
     \includegraphics[width=16cm]{images/rep_geral.png}
-    \caption{Repositório de dados eleitorais.}
+    \caption{Visão geral do repositório de dados eleitorais.}
     \label{fig:rep_geral}
 \end{figure}
 
@@ -102,21 +102,35 @@ Os dados pertencentes à categoria "candidatos" são subdivididos em informações d
 \begin{figure}[htb]
     \centering
     \includegraphics[width=16cm]{images/candidatos.png}
-    \caption{Subcategorias da categoria "candidatos".}
+    \caption{Organização dos arquivos sobre candidatos.}
     \label{fig:candidatos}
 \end{figure}
 
 Os arquivos correspondentes à informações de candidatura são os mais extensos e também os mais importantes para as análises propostas por este trabalho. Eles contêm informações importantes sobre os candidatos, como por exemplo ocupação, sexo, idade, grau de escolaridade, estado civil e um dado crucial: se o candidato foi eleito ou não ao término da eleição. Além disso, este arquivo contém informações sobre o cargo que o candidato está concorrendo e a qual partido político e coligação ele pertence.
 
+No momento da candidatura os candidatos são obrigados a preencher um formulário de declaração de bens e valores em cumprimento ao Artigo 13 da Lei n$^o$ 8.429 \cite{Lei8429}. O repositório de dados do TSE disponibiliza os conteúdos desses formulários, obtém-se para cada item declarado por um candidato uma descrição, o valor e o tipo do item.
 
+De acordo com o arquivo de ajuda do repositório de dados do TSE, uma legenda política pode ser constituída por um ou mais partidos políticos. Além disso, diferentes legendas podem ser formadas em diferentes unidades eleitorais do país e também para diferentes cargos.
+
+% DEFINIR UNIDADE ELEITORAL (NA INTRODUÇÃO?) % 
+
+Os arquivos de vagas disponíveis são os mais simples da categoria "candidatos" e descreve para cada unidade eleitoral a quantidade de vagas disponíveis para cada cargo. 
 
 \subsubsection{Resultados}\label{sss:resultados}
 
+O repositório de dados disponibiliza os resultados das eleições por meio de duas categorias: votos totalizados e detalhes de apuração, como pode ser observado pela Figura~\ref{fig:resultados}.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=16cm]{images/resultados.png}
+    \caption{Organização dos arquivos sobre resultados das eleições.}
+    \label{fig:resultados}
+\end{figure}
 
 \subsubsection{Prestação de Contas}\label{sss:resultados}
 
 
-a ordem e, em alguns casos, até mesmo a existência de determinados campos varia de dados de anos diferentes. 
+a ordem e, em alguns casos, até mesmo a existência de determinados campos varia de eleição para eleição. 
 
 \subsection{Seleção dos Dados}\label{sub:dbselection}
 

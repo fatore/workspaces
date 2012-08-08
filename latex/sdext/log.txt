@@ -97,18 +97,21 @@ pdftex/updmap/pdftex.map}]
 <images/rep_geral.png, id=66, 1416.29124pt x 327.2225pt>
 <use images/rep_geral.png>
 <images/candidatos.png, id=68, 1386.17876pt x 327.2225pt>
-<use images/candidatos.png> [2 <./images/rep_geral.png>] [3 <./images/candidato
-s.png>]
+<use images/candidatos.png> [2 <./images/rep_geral.png>]
+<images/resultados.png, id=77, 1781.65625pt x 367.3725pt>
+<use images/resultados.png> [3 <./images/candidatos.png>] [4 <./images/resultad
+os.png>]
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-(/usr/share/texmf-dist/tex/latex/psnfss/t1pcr.fd) [4] [5] (./document.aux)
+(/usr/share/texmf-dist/tex/latex/psnfss/t1pcr.fd) [5] [6] (./document.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ){/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texmf-dist/fon
-ts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/ut
-mb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/te
-xmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on document.pdf (5 pages, 127613 bytes).
+ts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texmf-dist/fonts/type1/urw/co
+urier/ucrr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/
+share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-dist/fonts/
+type1/urw/times/utmri8a.pfb>
+Output written on document.pdf (6 pages, 185392 bytes).
 Transcript written on document.log.
