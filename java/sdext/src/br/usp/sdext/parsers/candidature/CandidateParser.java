@@ -5,8 +5,6 @@ import java.util.Date;
 import java.util.HashMap;
 
 import br.usp.sdext.core.Model;
-import br.usp.sdext.models.State;
-import br.usp.sdext.models.Town;
 import br.usp.sdext.models.candidate.Candidate;
 import br.usp.sdext.models.candidate.Citizenship;
 import br.usp.sdext.models.candidate.Sex;
@@ -14,6 +12,8 @@ import br.usp.sdext.models.candidate.status.Job;
 import br.usp.sdext.models.candidate.status.MaritalStatus;
 import br.usp.sdext.models.candidate.status.Schooling;
 import br.usp.sdext.models.candidate.status.Status;
+import br.usp.sdext.models.location.State;
+import br.usp.sdext.models.location.Town;
 import br.usp.sdext.parsers.MiscParser;
 import br.usp.sdext.parsers.ModelParser;
 import br.usp.sdext.parsers.estate.EstateBinding;

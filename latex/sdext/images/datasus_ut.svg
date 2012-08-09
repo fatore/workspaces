@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="750"
+   height="750"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="drawing.pdf">
+  <defs
+     id="defs4">
+    <linearGradient
+       id="linearGradient3781"
+       osb:paint="solid">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop3783" />
+    </linearGradient>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.7"
+     inkscape:cx="384.48278"
+     inkscape:cy="542.95022"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="959"
+     inkscape:window-height="1027"
+     inkscape:window-x="960"
+     inkscape:window-y="27"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-302.3618)">
+    <path
+       style="opacity:0.98999999;fill:#e6e6e6;stroke:#000000;stroke-width:5.38463736;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="M 329.05957,1022.8517 C 181.0634,1000.5828 66.271636,899.11611 29.743812,758.28078 -10.786321,602.01426 70.403819,435.6229 221.87424,364.52818 c 54.00598,-25.34845 89.57775,-33.00041 153.40968,-33.00041 65.12765,0 101.02571,7.91035 156.34712,34.45207 82.25315,39.46283 148.72824,111.65333 179.34804,194.76817 18.822,51.09054 25.27516,116.43246 16.6053,168.13758 -12.49625,74.52484 -46.79463,140.30482 -100.70931,193.14771 -70.01325,68.62135 -156.97546,103.2559 -256.61972,102.2043 -18.91897,-0.1997 -37.45706,-0.8233 -41.19578,-1.3859 z"
+       id="path5231"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-size:51.3078537px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:-0.01282696px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="302.30972"
+       y="406.39978"
+       id="text5233"
+       sodipodi:linespacing="125%"
+       transform="scale(1.0492264,0.95308318)"><tspan
+         sodipodi:role="line"
+         id="tspan5235"
+         x="302.30972"
+         y="406.39978"
+         rotate="0 0 0 0 0 0 0"
+         style="font-size:30.78470993px;letter-spacing:0px">Região</tspan></text>
+    <path
+       sodipodi:type="arc"
+       style="opacity:0.98999999;fill:#cccccc;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path5249"
+       sodipodi:cx="416.42856"
+       sodipodi:cy="390.93362"
+       sodipodi:rx="275"
+       sodipodi:ry="235.71428"
+       d="m 691.42856,390.93362 a 275,235.71428 0 1 1 -550,0 275,235.71428 0 1 1 550,0 z"
+       transform="matrix(1.1631511,0,0,1.2620425,-111.52339,223.73846)" />
+    <text
+       xml:space="preserve"
+       style="font-size:30.78470993px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="210.68858"
+       y="522.20892"
+       id="text5253"
+       sodipodi:linespacing="125%"
+       transform="scale(1.0492264,0.95308318)"><tspan
+         sodipodi:role="line"
+         id="tspan5255"
+         x="210.68858"
+         y="522.20892">Unidade Federativa</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:24px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="392.85715"
+       y="209.50504"
+       id="text5257"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5259"
+         x="392.85715"
+         y="209.50504" /></text>
+    <path
+       sodipodi:type="arc"
+       style="opacity:0.98999999;fill:#b3b3b3;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path5261"
+       sodipodi:cx="445"
+       sodipodi:cy="408.79074"
+       sodipodi:rx="265"
+       sodipodi:ry="225"
+       d="m 710,408.79074 a 265,225 0 1 1 -530,0 265,225 0 1 1 530,0 z"
+       transform="matrix(0.94461763,0,0,1.0787642,-45.547984,321.97018)" />
+    <path
+       sodipodi:type="arc"
+       style="opacity:0.98999999;fill:#999999;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path5263"
+       sodipodi:cx="451.42856"
+       sodipodi:cy="440.21933"
+       sodipodi:rx="195.71428"
+       sodipodi:ry="187.85715"
+       d="m 647.14284,440.21933 a 195.71428,187.85715 0 1 1 -391.42856,0 195.71428,187.85715 0 1 1 391.42856,0 z"
+       transform="matrix(1.1468197,0,0,0.93463198,-139.99624,404.87624)" />
+    <path
+       sodipodi:type="arc"
+       style="opacity:0.98999999;fill:#808080;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path5265"
+       sodipodi:cx="435"
+       sodipodi:cy="452.36218"
+       sodipodi:rx="172.14285"
+       sodipodi:ry="157.14285"
+       d="m 607.14285,452.36218 a 172.14285,157.14285 0 1 1 -344.2857,0 172.14285,157.14285 0 1 1 344.2857,0 z"
+       transform="matrix(1.129696,0,0,0.72780784,-108.85663,534.04203)" />
+    <path
+       sodipodi:type="arc"
+       style="opacity:0.98999999;fill:#666666;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path5269"
+       sodipodi:cx="410"
+       sodipodi:cy="479.50504"
+       sodipodi:rx="157.14285"
+       sodipodi:ry="140"
+       d="m 567.14285,479.50504 a 157.14285,140 0 1 1 -314.2857,0 157.14285,140 0 1 1 314.2857,0 z"
+       transform="matrix(0.9850598,0,0,0.41143137,-20.901924,702.24808)" />
+    <text
+       xml:space="preserve"
+       style="font-size:30.78470993px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="276.65579"
+       y="628.12292"
+       id="text5271"
+       sodipodi:linespacing="125%"
+       transform="scale(1.0492264,0.95308318)"><tspan
+         sodipodi:role="line"
+         id="tspan5273"
+         x="276.65579"
+         y="628.12292">Mesoregião</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:30.78470993px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="278.48822"
+       y="747.23053"
+       id="text5275"
+       sodipodi:linespacing="125%"
+       transform="scale(1.0492264,0.95308318)"><tspan
+         sodipodi:role="line"
+         id="tspan5277"
+         x="278.48822"
+         y="747.23053">Microregião</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:30.78470993px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="293.14755"
+       y="853.51099"
+       id="text5279"
+       sodipodi:linespacing="125%"
+       transform="scale(1.0492264,0.95308318)"><tspan
+         sodipodi:role="line"
+         id="tspan5281"
+         x="293.14755"
+         y="853.51099">Município</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:30.78470993px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="313.30423"
+       y="948.79712"
+       id="text5283"
+       sodipodi:linespacing="125%"
+       transform="scale(1.0492264,0.95308318)"><tspan
+         sodipodi:role="line"
+         id="tspan5285"
+         x="313.30423"
+         y="948.79712">Distrito</tspan></text>
+  </g>
+</svg>

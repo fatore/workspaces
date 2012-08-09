@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import br.usp.sdext.core.Model;
-import br.usp.sdext.models.Town;
+import br.usp.sdext.models.location.Town;
 
 
 @Entity

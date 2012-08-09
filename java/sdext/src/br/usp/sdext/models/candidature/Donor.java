@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import br.usp.sdext.core.Model;
-import br.usp.sdext.models.State;
+import br.usp.sdext.models.location.State;
 
 @Entity
 public class Donor extends Model implements Serializable {

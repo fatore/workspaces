@@ -1,8 +1,8 @@
 package br.usp.sdext.parsers.account;
 
-import br.usp.sdext.models.State;
-import br.usp.sdext.models.Town;
 import br.usp.sdext.models.candidature.Candidature;
+import br.usp.sdext.models.location.State;
+import br.usp.sdext.models.location.Town;
 
 public class AccountabilityBinding {
 	

@@ -94,17 +94,16 @@ LaTeX Warning: Label `sss:resultados' multiply defined.
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd)
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd) [1{/var/lib/texmf/fonts/map/
 pdftex/updmap/pdftex.map}]
-<images/rep_geral.png, id=66, 1416.29124pt x 327.2225pt>
+<images/rep_geral.png, id=86, 1416.29124pt x 327.2225pt>
 <use images/rep_geral.png>
-<images/candidatos.png, id=68, 1386.17876pt x 327.2225pt>
+<images/candidatos.png, id=88, 1386.17876pt x 327.2225pt>
 <use images/candidatos.png> [2 <./images/rep_geral.png>]
-<images/resultados.png, id=77, 1759.57375pt x 568.1225pt>
+<images/resultados.png, id=96, 1759.57375pt x 568.1225pt>
 <use images/resultados.png> [3 <./images/candidatos.png>] [4 <./images/resultad
-os.png>]
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-(/usr/share/texmf-dist/tex/latex/psnfss/t1pcr.fd) [5] [6] (./document.aux)
+os.png>] [5] <images/datasus_ut.pdf, id=115, 602.25pt x 602.25pt>
+<use images/datasus_ut.pdf> [6]
+(/usr/share/texmf-dist/tex/latex/psnfss/t1pcr.fd) [7 <./images/datasus_ut.pdf>]
+[8] (./document.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
@@ -113,5 +112,5 @@ ts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texmf-dist/fonts/type1/urw/co
 urier/ucrr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/
 share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-dist/fonts/
 type1/urw/times/utmri8a.pfb>
-Output written on document.pdf (6 pages, 200610 bytes).
+Output written on document.pdf (8 pages, 218268 bytes).
 Transcript written on document.log.

@@ -38,8 +38,10 @@
 	<mapping class="br.usp.sdext.models.Election"/>
 	<mapping class="br.usp.sdext.models.Log"/>
 	<mapping class="br.usp.sdext.models.Party"/>
-	<mapping class="br.usp.sdext.models.State"/>
-	<mapping class="br.usp.sdext.models.Town"/>
+	
+	<mapping class="br.usp.sdext.models.location.Region"/>
+	<mapping class="br.usp.sdext.models.location.State"/>
+	<mapping class="br.usp.sdext.models.location.Town"/>
 
 	<mapping class="br.usp.sdext.models.candidate.Candidate"/>
 	<mapping class="br.usp.sdext.models.candidate.Citizenship"/>

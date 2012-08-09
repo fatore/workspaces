@@ -70,13 +70,17 @@
 
 \section{Metodologia}\label{sec:metodology}
 
+% ONDE TENHO QUE FALAR A LINGUAGEM DE PROGRAMAÇÃO E BD? % 
+
 \subsection{Levantamento dos Dados}\label{sub:scouting}
 
 Os dados utilizados neste trabalho são provenientes do repositório de dados~\cite{www.tse-rep} do TSE (Tribunal Superior Eleitoral). O TSE é o órgão máximo da Justiça Eleitoral brasileira e atua em conjunto com os TREs (Tribunais Regionais Eleitorais), que são os responsáveis diretos pela administração do processo eleitoral dos respectivos estados e municípios os quais representam.~\cite{www.tse}
 
 O repositório de dados eleitorais é uma compilação de dados brutos das eleições desde 1994 voltada a pesquisadores, imprensa e cidadãos em geral que tenham interesse em analisar os dados de eleitorado, candidaturas, resultados e prestação de contas das eleições.
 
-Os dados são fornecidos como arquivos de texto formatados no padrão CSV~\cite{www.csv} (Comma Separated Values), que é um tipo de formatação muito utilizado devido à sua simplicidade. O conteúdo de cada arquivo é descrito por arquivos de ajuda.
+Os dados são fornecidos como arquivos de texto formatados no padrão CSV~\cite{www.csv} (Comma Separated Values), que é um tipo de formatação muito utilizado devido à sua simplicidade. O conteúdo de cada arquivo é descrito por arquivos de ajuda. Nestes arquivos de ajuda é comum o uso do termo "unidade eleitoral", a definição deste termo no caso de eleição majoritária é o estado em que o candidato concorre e em caso de eleição municipal é o código TSE do município.
+Assume os valores especiais BR, ZZ e VT para designar, respectivamente, o Brasil, Exterior e Voto em Trânsito.
+
 
 O TSE não se responsabiliza por qualquer consulta ou análise realizada sobre os dados, deste modo deve-se atentar para uma cuidadosa etapa de aquisição dos dados e buscar manter a consistência dos dados durante todo o decorrer do trabalho.
 
@@ -112,8 +116,6 @@ No momento da candidatura os candidatos são obrigados a preencher um formulário 
 
 De acordo com o arquivo de ajuda do repositório de dados do TSE, uma legenda política pode ser constituída por um ou mais partidos políticos. Além disso, diferentes legendas podem ser formadas em diferentes unidades eleitorais do país e também para diferentes cargos.
 
-% DEFINIR UNIDADE ELEITORAL (NA INTRODUÇÃO?) % 
-
 Os arquivos de vagas disponíveis são os mais simples da categoria "candidatos" e descreve para cada unidade eleitoral a quantidade de vagas disponíveis para cada cargo. 
 
 \subsubsection{Resultados}\label{sss:resultados}
@@ -129,131 +131,63 @@ O repositório de dados disponibiliza os resultados das eleições por meio de duas
 
 Os votos totalizados são o resultado do trabalho realizado pelo sistema de apuração, ou sistema de totalização. Para cada candidato é informado o número de votos obtidos em cada zona eleitoral de cada município. A mesma informação é disponibilizada para cada partido político.
 
-Os boletins de urna são os dados coletados pelas seções eleitorais. 
-
+Os boletins de urna são os dados coletados pelas seções eleitorais. Pode-se ainda dividir esses boletins em duas categorias: detalhes de apuração e votos. Os detalhes de apuração descrevem para zonas eleitorais e para seções eleitorais uma série de informações em relação a uma determinada eleição. Esses detalhes informam o comparecimento e as abstenções dos eleitores e o número de votos válidos, nulos, em branco e em legenda. Por meio dos boletins de votos realiza-se a apuração de uma eleição. Este tipo de boletim revela quantos votos um candidato de um determinado partido obteve em uma seção eleitoral específica.
 
 
 \subsubsection{Prestação de Contas}\label{sss:resultados}
 
-a ordem e, em alguns casos, até mesmo a existência de determinados campos varia de eleição para eleição. 
+Os arquivos de prestação de contas descrevem as receitas e despesas de campanha dos candidatos, partidos e comitês. As prestações de contas estão disponíveis em meio digital somente a partir de 2002.
+
+O TSE não faz menção aos arquivos de prestação de contas em seu arquivo de ajuda. Existe, na verdade, para cada eleição um arquivo específico que descreve como a informação de prestação se encontra para aquela eleição particularmente. A falta de uma especificação geral para esses dados resulta em uma maior complexidade no tratamento desses dados, pois a ordem e, em alguns casos, até mesmo a existência de determinados campos varia de eleição para eleição.
+
+De um modo geral, o repositório de dados disponibiliza os valores e pessoas (ou empresas) envolvidos em cada receita e despesa dos candidatos, partidos e comitês. Para doadores e fornecedores têm-se por exemplo os seus nomes e os números do CPF, ou CNPJ tratando-se de uma empresa.
 
 \subsection{Seleção dos Dados}\label{sub:dbselection}
 
-A tarefa de seleção dos dados é crucial para este trabalho, pois é impossível trabalhar com todos os dados do repositório de dados dentro do cronograma estipulado. 
+O levantamento dos dados permite definir quais dados são relevantes para as análises propostas. A tarefa de seleção dos dados também é necessária, pois é impossível trabalhar com todos os dados do repositório de dados dentro do cronograma estipulado. Assim, com o intuito de manter o trabalho dentro do escopo definido, selecionou-se apenas alguns dados das categorias "candidatos" e "prestação de contas".
 
-O levantamento dos dados realizado permite definir quais dados são relevantes para as análises propostas. Assim, com o intuito de manter o trabalho dentro do escopo definido, selecionou-se apenas alguns dados das categorias "candidatos" e "prestação de contas".
+Dentro da categoria "candidatos" escolheu-se utilizar somente as informações de candidatura e bens de candidatos, pois tratam-se dos dados mais diretamente relacionados às análises propostas. Para a categoria "prestação de contas" apenas os gastos e receitas de candidatos foram considerados.
 
-Dentro da categoria "candidatos" escolheu-se utilizar somente as informações de candidatura e bens de candidatos. Para a categoria "prestação de contas" apenas os gastos e receitas dos candidatos foram considerados.
+% PRECISO JUSTIFICAR PORQUE FORAM ESCOLHIDAS ESSAS CATEGORIAS ?% 
 
 \subsection{Criação do Banco de Dados}\label{sub:dbcreation}
 
 A fase de criação do banco de dados consiste em interpretar os dados selecionados de modo que seja possível realizar consultas para analisar relações entre os dados, como por exemplo: informações de candidaturas de um determinado candidato ao longo de diferentes eleições.
 
-O banco de dados se comporta como um centralizador de toda a informação adquirida esparsamente no repositório de dados. Para 
+O banco de dados se comporta como um centralizador de toda a informação adquirida esparsamente no repositório de dados. Em sua modelagem e implementação deve se ter em mente que a síntese de informações de diferentes arquivos requer um grande esforço, assim à esta etapa reservou-se uma grande parcela do tempo de execução deste trabalho.
 
+Optou-se por dividir a etapa de criação do banco de dados em módulos que são detalhados nas subseções seguintes. Assim tanto a implementação quanto a descrição do trabalho realizado podem ser melhor compreendidos.
 
+\subsubsection{Tratamento de Ambiguidade entre Palavras}
 
-A Tabela~\ref{tab:eleitorado} apresenta todos os atributos que compõem o arquivo de perfil do eleitorado. O campo "código TSE do município" trata-se de um valor gerado internamente pelos sistemas do TSE que é responsável por identificar os municípios.
+Um problema recorrente.
 
-\begin{table}[h!]
+\subsubsection{Dados de Localidade}
+
+Uma informação que é recorrente em praticamente em todos os arquivos do repositório de dados trata-se da localização de determinado acontecimento, por exemplo o local onde um candidato concorre a um determinado cargo, ou o seu local de nascimento. Essa informação representa um dado valioso para as análises propostas, pois sua disponibilidade viabiliza análises para verificar tendências geográficas.
+
+No entanto existe um problema no tratamento dessa informação, o repositório do TSE utiliza um código gerado internamente para identificar os municípios. Esse código não apresenta relação com outros sistemas do governo, assim no caso de análises geográficas não é possível utilizar dados do IBGE, por exemplo, para determinar a proximidade entre dois municípios. Durante uma análise dos dados detectou-se que em alguns casos esse código do TSE simplesmente não constava em determinados arquivos. Em situações onde a identificação do TSE não existe ou é inválida é preciso utilizar o nome da cidade e a qual estado ela pertence para identificá-la.
+
+A solução proposta para contornar essa questão foi utilizar um recurso criado pelo Departamento de Informática do SUS, o DATASUS~\cite{www.datasus} . Este recurso é um trabalho que tem como objetivo o aprimoramento da gestão do sistema de saúde nacional. 
+O sistema mantém códigos em suas tabelas que possibilitam a comunicação com outros sistemas do governo inclusive com o IBGE. 
+
+Apesar de se tratar de um recurso voltado para a saúde, esse sistema apresenta uma base de dados completa. Particularmente a seção de unidades territoriais é de extremo interesse para este trabalho, pois existe uma hierarquia completa de níveis de detalhamento geográfico que possibilita trabalhar de regiões nacionais até distritos de um município, como pode ser observado na Figura~\ref{fig:datasus_ut}. Para cada município o tem-se sua localização geográfica com base em sua latitude e longitude.
+
+\begin{figure}[htb]
     \centering
-    \begin{tabular}{|l|l|l|}
-        \hline
-        \multicolumn{3}{|c|}{\textbf{Perfil do Eleitorado}} \\
-        \hline
-        \textbf{Ordem} &  \textbf{Nome} & \textbf{Tipo}   \\
-        \hline
-        0 & Ano Eleição & Numérico \\
-        \hline
-        1 & UF da Zona Eleitoral & Caractere \\
-        \hline
-        2 & Município da Zona Eleitoral & Caractere \\
-        \hline
-        3 & Código TSE do Município & Numérico \\
-        \hline
-        4 & Número da Zona Eleitoral  & Numérico \\
-        \hline
-        5 & Sexo do Perfil & Caractere \\
-        \hline
-        6 & Faixa Etária do Perfil & Caractere \\
-        \hline
-        7 & Grau de Escolaridade do Perfil & Caractere \\
-        \hline
-        8 & Quantidade de Eleitores no Perfil & Numérico \\
-        \hline
-    \end{tabular}
-    \caption{Atributos dos arquivos de perfil do eleitorado.}
-    \label{tab:eleitorado}
-\end{table}
+    \includegraphics[width=10cm]{images/datasus_ut.pdf}
+    \caption{Hierarquia dos níveis de detalhamento geográfico dos dados de unidades territoriais do DATASUS.}
+    \label{fig:datasus_ut}
+\end{figure}
 
-A Tabela~\ref{tab:candidaturas} apresenta a estrutura dos arquivos de informações de candidaturas.
-
-\begin{table}[h!]
-    \centering
-    \begin{tabular}{|l|l|l|}
-        \hline
-        \multicolumn{3}{|c|}{\textbf{Informações de Candidaturas}} \\
-        \hline
-        \textbf{Ordem} &  \textbf{Nome} & \textbf{Tipo}   \\
-        \hline
-        0 &  & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-        & & \\
-        \hline
-    \end{tabular}
-    \caption{Atributos dos arquivos de perfil do eleitorado.}
-    \label{tab:candidaturas}
-\end{table}
+A proposta desta tarefa é estabelecer uma relação entre os dados de localidade encontrados no repositório do TSE e os dados do DATASUS. O procedimento realizado para isso se baseia em utilizar o nome da cidade e seu estado informados no repositório do TSE para definir uma equivalência com os dados do DATASUS.
 
 
+\subsubsection{Dados de Candidatura}
+
+\subsubsection{Dados de Bens de Candidatos}
+
+\subsubsection{Dados de Prestação de Contas}
 
 \section{Resultados}\label{sec:resuls}
 

@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import br.usp.sdext.core.Model;
+import br.usp.sdext.models.location.State;
+import br.usp.sdext.models.location.Town;
 
 @Entity
 public class Election extends Model implements Serializable {
