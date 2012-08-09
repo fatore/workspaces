@@ -8,8 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import br.usp.sdext.core.Model;
-import br.usp.sdext.models.location.State;
-import br.usp.sdext.models.location.Town;
+import br.usp.sdext.models.location.StateOld;
+import br.usp.sdext.models.location.TownOld;
 
 @Entity
 public class Election extends Model implements Serializable {
@@ -28,10 +28,10 @@ public class Election extends Model implements Serializable {
 	private Integer round;	
 	
 	@ManyToOne
-	private State state;
+	private StateOld state;
 	
 	@ManyToOne
-	private Town town;
+	private TownOld town;
 	
 	@Column(nullable=false)
 	private Long postID;
@@ -56,8 +56,8 @@ public class Election extends Model implements Serializable {
 	public Long getPostID() {return postID;}
 	public String getDescription() {return description;}
 	public String getPost() {return post;}
-	public State getState() {return state;}
-	public Town getTown() {return town;}
+	public StateOld getState() {return state;}
+	public TownOld getTown() {return town;}
 	
 	// setters
 	public void setId(Long id) {this.id = id;}
@@ -65,8 +65,8 @@ public class Election extends Model implements Serializable {
 	public void setRound(Integer round) {this.round = round;}
 	public void setPostID(Long postID) {this.postID = postID;}
 	public void setDescription(String description) {this.description = description;}
-	public void setState(State state) {this.state = state;}
-	public void setTown(Town town) {this.town = town;}
+	public void setState(StateOld state) {this.state = state;}
+	public void setTown(TownOld town) {this.town = town;}
 	public void setPost(String post) {this.post = post;}
 
 	@Override

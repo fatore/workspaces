@@ -41,7 +41,12 @@
 	
 	<mapping class="br.usp.sdext.models.location.Region"/>
 	<mapping class="br.usp.sdext.models.location.State"/>
+	<mapping class="br.usp.sdext.models.location.MesoRegion"/>
+	<mapping class="br.usp.sdext.models.location.MicroRegion"/>
 	<mapping class="br.usp.sdext.models.location.Town"/>
+	
+	<mapping class="br.usp.sdext.models.location.StateOld"/>
+	<mapping class="br.usp.sdext.models.location.TownOld"/>
 
 	<mapping class="br.usp.sdext.models.candidate.Candidate"/>
 	<mapping class="br.usp.sdext.models.candidate.Citizenship"/>

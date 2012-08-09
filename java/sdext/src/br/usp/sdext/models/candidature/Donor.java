@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import br.usp.sdext.core.Model;
-import br.usp.sdext.models.location.State;
+import br.usp.sdext.models.location.StateOld;
 
 @Entity
 public class Donor extends Model implements Serializable {
@@ -23,7 +23,7 @@ public class Donor extends Model implements Serializable {
 	private String name;
 	
 	@ManyToOne
-	private State state;
+	private StateOld state;
 	
 	public Donor() {}
 	
@@ -37,13 +37,13 @@ public class Donor extends Model implements Serializable {
 	public Long getID() {return id;}
 	public String getName() {return name;}
 	public Long getCpf() {return cpf;}
-	public State getState() {return state;}
+	public StateOld getState() {return state;}
 
 	// setters 
 	public void setId(Long id) {this.id = id;}
 	public void setName(String name) {this.name = name;}
 	public void setCpf(Long cpf) {this.cpf = cpf;}
-	public void setState(State state) {this.state = state;}
+	public void setState(StateOld state) {this.state = state;}
 
 	@Override
 	public int hashCode() {

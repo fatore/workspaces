@@ -112,5 +112,5 @@ ts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texmf-dist/fonts/type1/urw/co
 urier/ucrr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/
 share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-dist/fonts/
 type1/urw/times/utmri8a.pfb>
-Output written on document.pdf (8 pages, 218268 bytes).
+Output written on document.pdf (8 pages, 220012 bytes).
 Transcript written on document.log.

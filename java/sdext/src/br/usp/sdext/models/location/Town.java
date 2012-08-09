@@ -10,78 +10,97 @@ import br.usp.sdext.core.Model;
 
 @Entity
 public class Town extends Model implements Serializable {
-	
-	private static final long serialVersionUID = -1828441396997644793L;
+
+	private static final long serialVersionUID = -1778986467262553206L;
 
 	@Id
 	private Long id;
 	
+	public Integer ibgeCode;
+	public Integer ibgeCodeVD;
+	
+	public String status;
+	
+	public Integer sinpasCode;
+	public Integer siafiCode;
+	
+	public String name;
+	public String namex;
+	
+	public String obs;
+	
+	public String altCode;
+	public String altCodeVD;
+	
+	public Boolean legalAmazon;
+	public Boolean border;
+	public Boolean capital;
+	
 	@ManyToOne
 	private State state;
 	
-	private Long tseId;
+	@ManyToOne
+	private MesoRegion mesoRegion;
 	
-	private Long ueID;
+	@ManyToOne
+	private MicroRegion microRegion;
 	
-	private String label;
+	public Float latitude;
+	public Float longetude;
 	
-	public Town() {}
+	public Float altitude;
+	public Float area;
 	
-	public Town(Long tseId, String label) {
+	public Town(Integer ibgeCode, Integer ibgeCodeVD, String status,
+			Integer sinpasCode, Integer siafiCode, String name, String namex,
+			String obs, String altCode, String altCodeVD, Boolean legalAmazon,
+			Boolean border, Boolean capital, State state, 
+			MesoRegion mesoRegion, MicroRegion microRegion, Float latitude,
+			Float longetude, Float altitude, Float area) {
 		
-		this.id = null;
-		this.tseId = tseId;
-		this.label = label;
+		this.ibgeCode = ibgeCode;
+		this.ibgeCodeVD = ibgeCodeVD;
+		this.status = status;
+		this.sinpasCode = sinpasCode;
+		this.siafiCode = siafiCode;
+		this.name = name;
+		this.namex = namex;
+		this.obs = obs;
+		this.altCode = altCode;
+		this.altCodeVD = altCodeVD;
+		this.legalAmazon = legalAmazon;
+		this.border = border;
+		this.capital = capital;
+		this.state = state;
+		this.mesoRegion = mesoRegion;
+		this.microRegion = microRegion;
+		this.latitude = latitude;
+		this.longetude = longetude;
+		this.altitude = altitude;
+		this.area = area;
 	}
-	
+
 	public Long getId() {return id;}
 	public State getState() {return state;}
-	public Long getTseId() {return tseId;} 
-	public Long getUeId() {return ueID;} 
-	public String getLabel() {return label;}
+	public MesoRegion getMesoRegion() {return mesoRegion;}
+	public MicroRegion getMicroRegion() {return microRegion;}
 
 	public void setId(Long id) {this.id = id;}
 	public void setState(State state) {this.state = state;}
-	public void setTseId(Long tseId) {this.tseId = tseId;}
-	public void setUeId(Long ueId) {this.ueID = ueId;}
-	public void setLabel(String label) {this.label = label;}
-	
-	@Override
-	public int hashCode() {
-		
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((label == null) ? 0 : label.hashCode());
-		result = prime * result + ((state == null) ? 0 : state.hashCode());
-		return result;
-	}
+	public void setMesoRegion(MesoRegion mesoRegion) {this.mesoRegion = mesoRegion;}
+	public void setMicroRegion(MicroRegion microRegion) {this.microRegion = microRegion;}
 
 	@Override
-	public boolean equals(Object obj) {
-		
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Town other = (Town) obj;
-		if (label == null) {
-			if (other.label != null)
-				return false;
-		} else if (!label.equals(other.label))
-			return false;
-		if (state == null) {
-			if (other.state != null)
-				return false;
-		} else if (!state.equals(other.state))
-			return false;
-		return true;
-	}
-	
-	@Override
 	public String toString() {
-		return "Town [id=" + id + ", state=" + state + ", tseId=" + tseId
-				+ ", ueID=" + ueID + ", label=" + label + "]";
+		
+		return "Town [id=" + id + ", ibgeCode=" + ibgeCode + ", ibgeCodeVD="
+				+ ibgeCodeVD + ", status=" + status + ", sinpasCode="
+				+ sinpasCode + ", siafiCode=" + siafiCode + ", name=" + name
+				+ ", namex=" + namex + ", obs=" + obs + ", altCode=" + altCode
+				+ ", altCodeVD=" + altCodeVD + ", legalAmazon=" + legalAmazon
+				+ ", border=" + border + ", capital=" + capital + ", state="
+				+ state + ", mesoRegion=" + mesoRegion + ", microRegion="
+				+ microRegion + ", latitude=" + latitude + ", longetude="
+				+ longetude + ", altitude=" + altitude + ", area=" + area + "]";
 	}
 }

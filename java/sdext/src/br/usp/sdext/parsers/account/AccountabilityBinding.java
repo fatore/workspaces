@@ -1,18 +1,18 @@
 package br.usp.sdext.parsers.account;
 
 import br.usp.sdext.models.candidature.Candidature;
-import br.usp.sdext.models.location.State;
-import br.usp.sdext.models.location.Town;
+import br.usp.sdext.models.location.StateOld;
+import br.usp.sdext.models.location.TownOld;
 
 public class AccountabilityBinding {
 	
 	private String post;
-	private State electionState; 
-	private Town electionTown;
+	private StateOld electionState; 
+	private TownOld electionTown;
 	private Integer electionYear;
 	private Integer ballotNo;
 	
-	public AccountabilityBinding(String post, State electionState, Town electionTown,
+	public AccountabilityBinding(String post, StateOld electionState, TownOld electionTown,
 			Integer electionYear, Integer ballotNo) {
 		
 		this.post = post;

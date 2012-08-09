@@ -4,43 +4,62 @@ import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 import br.usp.sdext.core.Model;
 
 @Entity
 public class State extends Model implements Serializable {
-	
-	private static final long serialVersionUID = 6358274013517612742L;
-	
+
+	private static final long serialVersionUID = -2492705092435132356L;
+
 	@Id
 	private Long id;
 	
-	private String label;
+	public Integer ibgeCode;
+	
+	public String acronym;
+	
+	public String name;
+	public String namex;
+	
+	public Integer sinpasCode;
+	
+	@ManyToOne
+	private Region region;
+	
+	public Float area;
+	
+	public String status;
 	
 	public State() {}
-	
-	public State(String label) throws Exception 
-	{
-		if (label != null) 
-		{ 
-			if (label.length() > 2) 
-			{
-				throw new Exception("State label is larger than 2.");
-			}
-		}
-		this.id = null;
-		this.label = label;
+
+	public State(Integer ibgeCode, String acronym, String name, String namex,
+			Integer sinpasCode, Region region, Float area, String status) {
+		
+		this.ibgeCode = ibgeCode;
+		this.acronym = acronym;
+		this.name = name;
+		this.namex = namex;
+		this.sinpasCode = sinpasCode;
+		this.region = region;
+		this.area = area;
+		this.status = status;
 	}
-
-	public Long getId() {return id;}
-	public String getLabel() {return label;}
-
-	public void setId(Long id) {this.id = id;}
-	public void setLabel(String label) {this.label = label;}
 	
+	public Long getId() {return id;}
+	public Region getRegion() {return region;}
+	
+	public void setId(Long id) {this.id = id;}
+	public void setRegion(Region region) {this.region = region;}
+
 	@Override
 	public String toString() {
-		return "State [id=" + id + ", label=" + label + "]";
+		
+		return "State [id=" + id + ", ibgeCode=" + ibgeCode + ", acronym="
+				+ acronym + ", name=" + name + ", namex=" + namex
+				+ ", sinpasCode=" + sinpasCode + ", region=" + region
+				+ ", area=" + area + ", status=" + status + "]";
 	}
 
 	@Override
@@ -48,7 +67,7 @@ public class State extends Model implements Serializable {
 		
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((label == null) ? 0 : label.hashCode());
+		result = prime * result + ((acronym == null) ? 0 : acronym.hashCode());
 		return result;
 	}
 
@@ -62,10 +81,10 @@ public class State extends Model implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		State other = (State) obj;
-		if (label == null) {
-			if (other.label != null)
+		if (acronym == null) {
+			if (other.acronym != null)
 				return false;
-		} else if (!label.equals(other.label))
+		} else if (!acronym.equals(other.acronym))
 			return false;
 		return true;
 	}

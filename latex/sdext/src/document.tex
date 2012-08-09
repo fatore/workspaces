@@ -164,14 +164,12 @@ Um problema recorrente.
 
 \subsubsection{Dados de Localidade}
 
-Uma informação que é recorrente em praticamente em todos os arquivos do repositório de dados trata-se da localização de determinado acontecimento, por exemplo o local onde um candidato concorre a um determinado cargo, ou o seu local de nascimento. Essa informação representa um dado valioso para as análises propostas, pois sua disponibilidade viabiliza análises para verificar tendências geográficas.
+Uma informação que é recorrente em praticamente em todos os arquivos do repositório de dados trata-se da localização de determinado acontecimento, por exemplo o local onde um candidato concorre a um determinado cargo, ou o seu local de nascimento. Essa informação representa um dado valioso para as análises propostas, pois sua disponibilidade viabiliza análises sobre tendências geográficas.
 
-No entanto existe um problema no tratamento dessa informação, o repositório do TSE utiliza um código gerado internamente para identificar os municípios. Esse código não apresenta relação com outros sistemas do governo, assim no caso de análises geográficas não é possível utilizar dados do IBGE, por exemplo, para determinar a proximidade entre dois municípios. Durante uma análise dos dados detectou-se que em alguns casos esse código do TSE simplesmente não constava em determinados arquivos. Em situações onde a identificação do TSE não existe ou é inválida é preciso utilizar o nome da cidade e a qual estado ela pertence para identificá-la.
+No entanto existe um problema no tratamento dessa informação, o repositório do TSE utiliza um código gerado internamente para identificar os municípios. Esse código não apresenta relação com outros sistemas do governo, assim no caso de análises geográficas não é possível utilizar dados do IBGE, por exemplo, para determinar a proximidade entre dois municípios. Uma análise dos dados revela que em alguns casos esse código do TSE simplesmente não consta em determinados arquivos. Em situações onde a identificação do TSE não existe ou é inválida é preciso utilizar o nome da cidade e a qual estado ela pertence para identificá-la.
 
-A solução proposta para contornar essa questão foi utilizar um recurso criado pelo Departamento de Informática do SUS, o DATASUS~\cite{www.datasus} . Este recurso é um trabalho que tem como objetivo o aprimoramento da gestão do sistema de saúde nacional. 
-O sistema mantém códigos em suas tabelas que possibilitam a comunicação com outros sistemas do governo inclusive com o IBGE. 
-
-Apesar de se tratar de um recurso voltado para a saúde, esse sistema apresenta uma base de dados completa. Particularmente a seção de unidades territoriais é de extremo interesse para este trabalho, pois existe uma hierarquia completa de níveis de detalhamento geográfico que possibilita trabalhar de regiões nacionais até distritos de um município, como pode ser observado na Figura~\ref{fig:datasus_ut}. Para cada município o tem-se sua localização geográfica com base em sua latitude e longitude.
+A solução proposta para contornar essa questão foi utilizar um recurso criado pelo Departamento de Informática do SUS, o DATASUS~\cite{www.datasus}. Este recurso é um trabalho que tem como objetivo o aprimoramento da gestão do sistema de saúde nacional. 
+Apesar de se tratar de um recurso voltado para a saúde, esse sistema apresenta uma base de dados completa. Particularmente as tabelas relacionadas à unidades territoriais são de grande interesse para este trabalho, pois apresentam uma hierarquia completa de níveis de detalhamento geográfico que possibilita trabalhar desde regiões nacionais até distritos de um município, como pode ser observado na Figura~\ref{fig:datasus_ut}. Para cada município tem-se sua localização geográfica com base em sua latitude e longitude. Além disso, o sistema mantém códigos em suas tabelas que possibilitam a comunicação com outros sistemas do governo, inclusive com o IBGE. 
 
 \begin{figure}[htb]
     \centering
@@ -182,6 +180,7 @@ Apesar de se tratar de um recurso voltado para a saúde, esse sistema apresenta u
 
 A proposta desta tarefa é estabelecer uma relação entre os dados de localidade encontrados no repositório do TSE e os dados do DATASUS. O procedimento realizado para isso se baseia em utilizar o nome da cidade e seu estado informados no repositório do TSE para definir uma equivalência com os dados do DATASUS.
 
+Os dados obtidos no DATASUS estão no formato dBase e podem ser baixados livremente e importados por diversos softwares que suportam este formato. Os arquivos se encontram na codificação DOS/850 e esta deve ser levada em conta ao se realizar a importação dos arquivos. Este trabalho utilizou a ferramenta livre OpenOffice~\cite{www.lbo} para converter os arquivos dBase para o formato CSV e assim posteriormente processá-los juntamente com os dados do TSE.
 
 \subsubsection{Dados de Candidatura}
 
