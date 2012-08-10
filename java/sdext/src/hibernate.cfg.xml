@@ -33,10 +33,10 @@
         <!-- Drop and re-create the database schema on startup -->
         <property name="hbm2ddl.auto">create-drop</property>
 
+	<mapping class="br.usp.sdext.models.Log"/>
 	
 	<mapping class="br.usp.sdext.models.Coalition"/>
 	<mapping class="br.usp.sdext.models.Election"/>
-	<mapping class="br.usp.sdext.models.Log"/>
 	<mapping class="br.usp.sdext.models.Party"/>
 	
 	<mapping class="br.usp.sdext.models.location.Region"/>

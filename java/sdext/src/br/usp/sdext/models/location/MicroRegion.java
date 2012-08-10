@@ -16,17 +16,17 @@ public class MicroRegion extends Model implements Serializable {
 	@Id
 	private Long id;
 	
-	public Integer ibgeCode;
+	private Integer ibgeCode;
 	
-	public String name;
-	public String namex;
+	private String name;
+	private String namex;
 	
-	public String acronym;
+	private String acronym;
 	
 	@ManyToOne
 	private State state;
 	
-	public String status;
+	private String status;
 	
 	public MicroRegion() {}
 	
@@ -42,10 +42,20 @@ public class MicroRegion extends Model implements Serializable {
 	}
 	
 	public Long getId() {return id;}
+	public Integer getIbgeCode() {return ibgeCode;}
+	public String getName() {return name;}
+	public String getNamex() {return namex;}
+	public String getAcronym() {return acronym;}
 	public State getState() {return state;}
-
+	public String getStatus() {return status;}
+	
 	public void setId(Long id) {this.id = id;}
+	public void setIbgeCode(Integer ibgeCode) {this.ibgeCode = ibgeCode;}
+	public void setName(String name) {this.name = name;}
+	public void setNamex(String namex) {this.namex = namex;}
+	public void setAcronym(String acronym) {this.acronym = acronym;}
 	public void setState(State state) {this.state = state;}
+	public void setStatus(String status) {this.status = status;}
 	
 	@Override
 	public String toString() {

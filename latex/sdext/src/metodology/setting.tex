@@ -1,0 +1,66 @@
+Os dados utilizados neste trabalho são provenientes do repositório de dados~\cite{www.tse-rep} do TSE (Tribunal Superior Eleitoral). O TSE é o órgão máximo da Justiça Eleitoral brasileira e atua em conjunto com os TREs (Tribunais Regionais Eleitorais), que são os responsáveis diretos pela administração do processo eleitoral dos respectivos estados e municípios os quais representam.~\cite{www.tse}
+
+O repositório de dados eleitorais é uma compilação de dados brutos das eleições desde 1994 voltada a pesquisadores, imprensa e cidadãos em geral que tenham interesse em analisar os dados de eleitorado, candidaturas, resultados e prestação de contas das eleições.
+
+Os dados são fornecidos como arquivos de texto formatados no padrão CSV~\cite{www.csv} (Comma Separated Values), que é um tipo de formatação muito utilizado devido à sua simplicidade. O conteúdo de cada arquivo é descrito por arquivos de ajuda. Nestes arquivos de ajuda é comum o uso do termo "unidade eleitoral", a definição deste termo no caso de eleição majoritária é o estado em que o candidato concorre e em caso de eleição municipal é o código TSE do município.
+Assume-se os valores especiais BR, ZZ e VT para designar as unidades eleitorais correspondentes, respectivamente, ao Brasil, ao Exterior e a Voto em Trânsito.
+
+O TSE não se responsabiliza por qualquer consulta ou análise realizada sobre os dados, deste modo deve-se atentar para uma cuidadosa etapa de aquisição dos dados e buscar manter a consistência dos dados durante todo o decorrer do trabalho.
+
+Os arquivos do repositório estão organizados nas categorias eleitorado, candidatos, resultados e prestação de contas, como mostra a Figura~\ref{fig:rep_geral}. As subseções seguintes buscam detalhar o conteúdo de cada uma dessas categorias.
+
+\begin{figure}[htb]
+        \centering
+        \includegraphics[width=16cm]{images/rep_geral.png}
+        \caption{Visão geral do repositório de dados eleitorais.}
+        \label{fig:rep_geral}
+\end{figure}
+
+\subsection{Eleitorado}\label{sub:eleitorado}
+
+A categoria "eleitorado" contém arquivos com informações do perfil do eleitorado de cada eleição até o grão de zona eleitoral. Um município pode conter várias zonas eleitorais e o que este arquivo descreve é a quantidade de eleitores de um determinado perfil que pertencem à estas zonas. 
+
+Um perfil de eleitorado é definido pelos atributos sexo, faixa etária e grau de escolaridade. Deve-se ter em mente que o atributo grau escolaridade é declarado pelo eleitor, sendo que em muitos casos o eleitor se cadastra com um determinado grau de escolaridade, por exemplo: com ensino médio aos 16 anos de idade, e não volta ao cartório eleitoral para atualizar esta informação.
+
+\subsection{Candidatos}\label{sub:candidatos}
+
+Os dados pertencentes à categoria "candidatos" são subdivididos em informações de candidatura, bens dos candidatos, legendas políticas e vagas disponíveis, como mostra a Figura~\ref{fig:candidatos}.
+
+\begin{figure}[htb]
+        \centering
+        \includegraphics[width=16cm]{images/candidatos.png}
+        \caption{Organização dos arquivos de candidatos.}
+        \label{fig:candidatos}
+\end{figure}
+
+Os arquivos correspondentes às informações de candidatura são os mais extensos e também os mais importantes para as análises propostas por este trabalho. Eles contêm informações importantes sobre os candidatos, como por exemplo ocupação, sexo, idade, grau de escolaridade, estado civil e um dado crucial: se o candidato foi eleito ou não ao término da eleição. Além disso, este arquivo contém informações sobre o cargo que o candidato está concorrendo e a qual partido político e coligação ele pertence.
+
+No momento da candidatura os candidatos são obrigados a preencher um formulário de declaração de bens e valores em cumprimento ao Artigo 13 da Lei n$^o$ 8.429 \cite{Lei8429}. O repositório de dados do TSE disponibiliza os conteúdos desses formulários, para cada item declarado por um candidato há uma descrição, o valor e o tipo do item.
+
+De acordo com o arquivo de ajuda do repositório de dados do TSE, uma legenda política pode ser constituída por um ou mais partidos políticos. Além disso, diferentes legendas podem ser formadas em diferentes unidades eleitorais do país e também para diferentes cargos.
+
+Os arquivos de vagas disponíveis são os mais simples da categoria "candidatos" e descrevem para cada unidade eleitoral a quantidade de vagas disponíveis para cada cargo. 
+
+\subsection{Resultados}\label{sub:resultados}
+
+O repositório de dados disponibiliza os resultados das eleições por meio de duas categorias: votos totalizados e boletins de urnas. A organização completa desses arquivos pode ser observada na Figura~\ref{fig:resultados}.
+
+\begin{figure}[htb]
+        \centering
+        \includegraphics[width=16cm]{images/resultados.png}
+        \caption{Organização dos arquivos de resultados de eleições.}
+        \label{fig:resultados}
+\end{figure}
+
+Os votos totalizados são o resultado do trabalho realizado pelo sistema de apuração, ou sistema de totalização. Para cada candidato é informado o número de votos obtidos em cada zona eleitoral de cada município. A mesma informação é disponibilizada para cada partido político.
+
+Os boletins de urna são os dados coletados pelas seções eleitorais. Pode-se ainda dividir esses boletins em duas categorias: detalhes de apuração e votos. Os detalhes de apuração descrevem para zonas eleitorais e para seções eleitorais uma série de informações em relação a uma determinada eleição. Esses detalhes informam o comparecimento e as abstenções dos eleitores e o número de votos válidos, nulos, em branco e em legenda. Por meio dos boletins de votos realiza-se a apuração de uma eleição. Este tipo de boletim revela quantos votos um candidato de um determinado partido obteve em cada seção eleitoral.
+
+
+\subsection{Prestação de Contas}\label{sub:resultados}
+
+Os arquivos de prestação de contas descrevem as receitas e despesas de campanha dos candidatos, partidos e comitês. As prestações de contas estão disponíveis em meio digital somente a partir de 2002.
+
+O TSE não faz menção aos arquivos de prestação de contas em seu arquivo de ajuda. Existe, na verdade, para cada eleição um arquivo específico que descreve como a informação de prestação contas se encontra para aquela eleição particularmente. A falta de uma especificação geral para esses dados resulta em uma maior complexidade no tratamento desses dados, pois a ordem e, em alguns casos, até mesmo a existência de determinados campos varia de eleição para eleição.
+
+De um modo geral, o repositório de dados disponibiliza os valores e pessoas (ou empresas) envolvidos em cada receita e despesa dos candidatos, partidos e comitês. Para doadores e fornecedores têm-se por exemplo os seus nomes e os números do CPF, ou CNPJ tratando-se de uma empresa.

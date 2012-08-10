@@ -14,8 +14,8 @@ kurmanji, latin, latvian, lithuanian, mongolian, mongolianlmc, bokmal, nynorsk,
  polish, portuguese, romanian, romansh, russian, sanskrit, serbian, serbianc, s
 lovak, slovenian, spanish, swedish, turkish, turkmen, ukrainian, uppersorbian, 
 welsh, loaded.
-(/usr/share/texmf-dist/tex/latex/base/article.cls
-Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
+(/usr/share/texmf-dist/tex/latex/base/report.cls
+Document Class: report 2007/10/19 v1.4h Standard LaTeX document class
 (/usr/share/texmf-dist/tex/latex/base/size12.clo))
 (/usr/share/texmf-dist/tex/generic/babel/babel.sty
 (/usr/share/texmf-dist/tex/generic/babel/portuges.ldf
@@ -77,7 +77,7 @@ Package biblatex Warning: 'babel' detected but 'csquotes' missing.
 
 (./document.aux
 
-LaTeX Warning: Label `sss:resultados' multiply defined.
+LaTeX Warning: Label `sub:resultados' multiply defined.
 
 ) (/usr/share/texmf-dist/tex/latex/psnfss/t1ptm.fd)
 (/usr/share/texmf-dist/tex/latex/hyperref/nameref.sty
@@ -93,24 +93,44 @@ LaTeX Warning: Label `sss:resultados' multiply defined.
 *geometry* detected driver: pdftex
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd)
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd) [1{/var/lib/texmf/fonts/map/
-pdftex/updmap/pdftex.map}]
-<images/rep_geral.png, id=86, 1416.29124pt x 327.2225pt>
+pdftex/updmap/pdftex.map}]pdfTeX warning (ext4): destination with the same iden
+tifier (name{page.1}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.63 \end{abstract}
+                    [1]
+Cap\'{\i }tulo 1.
+[2]
+Cap\'{\i }tulo 2.
+[3]
+Cap\'{\i }tulo 3.
+(./src/metodology/materials.tex) (./src/metodology/setting.tex [4]
+<images/rep_geral.png, id=105, 1416.29124pt x 327.2225pt>
 <use images/rep_geral.png>
-<images/candidatos.png, id=88, 1386.17876pt x 327.2225pt>
-<use images/candidatos.png> [2 <./images/rep_geral.png>]
-<images/resultados.png, id=96, 1759.57375pt x 568.1225pt>
-<use images/resultados.png> [3 <./images/candidatos.png>] [4 <./images/resultad
-os.png>] [5] <images/datasus_ut.pdf, id=115, 602.25pt x 602.25pt>
-<use images/datasus_ut.pdf> [6]
-(/usr/share/texmf-dist/tex/latex/psnfss/t1pcr.fd) [7 <./images/datasus_ut.pdf>]
-[8] (./document.aux)
+<images/candidatos.png, id=107, 1386.17876pt x 327.2225pt>
+<use images/candidatos.png> [5 <./images/rep_geral.png>]
+<images/resultados.png, id=115, 1759.57375pt x 568.1225pt>
+<use images/resultados.png> [6 <./images/candidatos.png>]) [7 <./images/resulta
+dos.png>] (./src/metodology/db_selection.tex) (./src/metodology/db_creation.tex
+ [8] <images/datasus_ut.pdf, id=135, 602.25pt x 602.25pt>
+<use images/datasus_ut.pdf> [9]
+<images/locations_db.png, id=144, 731.73375pt x 325.215pt>
+<use images/locations_db.png> (/usr/share/texmf-dist/tex/latex/psnfss/omsptm.fd
+) [10 <./images/datasus_ut.pdf>] [11 <./images/locations_db.png>]) [12]
+[13]
+Cap\'{\i }tulo 4.
+[14]
+Cap\'{\i }tulo 5.
+[15] (/usr/share/texmf-dist/tex/latex/psnfss/t1pcr.fd) [16] (./document.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
- ){/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texmf-dist/fon
-ts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texmf-dist/fonts/type1/urw/co
-urier/ucrr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/
-share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-dist/fonts/
-type1/urw/times/utmri8a.pfb>
-Output written on document.pdf (8 pages, 220012 bytes).
+ )
+(see the transcript file for additional information){/usr/share/texmf-dist/font
+s/enc/dvips/base/8r.enc}</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/c
+mmi8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr
+/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-dist/fon
+ts/type1/urw/times/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmr
+8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on document.pdf (17 pages, 246348 bytes).
 Transcript written on document.log.

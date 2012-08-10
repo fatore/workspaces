@@ -4,10 +4,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import javax.persistence.ManyToOne;
+import java.util.HashSet;
 
 import br.usp.sdext.core.Model;
 import br.usp.sdext.models.Log;
@@ -29,6 +29,9 @@ public class LocationParser extends ModelParser {
 	private HashMap<Model, Model> townsMap = new HashMap<>();
 	
 	private HashMap<Integer, Model> statesMapByIBGE = new HashMap<>();
+	private HashMap<Integer, Model> townsMapByIBGE = new HashMap<>();
+	
+	private HashSet<Model> lostTownsMap= new HashSet<>();
 
 	public HashMap<Model, Model> getRegionsMap() {return regionsMap;}
 	public HashMap<Model, Model> getStatesMap() {return statesMap;}
@@ -43,13 +46,14 @@ public class LocationParser extends ModelParser {
 
 		// Skip first line.
 		String line = in.readLine();
+		String pieces[] = null;
 
 		while ((line = in.readLine()) != null) {
 
 			try {
 				
-				// Break line where finds ";"
-				String pieces[] = line.split("\\t");
+				// Break line where finds tab
+				pieces = line.split("\\t");
 
 				// remove double quotes
 				for (int i = 0; i < pieces.length; i++) {
@@ -83,7 +87,54 @@ public class LocationParser extends ModelParser {
 				}
 
 			} catch (Exception e) {
+				
+				String exceptionClass = null;
+				String exceptionMethod = null;
 
+				for (StackTraceElement element : e.getStackTrace()) {
+
+					if (element.getClassName().contains("br.usp.sdext.parsers")) {
+						exceptionClass = element.getClassName();
+						exceptionMethod = element.getMethodName();
+						break;
+					}
+				}
+				Log log = new Log(line,"CAUSED BY: " + exceptionMethod 
+						+ " IN CLASS: " + exceptionClass, e.getMessage());
+				logs.add(log);
+			}
+		}
+
+		if (in != null) {
+			in.close();
+		}
+	}
+	
+	public void bindObjects(String filename) throws Exception {
+
+		BufferedReader in = new BufferedReader(
+				new InputStreamReader(new FileInputStream(new File(filename)), "ISO-8859-1"));
+
+		// Skip first line.
+		String line = in.readLine();
+		String pieces[] = null;
+
+		while ((line = in.readLine()) != null) {
+
+			try {
+				
+				// Break line where finds ";"
+				pieces = line.split(";");
+
+				// remove double quotes
+				for (int i = 0; i < pieces.length; i++) {
+					pieces[i] = pieces[i].replace("\"", "");
+				}
+
+				bindTown(pieces);
+
+			} catch (Exception e) {
+				
 				String exceptionClass = null;
 				String exceptionMethod = null;
 
@@ -108,7 +159,7 @@ public class LocationParser extends ModelParser {
 
 	private void parseRegion(String[] pieces) throws Exception {
 
-		Integer ibgeCode = parseInt(pieces[0]);
+		Integer ibgeCode = Integer.parseInt(pieces[0]);
 
 		String name = pieces[1];
 		String namex = pieces[2];
@@ -134,17 +185,17 @@ public class LocationParser extends ModelParser {
 
 	private void parseState(String[] pieces) throws Exception {
 
-		Integer ibgeCode = parseInt(pieces[0]);
+		Integer ibgeCode = Integer.parseInt(pieces[0]);
 
 		String acronym = pieces[1];
 
 		String name = pieces[2];
 		String namex = pieces[3];
 
-		Integer sinpasCode = parseInt(pieces[4]);
+		Integer sinpasCode = Integer.parseInt(pieces[4]);
 
 		Region region = new Region();
-		region.ibgeCode = parseInt(pieces[5]);
+		region.setIbgeCode(Integer.parseInt(pieces[5]));
 		region = (Region) Model.fetch(region, regionsMap);
 
 		Float area = Float.parseFloat(pieces[6]);
@@ -159,7 +210,7 @@ public class LocationParser extends ModelParser {
 
 			state = (State) Model.fetch(state, statesMap);
 			
-			statesMapByIBGE.put(state.ibgeCode, state);
+			statesMapByIBGE.put(state.getIbgeCode(), state);
 			
 		} else {
 
@@ -169,7 +220,7 @@ public class LocationParser extends ModelParser {
 	
 	private void parseMesoRegion(String[] pieces) throws Exception {
 
-		Integer ibgeCode = parseInt(pieces[0]);
+		Integer ibgeCode = Integer.parseInt(pieces[0]);
 
 		String name = pieces[1];
 		String namex = pieces[2];
@@ -177,7 +228,7 @@ public class LocationParser extends ModelParser {
 		String acronym = pieces[3];
 
 		State state = new State();
-		state = (State) statesMapByIBGE.get(parseInt(pieces[4]));
+		state = (State) statesMapByIBGE.get(Integer.parseInt(pieces[4]));
 
 		String status = pieces[5];
 		
@@ -198,7 +249,7 @@ public class LocationParser extends ModelParser {
 	
 	private void parseMicroRegion(String[] pieces) throws Exception {
 
-		Integer ibgeCode = parseInt(pieces[0]);
+		Integer ibgeCode = Integer.parseInt(pieces[0]);
 
 		String name = pieces[1];
 		String namex = pieces[2];
@@ -206,7 +257,7 @@ public class LocationParser extends ModelParser {
 		String acronym = pieces[3];
 
 		State state = new State();
-		state = (State) statesMapByIBGE.get(parseInt(pieces[4]));
+		state = (State) statesMapByIBGE.get(Integer.parseInt(pieces[4]));
 
 		String status = pieces[5];
 		
@@ -227,8 +278,8 @@ public class LocationParser extends ModelParser {
 	
 	private void parseTown(String[] pieces) throws Exception {
 		
-		Integer ibgeCode = parseInt(pieces[0]);
-		Integer ibgeCodeVD = parseInt(pieces[1]);
+		Integer ibgeCode = Integer.parseInt(pieces[0]);
+		Integer ibgeCodeVD = Integer.parseInt(pieces[1]);
 		
 		String status = pieces[2];
 		
@@ -248,14 +299,14 @@ public class LocationParser extends ModelParser {
 		Boolean capital = (pieces[12].equals("S")) ? true : false;
 		
 		State state = new State();
-		state = (State) statesMapByIBGE.get(parseInt(pieces[13]));
+		state = (State) statesMapByIBGE.get(Integer.parseInt(pieces[13]));
 		
 		MesoRegion mesoRegion = new MesoRegion();
-		mesoRegion.ibgeCode = parseInt(pieces[14]);
+		mesoRegion.setIbgeCode(Integer.parseInt(pieces[14]));
 		mesoRegion = (MesoRegion) mesosMap.get(mesoRegion);
 		
 		MicroRegion microRegion = new MicroRegion();
-		microRegion.ibgeCode = parseInt(pieces[15]);
+		microRegion.setIbgeCode(Integer.parseInt(pieces[15]));
 		microRegion = (MicroRegion) microsMap.get(microRegion);
 		
 		Float latitude = Float.parseFloat(pieces[25]);
@@ -268,6 +319,60 @@ public class LocationParser extends ModelParser {
 				name, namex, obs, altCode, altCodeVD, legalAmazon, border, capital,
 				state, mesoRegion, microRegion, latitude, longetude, altitude, area);
 		
+		Town mappedTown = (Town) townsMap.get(town);
+		
+		if (mappedTown == null) {
+			
+			town = (Town) Model.fetch(town, townsMap);
+			
+			townsMapByIBGE.put(town.getIbgeCode(), town);
+			
+		} else {
+			
+			throw new Exception("Town already exists in map.");
+		}
+		
+	}
+	
+	private void bindTown(String[] pieces) throws Exception {
+		
+		State state = new State();
+		state.setAcronym(pieces[1]);
+		
+		State mappedState = (State) statesMap.get(state);
+		
+		if (mappedState == null) {
+			
+			throw new Exception("State not found in map: " + state.getAcronym());
+		} else {
+			
+			state = mappedState;
+		}
+		
+		Town town = new Town();
+		town.setNamex(removeAccent(pieces[2]).toUpperCase());
+		town.setState(state);
+		
+		Town mappedTown = (Town) townsMap.get(town);
+		
+		if (mappedTown == null) {
+			
+			if (!lostTownsMap.contains(town)) {
+				
+				System.out.println("Town not found in map: " + town.getNamex());
+				lostTownsMap.add(town);
+				throw new Exception("Town not found in map: " + town.getNamex());
+			}
+			
+		} else {
+			
+			town = mappedTown;
+		}
+		
+		Integer tseCode = Integer.parseInt(pieces[3]);
+		
+		town.setTseCode(tseCode);
+		
 	}
 	
 	private Integer parseInt(String str) {
@@ -278,11 +383,21 @@ public class LocationParser extends ModelParser {
 		
 		return number;
 	}
+	
+	private String removeAccent(String str) {
+		
+		String result = Normalizer.normalize(str, Normalizer.Form.NFD);
+		result = result.replaceAll("[^\\p{ASCII}]", "");
+		
+		return result;
+	}
 
 	@Override
 	public void save() {
 
+		
 		Model.bulkSave(logs);
+		System.out.println("Saving location data: ");
 		System.out.println("\tSaving logs...");
 
 		System.out.println("\tSaving regions...");
@@ -299,6 +414,8 @@ public class LocationParser extends ModelParser {
 		
 		System.out.println("\tSaving towns...");
 		Model.bulkSave(townsMap.values());
+		
+		System.out.println("Done.");
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -310,6 +427,8 @@ public class LocationParser extends ModelParser {
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/meso.csv", "meso");
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/micro.csv", "micro");
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/mun.csv", "town");
+		
+		locationParser.bindObjects("/home/fm/work/data/sdext/eleitorais/eleitorado/2012/perfil_eleitorado_2012.txt");
 
 		locationParser.save();
 	}

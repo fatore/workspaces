@@ -16,21 +16,21 @@ public class State extends Model implements Serializable {
 	@Id
 	private Long id;
 	
-	public Integer ibgeCode;
+	private Integer ibgeCode;
 	
-	public String acronym;
+	private String acronym;
 	
-	public String name;
-	public String namex;
+	private String name;
+	private String namex;
 	
-	public Integer sinpasCode;
+	private Integer sinpasCode;
 	
 	@ManyToOne
 	private Region region;
 	
-	public Float area;
+	private Float area;
 	
-	public String status;
+	private String status;
 	
 	public State() {}
 
@@ -48,10 +48,24 @@ public class State extends Model implements Serializable {
 	}
 	
 	public Long getId() {return id;}
+	public Integer getIbgeCode() {return ibgeCode;}
+	public String getName() {return name;}
+	public String getNamex() {return namex;}
+	public String getAcronym() {return acronym;}
+	public String getStatus() {return status;}
+	public Integer getSinpasCode() {return sinpasCode;}
 	public Region getRegion() {return region;}
+	public void setAcronym(String acronym) {this.acronym = acronym;}
 	
 	public void setId(Long id) {this.id = id;}
+	public void setIbgeCode(Integer ibgeCode) {this.ibgeCode = ibgeCode;}
+	public void setName(String name) {this.name = name;}
+	public void setNamex(String namex) {this.namex = namex;}
+	public Float getArea() {return area;}
+	public void setSinpasCode(Integer sinpasCode) {this.sinpasCode = sinpasCode;}
 	public void setRegion(Region region) {this.region = region;}
+	public void setArea(Float area) {this.area = area;}
+	public void setStatus(String status) {this.status = status;}
 
 	@Override
 	public String toString() {

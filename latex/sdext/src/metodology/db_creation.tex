@@ -1,0 +1,119 @@
+A fase de criação do banco de dados consiste em interpretar os dados selecionados de modo que seja possível realizar consultas para analisar relações entre os dados, como por exemplo: informações de candidaturas de um determinado candidato ao longo de diferentes eleições.
+
+O banco de dados se comporta como um centralizador de toda a informação adquirida esparsamente no repositório de dados. Em sua modelagem e implementação deve se ter em mente que a síntese de informações de diferentes arquivos requer um grande esforço, assim à esta etapa reservou-se uma grande parcela do tempo de execução deste trabalho.
+
+Optou-se por dividir a etapa de criação do banco de dados em módulos que são detalhados nas subseções seguintes. Assim tanto a implementação quanto a descrição do trabalho realizado podem ser melhor compreendidos.
+
+\subsection{Tratamento de Ambiguidade entre Palavras}
+
+\subsubsection{O problema}
+
+\begin{itemize}
+        \item
+        \item
+\end{itemize}
+
+                
+
+Um problema recorrente.
+
+\subsection{Dados de Localidade}
+
+Uma informação que é recorrente em praticamente em todos os arquivos do repositório de dados trata-se da localização de determinado acontecimento, por exemplo o local onde um candidato concorre a um determinado cargo, ou o seu local de nascimento. Essa informação representa um dado valioso para as análises propostas, pois sua disponibilidade viabiliza análises sobre tendências geográficas.
+
+No entanto existe um problema no tratamento dessa informação, o repositório do TSE utiliza um código gerado internamente para identificar os municípios. Esse código não apresenta relação com outros sistemas do governo, assim no caso de análises geográficas não é possível, por exemplo, utilizar dados do IBGE para determinar a localização de um município. Uma análise dos dados revela que em alguns casos esse código do TSE simplesmente não consta em determinados arquivos.
+
+A solução para contornar essa questão foi encontrada em um recurso criado pelo Departamento de Informática do SUS, o DATASUS~\cite{www.datasus}. Este recurso é um trabalho que tem como objetivo o aprimoramento da gestão do sistema de saúde nacional. 
+Apesar de se tratar de um recurso voltado para a saúde, esse sistema apresenta uma  rica base de dados com arquivos de diversas categorias, incluindo uma categoria de unidades territoriais. 
+
+As tabelas do DATASUS relacionadas à unidades territoriais apresentam uma hierarquia completa de níveis de detalhamento geográfico que possibilitam trabalhar desde regiões nacionais até distritos de um município, como pode ser observado na Figura~\ref{fig:datasus_ut}. 
+
+\begin{figure}[htb]
+        \centering
+        \includegraphics[width=10cm]{images/datasus_ut.pdf}
+        \caption{Hierarquia dos níveis de detalhamento geográfico dos dados de unidades territoriais do DATASUS.}
+        \label{fig:datasus_ut}
+\end{figure}
+
+Para cada município tem-se sua localização geográfica com base em sua latitude e longitude. Além disso, o sistema mantém códigos em suas tabelas que possibilitam a comunicação com outros sistemas do governo, inclusive com o IBGE. 
+
+A proposta deste modulo é estabelecer uma relação entre os dados de localidade encontrados no repositório do TSE e os dados do DATASUS. O procedimento realizado para isso se baseia em utilizar o nome da cidade e seu estado informados no repositório do TSE para definir uma equivalência com os dados do DATASUS.
+
+Os dados obtidos no DATASUS estão no formato dBase e podem ser baixados livremente e importados por diversos softwares que suportam este formato. Os arquivos se encontram na codificação DOS/850 e esta deve ser levada em conta ao se realizar a importação dos arquivos. Este trabalho utilizou a ferramenta livre LibreOffice~\cite{www.lbo} para converter os arquivos dBase para o formato CSV e assim posteriormente processá-los juntamente com os dados do TSE.
+
+Desenvolveu-se um processador responsável por carregar os arquivos sobre unidades territoriais to DATASUS no banco de dados. Esta tarefa se resume a interpretar cada campo do arquivo CSV em um atributo de uma nova tabela no banco de dados. O resultado deste processamento é apresentado na Figura~\ref{fig:locations_db}.
+
+\begin{figure}[htb]
+        \centering
+        \includegraphics[width=15cm]{images/locations_db.png}
+        \caption{Resultado do processamento dos dados de unidades territoriais. Diagrama construído pela ferramenta \textit{SchemaSpy}~\cite{www.schemaspy}}
+        \label{fig:locations_db}
+\end{figure}
+
+A tabela de regiões contém 6 entradas (\textit{rows}), 1 que designa região ignorada ou no exterior e 5 que representam as macrorregiões nacionais. Uma região contém um ou mais estados. 
+
+Ao todo a tabela de estados contém 28 entradas, sendo elas:
+
+\begin{itemize}
+        \item 26 Unidades Federativas;
+        \item Distrito Federal; e 
+        \item UF ignorada ou no exterior.
+\end{itemize}
+
+As tabelas de mesorregiões e microrregiões com 165 e 586 entradas, respectivamente, representam subdivisões dos estados que congregam diversos municípios de uma área geográfica com similaridades econômicas e sociais. Ambas foram criadas pelo IBGE para fins estatísticos e não constituem entidades políticas ou administrativas. 
+
+A tabela de cidades contém informações referentes a:
+
+\begin{itemize}
+        \item 5.565 Municípios em vigor, sendo 5.563 Municípios propriamente ditos, 1 Distrito Federal (Brasília) e 1 Distrito Estadual (Fernando de Noronha);
+        \item 60 Municípios transferidos de Goiás para Tocantins, quando da criação deste; estes códigos são válidos até 31/12/1988;
+        \item 1 Município extinto (Pinto Bandeira, no Rio Grande do Sul, reincorporado a Bento Gonçalves por decisão judicial); e
+        \item 27 Municípios ignorados, um para cada Unidade da Federação (exceto do Distrito Federal) e um correspondendo a UF ignorada ou no exterior.
+\end{itemize}
+
+Os demais níveis de detalhamento como distritos de municípios não foram processados pois estão fora do interesse deste trabalho.
+
+
+
+Os arquivos de eleitorado mencionados na Seção~\ref{sec:setting} não são de interesse direto para as análises propostas por este trabalho. Porém, esta tabela contém todos municípios envolvidos nas eleições juntamente com o código utilizado pelo TSE para identificá-los, como pode ser observado na Tabela~\ref{tab:eleitorado}.
+
+\begin{table}[h!]
+        \centering
+        \begin{tabular}{|l|l|l|}
+                \hline
+                \multicolumn{3}{|c|}{\textbf{Perfil do Eleitorado}} \\
+                \hline
+                \textbf{Ordem} &  \textbf{Nome} & \textbf{Tipo}   \\
+                \hline
+                0 & Ano Eleição & Numérico \\
+                \hline
+                1 & \textbf{UF da Zona Eleitora0l} & Caractere \\
+                \hline
+                2 & \textbf{Município da Zona Eleitoral} & Caractere \\
+                \hline
+                3 & \textbf{Código TSE do Município} & Numérico \\
+                \hline
+                4 & Número da Zona Eleitoral  & Numérico \\
+                \hline
+                5 & Sexo do Perfil & Caractere \\
+                \hline
+                6 & Faixa Etária do Perfil & Caractere \\
+                \hline
+                7 & Grau de Escolaridade do Perfil & Caractere \\
+                \hline
+                8 & Quantidade de Eleitores no Perfil & Numérico \\
+                \hline
+        \end{tabular}
+        \caption{Atributos dos arquivos de perfil do eleitorado. Destaque para os atributos UF (estado), município e código TSE do município.}
+        \label{tab:eleitorado}
+\end{table}
+
+Por meio do nome e estado das cidades do arquivo de eleitorado é possível determinar a correspondência com as tabelas existentes no banco de dados e quando o código do TSE existir e for válido, então é possível associar esse valor às tabelas existentes. 
+
+O processamento descrito nesta subseção estabelece uma base confiável de informações sobre as unidades territoriais do Brasil. Com isso, nos processamentos descritos nas subseções seguintes quando surgir um campo relacionado a municípios ou estados, haverá tabelas no banco de dados preparadas para processar os dados, independentemente da disponibilidade do código do TSE. Além disso, existirá informação suficiente no banco de dados para permitir que análises sejam realizadas a partir de informações de níveis hierárquicos geográficos e de posições geográficas de unidades territoriais, 
+
+\subsection{Dados de Candidatura}
+
+\subsection{Dados de Bens de Candidatos}
+
+\subsection{Dados de Prestação de Contas}

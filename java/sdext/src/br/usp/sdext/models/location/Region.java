@@ -15,15 +15,15 @@ public class Region extends Model implements Serializable {
 	@Id
 	private Long id;
 	
-	public Integer ibgeCode;
+	private Integer ibgeCode;
 	
-	public String name;
-	public String namex;
+	private String name;
+	private String namex;
 	
-	public String acronym;
-	public String acronymx;
+	private String acronym;
+	private String acronymx;
 	
-	public String status;
+	private String status;
 	
 	public Region() {}
 	
@@ -39,7 +39,20 @@ public class Region extends Model implements Serializable {
 	}
 	
 	public Long getId() {return id;}
+	public Integer getIbgeCode() {return ibgeCode;}
+	public String getName() {return name;}
+	public String getNamex() {return namex;}
+	public String getAcronym() {return acronym;}
+	public String getAcronymx() {return acronymx;}
+	public String getStatus() {return status;}
+	
 	public void setId(Long id) {this.id = id;}
+	public void setIbgeCode(Integer ibgeCode) {this.ibgeCode = ibgeCode;}
+	public void setName(String name) {this.name = name;}
+	public void setNamex(String namex) {this.namex = namex;}
+	public void setAcronym(String acronym) {this.acronym = acronym;}
+	public void setAcronymx(String acronymx) {this.acronymx = acronymx;}
+	public void setStatus(String status) {this.status = status;}
 	
 	@Override
 	public String toString() {
