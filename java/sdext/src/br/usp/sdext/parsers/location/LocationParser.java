@@ -8,6 +8,9 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import br.usp.sdext.core.Model;
 import br.usp.sdext.models.Log;
@@ -17,6 +20,7 @@ import br.usp.sdext.models.location.Region;
 import br.usp.sdext.models.location.State;
 import br.usp.sdext.models.location.Town;
 import br.usp.sdext.parsers.ModelParser;
+import br.usp.sdext.util.LevenshteinDistance;
 
 public class LocationParser extends ModelParser {
 
@@ -27,17 +31,34 @@ public class LocationParser extends ModelParser {
 	private HashMap<Model, Model> mesosMap = new HashMap<>();
 	private HashMap<Model, Model> microsMap = new HashMap<>();
 	private HashMap<Model, Model> townsMap = new HashMap<>();
-	
+
 	private HashMap<Integer, Model> statesMapByIBGE = new HashMap<>();
 	private HashMap<Integer, Model> townsMapByIBGE = new HashMap<>();
-	
+
 	private HashSet<Model> lostTownsMap= new HashSet<>();
+	
+	private int failedBinds = 0;
 
 	public HashMap<Model, Model> getRegionsMap() {return regionsMap;}
 	public HashMap<Model, Model> getStatesMap() {return statesMap;}
 	public HashMap<Model, Model> getMesosMap() {return mesosMap;}
 	public HashMap<Model, Model> getMicrosMap() {return microsMap;}
 	public HashMap<Model, Model> getTownsMap() {return townsMap;}
+
+	public void addSpecialStateEntries() {
+
+		Region region = new Region();
+		region.setIbgeCode(0);
+
+		State state = new State(-1, "BR", "Brasil", "BRASIL", -1, region, 0f, "IGNOR");
+		Model.fetch(state, statesMap);
+
+		state = new State(-1, "ZZ", "Exterior", "EXTERIOR", -1, region, 0f, "IGNOR");
+		Model.fetch(state, statesMap);
+
+		state = new State(-1, "VT", "Voto em Trânsito", "VOTO EM TRANSITO", -1, region, 0f, "IGNOR");
+		Model.fetch(state, statesMap);
+	}
 
 	public void parseFile(String filename, String action) throws Exception {
 
@@ -51,7 +72,7 @@ public class LocationParser extends ModelParser {
 		while ((line = in.readLine()) != null) {
 
 			try {
-				
+
 				// Break line where finds tab
 				pieces = line.split("\\t");
 
@@ -69,15 +90,15 @@ public class LocationParser extends ModelParser {
 				case "state":
 					parseState(pieces);
 					break;
-					
+
 				case "meso":
 					parseMesoRegion(pieces);
 					break;
-					
+
 				case "micro":
 					parseMicroRegion(pieces);
 					break;
-					
+
 				case "town":
 					parseTown(pieces);
 					break;
@@ -87,7 +108,7 @@ public class LocationParser extends ModelParser {
 				}
 
 			} catch (Exception e) {
-				
+
 				String exceptionClass = null;
 				String exceptionMethod = null;
 
@@ -109,7 +130,7 @@ public class LocationParser extends ModelParser {
 			in.close();
 		}
 	}
-	
+
 	public void bindObjects(String filename) throws Exception {
 
 		BufferedReader in = new BufferedReader(
@@ -122,7 +143,7 @@ public class LocationParser extends ModelParser {
 		while ((line = in.readLine()) != null) {
 
 			try {
-				
+
 				// Break line where finds ";"
 				pieces = line.split(";");
 
@@ -134,7 +155,7 @@ public class LocationParser extends ModelParser {
 				bindTown(pieces);
 
 			} catch (Exception e) {
-				
+
 				String exceptionClass = null;
 				String exceptionMethod = null;
 
@@ -209,193 +230,236 @@ public class LocationParser extends ModelParser {
 		if (mappedState == null) {
 
 			state = (State) Model.fetch(state, statesMap);
-			
+
 			statesMapByIBGE.put(state.getIbgeCode(), state);
-			
+
 		} else {
 
 			throw new Exception("State already exists in map.");
 		}
 	}
-	
+
 	private void parseMesoRegion(String[] pieces) throws Exception {
 
 		Integer ibgeCode = Integer.parseInt(pieces[0]);
 
 		String name = pieces[1];
 		String namex = pieces[2];
-		
+
 		String acronym = pieces[3];
 
 		State state = new State();
 		state = (State) statesMapByIBGE.get(Integer.parseInt(pieces[4]));
 
 		String status = pieces[5];
-		
+
 		MesoRegion mesoRegion = new MesoRegion(ibgeCode, name, namex, acronym, state, status);
-		
+
 		MesoRegion mappedMeso = (MesoRegion) mesosMap.get(mesoRegion);
-		
+
 		if (mappedMeso == null) {
-			
+
 			mesoRegion = (MesoRegion) Model.fetch(mesoRegion, mesosMap);
-			
+
 		} else {
-			
+
 			throw new Exception("Meso region already exists in map.");
 		}
 
 	}
-	
+
 	private void parseMicroRegion(String[] pieces) throws Exception {
 
 		Integer ibgeCode = Integer.parseInt(pieces[0]);
 
 		String name = pieces[1];
 		String namex = pieces[2];
-		
+
 		String acronym = pieces[3];
 
 		State state = new State();
 		state = (State) statesMapByIBGE.get(Integer.parseInt(pieces[4]));
 
 		String status = pieces[5];
-		
+
 		MicroRegion microRegion = new MicroRegion(ibgeCode, name, namex, acronym, state, status);
-		
+
 		MicroRegion mappedMicro= (MicroRegion) mesosMap.get(microRegion);
-		
+
 		if (mappedMicro == null) {
-			
+
 			microRegion = (MicroRegion) Model.fetch(microRegion, microsMap);
-			
+
 		} else {
-			
+
 			throw new Exception("Meso region already exists in map.");
 		}
 
 	}
-	
+
 	private void parseTown(String[] pieces) throws Exception {
-		
+
 		Integer ibgeCode = Integer.parseInt(pieces[0]);
 		Integer ibgeCodeVD = Integer.parseInt(pieces[1]);
-		
+
 		String status = pieces[2];
-		
+
 		Integer sinpasCode = parseInt(pieces[3]);
 		Integer siafiCode = parseInt(pieces[4]);
-		
+
 		String name = pieces[5];
-		String namex = pieces[6];
-		
+		String namex = parseTownNamex(pieces[6]);
+
 		String obs = pieces[7];
-		
+
 		String altCode = pieces[8];
 		String altCodeVD = pieces[9];
-		
+
 		Boolean legalAmazon = (pieces[10].equals("S")) ? true : false;
 		Boolean border = (pieces[11].equals("S")) ? true : false;
 		Boolean capital = (pieces[12].equals("S")) ? true : false;
-		
+
 		State state = new State();
 		state = (State) statesMapByIBGE.get(Integer.parseInt(pieces[13]));
-		
+
 		MesoRegion mesoRegion = new MesoRegion();
 		mesoRegion.setIbgeCode(Integer.parseInt(pieces[14]));
 		mesoRegion = (MesoRegion) mesosMap.get(mesoRegion);
-		
+
 		MicroRegion microRegion = new MicroRegion();
 		microRegion.setIbgeCode(Integer.parseInt(pieces[15]));
 		microRegion = (MicroRegion) microsMap.get(microRegion);
-		
+
 		Float latitude = Float.parseFloat(pieces[25]);
 		Float longetude = Float.parseFloat(pieces[26]);
-		
+
 		Float altitude = Float.parseFloat(pieces[27]);
 		Float area = Float.parseFloat(pieces[28]);
-		
+
 		Town town = new Town(ibgeCode, ibgeCodeVD, status, sinpasCode, siafiCode,
 				name, namex, obs, altCode, altCodeVD, legalAmazon, border, capital,
 				state, mesoRegion, microRegion, latitude, longetude, altitude, area);
-		
+
 		Town mappedTown = (Town) townsMap.get(town);
-		
+
 		if (mappedTown == null) {
-			
+
 			town = (Town) Model.fetch(town, townsMap);
-			
+
 			townsMapByIBGE.put(town.getIbgeCode(), town);
-			
+
 		} else {
-			
+
 			throw new Exception("Town already exists in map.");
 		}
-		
+
 	}
-	
+
 	private void bindTown(String[] pieces) throws Exception {
-		
+
 		State state = new State();
 		state.setAcronym(pieces[1]);
-		
+
 		State mappedState = (State) statesMap.get(state);
-		
+
 		if (mappedState == null) {
-			
-			throw new Exception("State not found in map: " + state.getAcronym());
-		} else {
-			
-			state = mappedState;
+
+			throw new Exception("State not found in map." + state.getAcronym());
 		}
-		
+
 		Town town = new Town();
-		town.setNamex(removeAccent(pieces[2]).toUpperCase());
-		town.setState(state);
-		
+		town.setNamex(parseTownNamex(pieces[2]));
+		town.setState(mappedState);
+
 		Town mappedTown = (Town) townsMap.get(town);
 		
 		if (mappedTown == null) {
 			
 			if (!lostTownsMap.contains(town)) {
 				
-				System.out.println("Town not found in map: " + town.getNamex());
 				lostTownsMap.add(town);
-				throw new Exception("Town not found in map: " + town.getNamex());
+
+				mappedTown = findMisspelledTown(town, 1);
+				
+				if (mappedTown == null) {
+					
+					Town doeste = new Town();
+					doeste.setNamex(town.getNamex().replaceAll("DO OESTE", "D'OESTE"));
+					doeste.setState(town.getState());
+					mappedTown =  (Town) townsMap.get(doeste);
+				}
+				
+				if (mappedTown == null) {
+					
+					failedBinds++;
+					System.out.println("Town not found in map: " + town.getNamex() + " - " + town.getState().getNamex());
+					throw new Exception("Town not found in map: " + town.getNamex());
+				}
 			}
-			
-		} else {
-			
-			town = mappedTown;
-		}
-		
+
+		} 
+
 		Integer tseCode = Integer.parseInt(pieces[3]);
-		
-		town.setTseCode(tseCode);
-		
+
+		if (mappedTown.getTseCode() == null) {
+
+			mappedTown.setTseCode(tseCode);
+
+		} else {
+
+			if (!mappedTown.getTseCode().equals(tseCode)) {
+
+				throw new Exception("Same city different TSE ids.");
+			}
+		}
 	}
-	
+
 	private Integer parseInt(String str) {
-		
+
 		if (str.replace(" ", "").equals("")) return null;
 
-		Integer number = Integer.parseInt(str);
-		
-		return number;
+		return Integer.parseInt(str);
 	}
-	
-	private String removeAccent(String str) {
-		
-		String result = Normalizer.normalize(str, Normalizer.Form.NFD);
-		result = result.replaceAll("[^\\p{ASCII}]", "");
-		
-		return result;
+
+	private String parseTownNamex(String str) {
+
+		str = Normalizer.normalize(str, Normalizer.Form.NFD);
+
+		str = str.replaceAll("[^\\p{ASCII}]", "");
+
+		str = str.replaceAll("[\\s\\-()]", " ");
+
+		return str.toUpperCase().trim();
+	}
+
+	private Town findMisspelledTown(Town missTown, int threshold) {
+
+		Iterator i = townsMap.entrySet().iterator();
+
+		while (i.hasNext()) {
+
+			Town town = (Town) ((Entry) i.next()).getValue();
+
+			if (missTown.getState().equals(town.getState())) {
+
+				int distance = LevenshteinDistance.computeLevenshteinDistance(missTown.getNamex(), town.getNamex());
+
+				if (distance <= threshold) {
+
+					return town;
+				}
+			}
+		}
+
+		return null;
 	}
 
 	@Override
 	public void save() {
 
-		
+		System.out.println("Total towns: " + townsMap.size());
+		System.out.println("Failed town bindings: " + failedBinds);
+
 		Model.bulkSave(logs);
 		System.out.println("Saving location data: ");
 		System.out.println("\tSaving logs...");
@@ -405,17 +469,18 @@ public class LocationParser extends ModelParser {
 
 		System.out.println("\tSaving states...");
 		Model.bulkSave(statesMap.values());
-		
+
 		System.out.println("\tSaving meso regions...");
 		Model.bulkSave(mesosMap.values());
-		
+
 		System.out.println("\tSaving micro regions...");
 		Model.bulkSave(microsMap.values());
-		
+
 		System.out.println("\tSaving towns...");
 		Model.bulkSave(townsMap.values());
-		
-		System.out.println("Done.");
+
+
+		System.out.println("Done!");
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -424,10 +489,11 @@ public class LocationParser extends ModelParser {
 
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/reg.csv", "region");
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/uf.csv", "state");
+		locationParser.addSpecialStateEntries();
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/meso.csv", "meso");
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/micro.csv", "micro");
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/mun.csv", "town");
-		
+
 		locationParser.bindObjects("/home/fm/work/data/sdext/eleitorais/eleitorado/2012/perfil_eleitorado_2012.txt");
 
 		locationParser.save();
