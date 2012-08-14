@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import br.usp.sdext.core.Model;
@@ -36,29 +35,16 @@ public class LocationParser extends ModelParser {
 	private HashMap<Integer, Model> townsMapByIBGE = new HashMap<>();
 
 	private HashSet<Model> lostTownsMap= new HashSet<>();
+	private HashSet<Integer> townsMapByTSE= new HashSet<>();
 	
-	private int failedBinds = 0;
+	private int failedBindings = 0;
+	private int succededBindings = 0;
 
 	public HashMap<Model, Model> getRegionsMap() {return regionsMap;}
 	public HashMap<Model, Model> getStatesMap() {return statesMap;}
 	public HashMap<Model, Model> getMesosMap() {return mesosMap;}
 	public HashMap<Model, Model> getMicrosMap() {return microsMap;}
 	public HashMap<Model, Model> getTownsMap() {return townsMap;}
-
-	public void addSpecialStateEntries() {
-
-		Region region = new Region();
-		region.setIbgeCode(0);
-
-		State state = new State(-1, "BR", "Brasil", "BRASIL", -1, region, 0f, "IGNOR");
-		Model.fetch(state, statesMap);
-
-		state = new State(-1, "ZZ", "Exterior", "EXTERIOR", -1, region, 0f, "IGNOR");
-		Model.fetch(state, statesMap);
-
-		state = new State(-1, "VT", "Voto em Trânsito", "VOTO EM TRANSITO", -1, region, 0f, "IGNOR");
-		Model.fetch(state, statesMap);
-	}
 
 	public void parseFile(String filename, String action) throws Exception {
 
@@ -152,7 +138,7 @@ public class LocationParser extends ModelParser {
 					pieces[i] = pieces[i].replace("\"", "");
 				}
 
-				bindTown(pieces);
+				bindTownTSECode(pieces);
 
 			} catch (Exception e) {
 
@@ -355,8 +341,22 @@ public class LocationParser extends ModelParser {
 
 	}
 
-	private void bindTown(String[] pieces) throws Exception {
+	private void bindTownTSECode(String[] pieces) throws Exception {
 
+		// Parse TSE code.
+		Integer tseCode = Integer.parseInt(pieces[3]);
+		
+		// Stop if it is null.
+		if (tseCode == null) {
+			
+			return;
+		}
+		
+		if (townsMapByTSE.contains(tseCode)) {
+			
+			return;
+		}
+		
 		State state = new State();
 		state.setAcronym(pieces[1]);
 
@@ -364,6 +364,11 @@ public class LocationParser extends ModelParser {
 
 		if (mappedState == null) {
 
+			if (state.getAcronym().equals("ZZ")) {
+				
+				return;
+			}
+			
 			throw new Exception("State not found in map." + state.getAcronym());
 		}
 
@@ -383,27 +388,31 @@ public class LocationParser extends ModelParser {
 				
 				if (mappedTown == null) {
 					
-					Town doeste = new Town();
-					doeste.setNamex(town.getNamex().replaceAll("DO OESTE", "D'OESTE"));
-					doeste.setState(town.getState());
-					mappedTown =  (Town) townsMap.get(doeste);
+					Town test = new Town();
+					test.setNamex(town.getNamex().replaceAll("DO OESTE", "D'OESTE"));
+					test.setState(town.getState());
+					mappedTown = (Town) townsMap.get(test);
 				}
 				
 				if (mappedTown == null) {
 					
-					failedBinds++;
-					System.out.println("Town not found in map: " + town.getNamex() + " - " + town.getState().getNamex());
-					throw new Exception("Town not found in map: " + town.getNamex());
+					failedBindings++;
+					
+					mappedTown = (Town) Model.fetch(town, townsMap);
 				}
+				
+			} else {
+				
+				return;
 			}
-
 		} 
-
-		Integer tseCode = Integer.parseInt(pieces[3]);
 
 		if (mappedTown.getTseCode() == null) {
 
+			succededBindings++;
 			mappedTown.setTseCode(tseCode);
+			townsMapByTSE.add(tseCode);
+			
 
 		} else {
 
@@ -434,11 +443,11 @@ public class LocationParser extends ModelParser {
 
 	private Town findMisspelledTown(Town missTown, int threshold) {
 
-		Iterator i = townsMap.entrySet().iterator();
+		Iterator<Entry<Model, Model>> i = townsMap.entrySet().iterator();
 
 		while (i.hasNext()) {
 
-			Town town = (Town) ((Entry) i.next()).getValue();
+			Town town = (Town) ((Entry<Model, Model>) i.next()).getValue();
 
 			if (missTown.getState().equals(town.getState())) {
 
@@ -450,7 +459,6 @@ public class LocationParser extends ModelParser {
 				}
 			}
 		}
-
 		return null;
 	}
 
@@ -458,7 +466,9 @@ public class LocationParser extends ModelParser {
 	public void save() {
 
 		System.out.println("Total towns: " + townsMap.size());
-		System.out.println("Failed town bindings: " + failedBinds);
+		
+		System.out.println("Succeded bindings: " + succededBindings);
+		System.out.println("Failed bindings: " + failedBindings);
 
 		Model.bulkSave(logs);
 		System.out.println("Saving location data: ");
@@ -479,7 +489,6 @@ public class LocationParser extends ModelParser {
 		System.out.println("\tSaving towns...");
 		Model.bulkSave(townsMap.values());
 
-
 		System.out.println("Done!");
 	}
 
@@ -489,12 +498,12 @@ public class LocationParser extends ModelParser {
 
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/reg.csv", "region");
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/uf.csv", "state");
-		locationParser.addSpecialStateEntries();
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/meso.csv", "meso");
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/micro.csv", "micro");
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/mun.csv", "town");
 
-		locationParser.bindObjects("/home/fm/work/data/sdext/eleitorais/eleitorado/2012/perfil_eleitorado_2012.txt");
+		locationParser.bindObjects("/home/fm/work/data/sdext/eleitorais/eleitorado/perfil_eleitorado_2012.txt");
+		locationParser.bindObjects("/home/fm/work/data/sdext/eleitorais/eleitorado/perfil_eleitorado_2010.txt");
 
 		locationParser.save();
 	}

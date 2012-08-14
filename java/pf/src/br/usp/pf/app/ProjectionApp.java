@@ -59,7 +59,7 @@ public class ProjectionApp {
 		String folder;
 		
 		// static
-		folder = "../data/" + sequence + "/" + gaps + "/" + cutString + "/dmats/";
+		folder = "/home/fm/work/data/pf/" + sequence + "/" + gaps + "/" + cutString + "/dmats/";
 //		ProjectionApp.project(folder + "static.dmat", 1000, false);
 		ProjectionApp.project(folder + "dynamic.dmat", 100000, false);
 //		ProjectionApp.project(folder + "dmats-comparation.dmat", 1000000, false);

@@ -45,7 +45,7 @@ public class GLApp {
 			cutString = "full";
 		}
 		
-		String folder = "../data/" + sequence + "/" + gaps + "/" + cutString + "/projections/";
+		String folder = "/home/fm/work/data/pf/" + sequence + "/" + gaps + "/" + cutString + "/projections/";
 		
 //		visualize(folder + "dmats-comparation.data");
 //		visualize(folder + "static.data");

@@ -1,14 +1,8 @@
 package br.usp.pf.projection;
 
-import distance.DistanceMatrix;
-import distance.dissimilarity.AbstractDissimilarity;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
-
-import br.usp.pf.projection.InitialProjection.Layout;
 
 import matrix.AbstractMatrix;
 import matrix.dense.DenseMatrix;
@@ -16,6 +10,9 @@ import matrix.dense.DenseVector;
 import projection.model.ProjectionModelComp;
 import projection.technique.Projection;
 import projection.view.ProjectionFrameComp;
+import br.usp.pf.projection.InitialProjection.Layout;
+import distance.DistanceMatrix;
+import distance.dissimilarity.AbstractDissimilarity;
 
 public abstract class AbstractForceScheme implements Projection {
 	
