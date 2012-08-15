@@ -1,4 +1,4 @@
-package br.usp.sdext.models.location;
+package br.usp.sdext.models;
 
 import java.io.Serializable;
 

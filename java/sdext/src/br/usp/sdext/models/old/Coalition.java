@@ -1,4 +1,4 @@
-package br.usp.sdext.models;
+package br.usp.sdext.models.old;
 
 import java.io.Serializable;
 

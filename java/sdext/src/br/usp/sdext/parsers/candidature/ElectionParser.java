@@ -3,9 +3,9 @@ package br.usp.sdext.parsers.candidature;
 import java.util.HashMap;
 
 import br.usp.sdext.core.Model;
-import br.usp.sdext.models.Election;
-import br.usp.sdext.models.location.StateOld;
-import br.usp.sdext.models.location.TownOld;
+import br.usp.sdext.models.old.Election;
+import br.usp.sdext.models.old.State;
+import br.usp.sdext.models.old.Town;
 import br.usp.sdext.parsers.MiscParser;
 import br.usp.sdext.parsers.ModelParser;
 import br.usp.sdext.util.Misc;
@@ -43,8 +43,8 @@ public class ElectionParser extends ModelParser {
 		
 		String stateLabel = Misc.parseStr(pieces[5]); // label
 		if (stateLabel == null) {throw new Exception("State label is invalid: " + pieces[5]);}
-		StateOld electionState =  new StateOld(stateLabel);
-		electionState = (StateOld) StateOld.fetch(electionState, miscParser.getStatesMap());
+		State electionState =  new State(stateLabel);
+		electionState = (State) State.fetch(electionState, miscParser.getStatesMap());
 		election.setState(electionState);
 
 		if ((election.getYear() - Election.FIRST_MAIN_ELECTION) % 4 != 0) {
@@ -52,11 +52,11 @@ public class ElectionParser extends ModelParser {
 			String townLabel = Misc.parseStr(pieces[7]);
 			if (townLabel == null) {throw new Exception("Town label is invalid: " + pieces[7]);}
 
-			TownOld electionTown = new TownOld(null, Misc.parseStr(pieces[7]));
+			Town electionTown = new Town(null, Misc.parseStr(pieces[7]));
 			Long ueId = Misc.parseLong(pieces[6]);
 			electionTown.setState(electionState);
 			
-			electionTown = (TownOld) TownOld.fetch(electionTown, miscParser.getTownsMap());
+			electionTown = (Town) Town.fetch(electionTown, miscParser.getTownsMap());
 
 			if (electionTown.getUeId() == null) {
 				electionTown.setUeId(ueId);

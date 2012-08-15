@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import br.usp.sdext.core.Model;
 import br.usp.sdext.models.candidature.Donor;
-import br.usp.sdext.models.location.StateOld;
+import br.usp.sdext.models.old.State;
 import br.usp.sdext.parsers.MiscParser;
 import br.usp.sdext.parsers.ModelParser;
 import br.usp.sdext.util.Misc;
@@ -55,8 +55,8 @@ public class DonorParser extends ModelParser {
 
 		Donor donor = new Donor(donorName, donorCPF);
 
-		StateOld donorState = new StateOld(donorUF);
-		donorState = (StateOld) StateOld.fetch(donorState, miscParser.getStatesMap());
+		State donorState = new State(donorUF);
+		donorState = (State) State.fetch(donorState, miscParser.getStatesMap());
 		donor.setState(donorState);
 
 		donor = (Donor) Model.fetch(donor, donorsMap);

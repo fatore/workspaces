@@ -14,10 +14,10 @@ import org.hibernate.Session;
 
 import br.usp.sdext.core.Model;
 import br.usp.sdext.db.HibernateUtil;
-import br.usp.sdext.models.Coalition;
-import br.usp.sdext.models.Election;
 import br.usp.sdext.models.Party;
 import br.usp.sdext.models.candidate.Candidate;
+import br.usp.sdext.models.old.Coalition;
+import br.usp.sdext.models.old.Election;
 
 @Entity
 public class Candidature extends Model implements Serializable {

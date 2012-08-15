@@ -1,4 +1,4 @@
-package br.usp.sdext.parsers.location;
+package br.usp.sdext.parsers;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,19 +7,15 @@ import java.io.InputStreamReader;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map.Entry;
 
 import br.usp.sdext.core.Model;
 import br.usp.sdext.models.Log;
-import br.usp.sdext.models.location.MesoRegion;
-import br.usp.sdext.models.location.MicroRegion;
-import br.usp.sdext.models.location.Region;
-import br.usp.sdext.models.location.State;
-import br.usp.sdext.models.location.Town;
-import br.usp.sdext.parsers.ModelParser;
-import br.usp.sdext.util.LevenshteinDistance;
+import br.usp.sdext.models.MesoRegion;
+import br.usp.sdext.models.MicroRegion;
+import br.usp.sdext.models.Region;
+import br.usp.sdext.models.State;
+import br.usp.sdext.models.Town;
+import br.usp.sdext.util.ParseException;
 
 public class LocationParser extends ModelParser {
 
@@ -33,19 +29,19 @@ public class LocationParser extends ModelParser {
 
 	private HashMap<Integer, Model> statesMapByIBGE = new HashMap<>();
 	private HashMap<Integer, Model> townsMapByIBGE = new HashMap<>();
+	private HashMap<Integer, Model> townsMapByTSE= new HashMap<>();
 
-	private HashSet<Model> lostTownsMap= new HashSet<>();
-	private HashSet<Integer> townsMapByTSE= new HashSet<>();
+	private HashMap<Model, Model> lostTownsMap= new HashMap<>();
 	
-	private int failedBindings = 0;
-	private int succededBindings = 0;
-
 	public HashMap<Model, Model> getRegionsMap() {return regionsMap;}
 	public HashMap<Model, Model> getStatesMap() {return statesMap;}
 	public HashMap<Model, Model> getMesosMap() {return mesosMap;}
 	public HashMap<Model, Model> getMicrosMap() {return microsMap;}
 	public HashMap<Model, Model> getTownsMap() {return townsMap;}
-
+	public HashMap<Integer, Model> getTownsMapByIBGE() {return townsMapByIBGE;}
+	public HashMap<Model, Model> getLostTownsMap() {return lostTownsMap;}
+	public HashMap<Integer, Model> getTownsMapByTSE() {return townsMapByTSE;}
+	
 	public void parseFile(String filename, String action) throws Exception {
 
 		BufferedReader in = new BufferedReader(
@@ -90,10 +86,10 @@ public class LocationParser extends ModelParser {
 					break;
 
 				default:
-					throw new Exception("Invalid parser action.");
+					throw new Exception("Invalid parser action");
 				}
 
-			} catch (Exception e) {
+			} catch (ParseException e) {
 
 				String exceptionClass = null;
 				String exceptionMethod = null;
@@ -107,54 +103,7 @@ public class LocationParser extends ModelParser {
 					}
 				}
 				Log log = new Log(line,"CAUSED BY: " + exceptionMethod 
-						+ " IN CLASS: " + exceptionClass, e.getMessage());
-				logs.add(log);
-			}
-		}
-
-		if (in != null) {
-			in.close();
-		}
-	}
-
-	public void bindObjects(String filename) throws Exception {
-
-		BufferedReader in = new BufferedReader(
-				new InputStreamReader(new FileInputStream(new File(filename)), "ISO-8859-1"));
-
-		// Skip first line.
-		String line = in.readLine();
-		String pieces[] = null;
-
-		while ((line = in.readLine()) != null) {
-
-			try {
-
-				// Break line where finds ";"
-				pieces = line.split(";");
-
-				// remove double quotes
-				for (int i = 0; i < pieces.length; i++) {
-					pieces[i] = pieces[i].replace("\"", "");
-				}
-
-				bindTownTSECode(pieces);
-
-			} catch (Exception e) {
-
-				String exceptionClass = null;
-				String exceptionMethod = null;
-
-				for (StackTraceElement element : e.getStackTrace()) {
-
-					if (element.getClassName().contains("br.usp.sdext.parsers")) {
-						exceptionClass = element.getClassName();
-						exceptionMethod = element.getMethodName();
-						break;
-					}
-				}
-				Log log = new Log(line,"CAUSED BY: " + exceptionMethod 
-						+ " IN CLASS: " + exceptionClass, e.getMessage());
+						+ " IN CLASS: " + exceptionClass, e.getMessage(), e.getDetail());
 				logs.add(log);
 			}
 		}
@@ -186,7 +135,7 @@ public class LocationParser extends ModelParser {
 
 		} else {
 
-			throw new Exception("Region already exists in map.");
+			throw new ParseException("Region already exists in map");
 		}
 	}
 
@@ -221,7 +170,7 @@ public class LocationParser extends ModelParser {
 
 		} else {
 
-			throw new Exception("State already exists in map.");
+			throw new ParseException("State already exists in map");
 		}
 	}
 
@@ -249,7 +198,7 @@ public class LocationParser extends ModelParser {
 
 		} else {
 
-			throw new Exception("Meso region already exists in map.");
+			throw new ParseException("Meso region already exists in map");
 		}
 
 	}
@@ -278,7 +227,7 @@ public class LocationParser extends ModelParser {
 
 		} else {
 
-			throw new Exception("Meso region already exists in map.");
+			throw new ParseException("Meso region already exists in map");
 		}
 
 	}
@@ -336,91 +285,9 @@ public class LocationParser extends ModelParser {
 
 		} else {
 
-			throw new Exception("Town already exists in map.");
+			throw new ParseException("Town already exists in map");
 		}
 
-	}
-
-	private void bindTownTSECode(String[] pieces) throws Exception {
-
-		// Parse TSE code.
-		Integer tseCode = Integer.parseInt(pieces[3]);
-		
-		// Stop if it is null.
-		if (tseCode == null) {
-			
-			return;
-		}
-		
-		if (townsMapByTSE.contains(tseCode)) {
-			
-			return;
-		}
-		
-		State state = new State();
-		state.setAcronym(pieces[1]);
-
-		State mappedState = (State) statesMap.get(state);
-
-		if (mappedState == null) {
-
-			if (state.getAcronym().equals("ZZ")) {
-				
-				return;
-			}
-			
-			throw new Exception("State not found in map." + state.getAcronym());
-		}
-
-		Town town = new Town();
-		town.setNamex(parseTownNamex(pieces[2]));
-		town.setState(mappedState);
-
-		Town mappedTown = (Town) townsMap.get(town);
-		
-		if (mappedTown == null) {
-			
-			if (!lostTownsMap.contains(town)) {
-				
-				lostTownsMap.add(town);
-
-				mappedTown = findMisspelledTown(town, 1);
-				
-				if (mappedTown == null) {
-					
-					Town test = new Town();
-					test.setNamex(town.getNamex().replaceAll("DO OESTE", "D'OESTE"));
-					test.setState(town.getState());
-					mappedTown = (Town) townsMap.get(test);
-				}
-				
-				if (mappedTown == null) {
-					
-					failedBindings++;
-					
-					mappedTown = (Town) Model.fetch(town, townsMap);
-				}
-				
-			} else {
-				
-				return;
-			}
-		} 
-
-		if (mappedTown.getTseCode() == null) {
-
-			succededBindings++;
-			mappedTown.setTseCode(tseCode);
-			townsMapByTSE.add(tseCode);
-			
-
-		} else {
-
-			if (!mappedTown.getTseCode().equals(tseCode)) {
-
-				throw new Exception("Same city different TSE ids.");
-			}
-		}
 	}
 
 	private Integer parseInt(String str) {
@@ -441,38 +308,11 @@ public class LocationParser extends ModelParser {
 		return str.toUpperCase().trim();
 	}
 
-	private Town findMisspelledTown(Town missTown, int threshold) {
-
-		Iterator<Entry<Model, Model>> i = townsMap.entrySet().iterator();
-
-		while (i.hasNext()) {
-
-			Town town = (Town) ((Entry<Model, Model>) i.next()).getValue();
-
-			if (missTown.getState().equals(town.getState())) {
-
-				int distance = LevenshteinDistance.computeLevenshteinDistance(missTown.getNamex(), town.getNamex());
-
-				if (distance <= threshold) {
-
-					return town;
-				}
-			}
-		}
-		return null;
-	}
-
 	@Override
 	public void save() {
 
-		System.out.println("Total towns: " + townsMap.size());
-		
-		System.out.println("Succeded bindings: " + succededBindings);
-		System.out.println("Failed bindings: " + failedBindings);
-
 		Model.bulkSave(logs);
-		System.out.println("Saving location data: ");
-		System.out.println("\tSaving logs...");
+		System.out.println("Saving locations data: ");
 
 		System.out.println("\tSaving regions...");
 		Model.bulkSave(regionsMap.values());
@@ -501,9 +341,6 @@ public class LocationParser extends ModelParser {
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/meso.csv", "meso");
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/micro.csv", "micro");
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/mun.csv", "town");
-
-		locationParser.bindObjects("/home/fm/work/data/sdext/eleitorais/eleitorado/perfil_eleitorado_2012.txt");
-		locationParser.bindObjects("/home/fm/work/data/sdext/eleitorais/eleitorado/perfil_eleitorado_2010.txt");
 
 		locationParser.save();
 	}

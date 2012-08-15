@@ -12,16 +12,19 @@ public abstract class AbstractParser {
 			baseDir = new File(baseDirStr);
 		}
 		
-		System.out.println("Looking for directory " + baseDirStr);
+		System.out.print("Looking for directory " + baseDirStr + ".");
 		
 		if ( baseDir != null && baseDir.exists() && baseDir.isDirectory()) {
-			System.out.println("Directory successfully found.\n");					
+			
+			System.out.println(" OK!");	
+			
 		} else {
+			
+			System.out.println(" FAILED!");
 			throw new Exception("\nError: Invalid directory.");
 		}
 		
 		load(baseDir);
-		printResults();
 	}
 	
 	protected void load(File file) throws Exception {
@@ -35,7 +38,6 @@ public abstract class AbstractParser {
 	}
 	
 	protected abstract void loadFile(File file) throws Exception;
-	protected abstract void printResults();
 	public abstract void save() throws Exception;
 	
 }

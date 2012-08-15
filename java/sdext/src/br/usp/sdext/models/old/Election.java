@@ -1,4 +1,4 @@
-package br.usp.sdext.models;
+package br.usp.sdext.models.old;
 
 import java.io.Serializable;
 
@@ -12,7 +12,7 @@ import br.usp.sdext.core.Model;
 @Entity
 public class Election extends Model implements Serializable {
 	
-	private static final long serialVersionUID = 776526731178895284L;
+	private static final long serialVersionUID = -6495369177544198572L;
 	public static final int FIRST_MAIN_ELECTION = 1994;
 
 	@Id
@@ -20,8 +20,10 @@ public class Election extends Model implements Serializable {
 
 	@Column(nullable=false)
 	private Integer year;
-	
 	private String description;	
+	
+	@Column(nullable=false)
+	private Integer round;	
 	
 	@ManyToOne
 	private State state;
@@ -30,55 +32,47 @@ public class Election extends Model implements Serializable {
 	private Town town;
 	
 	@Column(nullable=false)
-	private Integer postCode;
-	
-	@Column(nullable=false)
+	private Long postID;
 	private String post;
 	
-	@Column(nullable=false)
-	private Integer noJobs;
-	
 	public Election() {}
-
-	public Election(Integer year, String description, State state, Town town,
-			Integer postCode, String post, Integer noJobs) {
+	
+	public Election(Integer year, Integer round, Long postID, 
+			String post, String description) {
 		
 		this.year = year;
+		this.round = round;
+		this.postID = postID;
 		this.description = description;
-		this.state = state;
-		this.town = town;
-		this.postCode = postCode;
 		this.post = post;
-		this.noJobs = noJobs;
 	}
 
 	// getters
 	public Long getID() {return id;}
 	public Integer getYear() {return year;}
-	public Integer getPostCode() {return postCode;}
+	public Integer getRound() {return round;}
+	public Long getPostID() {return postID;}
 	public String getDescription() {return description;}
 	public String getPost() {return post;}
 	public State getState() {return state;}
-	public Town getTown() {return town;}	
-	public Integer getNoJobs() {return noJobs;}
-
-
+	public Town getTown() {return town;}
+	
 	// setters
 	public void setId(Long id) {this.id = id;}
 	public void setYear(Integer year) {this.year = year;}
-	public void setPostCode(Integer postCode) {this.postCode = postCode;}
+	public void setRound(Integer round) {this.round = round;}
+	public void setPostID(Long postID) {this.postID = postID;}
 	public void setDescription(String description) {this.description = description;}
 	public void setState(State state) {this.state = state;}
 	public void setTown(Town town) {this.town = town;}
 	public void setPost(String post) {this.post = post;}
-	public void setNoJobs(Integer noJobs) {this.noJobs = noJobs;}
 
 	@Override
 	public int hashCode() {
-		
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((postCode == null) ? 0 : postCode.hashCode());
+		result = prime * result + ((postID == null) ? 0 : postID.hashCode());
+		result = prime * result + ((round == null) ? 0 : round.hashCode());
 		result = prime * result + ((state == null) ? 0 : state.hashCode());
 		result = prime * result + ((town == null) ? 0 : town.hashCode());
 		result = prime * result + ((year == null) ? 0 : year.hashCode());
@@ -87,7 +81,6 @@ public class Election extends Model implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -95,10 +88,17 @@ public class Election extends Model implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Election other = (Election) obj;
-		if (postCode == null) {
-			if (other.postCode != null)
+		
+		if (postID == null) {
+			if (other.postID != null)
 				return false;
-		} else if (!postCode.equals(other.postCode))
+		} else if (!postID.equals(other.postID))
+			return false;
+		
+		if (round == null) {
+			if (other.round != null)
+				return false;
+		} else if (!round.equals(other.round))
 			return false;
 		if (state == null) {
 			if (other.state != null)
@@ -121,8 +121,8 @@ public class Election extends Model implements Serializable {
 	@Override
 	public String toString() {
 		return "Election [id=" + id + ", year=" + year + ", description="
-				+ description + ", state=" + state + ", town=" + town
-				+ ", postID=" + postCode + ", post=" + post + ", noJobs="
-				+ noJobs + "]";
+				+ description + ", round=" + round + ", state=" + state
+				+ ", town=" + town + ", postID=" + postID + ", post=" + post
+				+ "]";
 	}
 }

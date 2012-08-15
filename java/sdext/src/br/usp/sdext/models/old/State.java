@@ -1,4 +1,4 @@
-package br.usp.sdext.models.location;
+package br.usp.sdext.models.old;
 
 import java.io.Serializable;
 
@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import br.usp.sdext.core.Model;
 
 @Entity
-public class StateOld extends Model implements Serializable {
+public class State extends Model implements Serializable {
 	
 	private static final long serialVersionUID = 6358274013517612742L;
 	
@@ -17,9 +17,9 @@ public class StateOld extends Model implements Serializable {
 	
 	private String label;
 	
-	public StateOld() {}
+	public State() {}
 	
-	public StateOld(String label) throws Exception 
+	public State(String label) throws Exception 
 	{
 		if (label != null) 
 		{ 
@@ -61,7 +61,7 @@ public class StateOld extends Model implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		StateOld other = (StateOld) obj;
+		State other = (State) obj;
 		if (label == null) {
 			if (other.label != null)
 				return false;

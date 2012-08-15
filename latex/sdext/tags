@@ -1,0 +1,21 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+Candidatos	src/metodology/setting.tex	/^\\subsection{Candidatos}\\label{sub:candidatos}$/;"	b
+Conclus o	src/document.tex	/^\\chapter{Conclusão}\\label{ch:conclusion}$/;"	c
+Cria o do Banco de Dados	src/document.tex	/^\\section{Criação do Banco de Dados}\\label{sec:db_creation}$/;"	s
+Eleitorado	src/metodology/setting.tex	/^\\subsection{Eleitorado}\\label{sub:eleitorado}$/;"	b
+Introdu o	src/document.tex	/^\\chapter{Introdução}\\label{ch:intro}$/;"	c
+Levantamento dos Dados	src/document.tex	/^\\section{Levantamento dos Dados}\\label{sec:setting}$/;"	s
+Materiais	src/document.tex	/^\\section{Materiais}$/;"	s
+Metodologia	src/document.tex	/^\\chapter{Metodologia}\\label{ch:metodology}$/;"	c
+Nomes de cidades	src/metodology/db_creation.tex	/^\\subsubsection{Nomes de cidades}$/;"	b
+Presta o de Contas	src/metodology/setting.tex	/^\\subsection{Prestação de Contas}\\label{sub:resultados}$/;"	b
+Resultados	src/document.tex	/^\\chapter{Resultados}\\label{ch:resuls}$/;"	c
+Resultados	src/metodology/setting.tex	/^\\subsection{Resultados}\\label{sub:resultados}$/;"	b
+Sele o dos Dados	src/document.tex	/^\\section{Seleção dos Dados}\\label{sec:db_selection}$/;"	s
+Trabalhos Relacionados	src/document.tex	/^\\chapter{Trabalhos Relacionados}\\label{ch:related}$/;"	c
+Tratamento de Ambiguidade entre Palavras	src/metodology/db_creation.tex	/^\\subsection{Tratamento de Ambiguidade entre Palavras}\\label{sub:desamb}$/;"	b

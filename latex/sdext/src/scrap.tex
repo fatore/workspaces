@@ -1,0 +1,37 @@
+Os arquivos de eleitorado mencionados na Seção~\ref{sec:setting} não são de interesse  direto para as análises propostas por este trabalho. Porém, esta tabela contém todos   municípios envolvidos nas eleições juntamente com o código utilizado pelo TSE para     identificá-los, como pode ser observado na Tabela~\ref{tab:eleitorado}.
+
+\begin{table}[h!]
+        \centering
+        \begin{tabular}{|l|l|l|}
+                \hline
+                \multicolumn{3}{|c|}{\textbf{Perfil do Eleitorado}} \\
+                \hline
+                \textbf{Ordem} &  \textbf{Nome} & \textbf{Tipo}   \\
+                \hline
+                0 & Ano Eleição & Numérico \\
+                \hline 
+                1 & \textbf{UF da Zona Eleitora0l} & Caractere \\
+                \hline
+                2 & \textbf{Município da Zona Eleitoral} & Caractere \\
+                \hline
+                3 & \textbf{Código TSE do Município} & Numérico \\ 
+                \hline
+                4 & Número da Zona Eleitoral  & Numérico \\
+                \hline
+                5 & Sexo do Perfil & Caractere \\
+                \hline
+                6 & Faixa Etária do Perfil & Caractere \\
+                \hline
+                7 & Grau de Escolaridade do Perfil & Caractere \\
+                \hline
+                8 & Quantidade de Eleitores no Perfil & Numérico \\
+                \hline
+        \end{tabular}
+        \caption{Atributos dos arquivos de perfil do eleitorado. Destaque para os      atributos UF (estado), município e código TSE do município.}
+        \label{tab:eleitorado}
+\end{table}
+
+Por meio do nome e estado das cidades do arquivo do eleitorado atual é possível        determinar a correspondência com as tabelas existentes no banco de dados e quando o    código do TSE existir e for válido, então é possível associar esse valor às tabelas    existentes.
+
+A correspondência foi estabelecida com sucesso em 5.538 dos casos e falhou para 35     casos. A maioria dessas falhas se justifica por divergências na grafia do nome da      cidade nos sistemas do SUS e do TSE. Foi possível reduzir o número de falhas para 28   ao ignorar o apostrofo nos nomes de cidades como "Santa Luzia D'Oeste". Reduziu-se as  falhas para 15 ao aceitar que houvesse a possibilidade de remover, modificar ou        acrescentar uma letra nos nomes das cidades, como em: "Mogi Mirim" e "Moji Mirim".     Mesmo as cidades que mesmo após a correção não obtiveram correspondência foram         armazenadas no banco de dados, porém não poderão ser utilizadas em todas as análises   propostas.
+

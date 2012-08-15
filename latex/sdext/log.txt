@@ -105,19 +105,19 @@ Cap\'{\i }tulo 2.
 [3]
 Cap\'{\i }tulo 3.
 (./src/metodology/materials.tex) (./src/metodology/setting.tex [4]
-<images/rep_geral.png, id=105, 1416.29124pt x 327.2225pt>
+<images/rep_geral.png, id=109, 1416.29124pt x 327.2225pt>
 <use images/rep_geral.png>
-<images/candidatos.png, id=107, 1386.17876pt x 327.2225pt>
+<images/candidatos.png, id=111, 1386.17876pt x 327.2225pt>
 <use images/candidatos.png> [5 <./images/rep_geral.png>]
-<images/resultados.png, id=115, 1759.57375pt x 568.1225pt>
+<images/resultados.png, id=119, 1759.57375pt x 568.1225pt>
 <use images/resultados.png> [6 <./images/candidatos.png>]) [7 <./images/resulta
 dos.png>] (./src/metodology/db_selection.tex) (./src/metodology/db_creation.tex
-(/usr/share/texmf-dist/tex/latex/psnfss/omsptm.fd) [8]
-<images/datasus_ut.pdf, id=135, 602.25pt x 602.25pt>
+ [8] <images/datasus_ut.pdf, id=139, 602.25pt x 602.25pt>
 <use images/datasus_ut.pdf> [9]
-<images/locations_db.png, id=146, 731.73375pt x 325.215pt>
-<use images/locations_db.png> [10 <./images/datasus_ut.pdf>] [11 <./images/loca
-tions_db.png>] [12]) [13]
+<images/locations_db.png, id=150, 731.73375pt x 325.215pt>
+<use images/locations_db.png> [10 <./images/datasus_ut.pdf>]
+(/usr/share/texmf-dist/tex/latex/psnfss/omsptm.fd) [11 <./images/locations_db.p
+ng>]) [12] [13]
 Cap\'{\i }tulo 4.
 [14]
 Cap\'{\i }tulo 5.
@@ -132,5 +132,5 @@ mmi8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr
 /share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-dist/fon
 ts/type1/urw/times/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmr
 8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on document.pdf (17 pages, 247202 bytes).
+Output written on document.pdf (17 pages, 246215 bytes).
 Transcript written on document.log.

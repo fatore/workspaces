@@ -9,9 +9,9 @@ import java.util.Date;
 import java.util.HashMap;
 
 import br.usp.sdext.core.Model;
-import br.usp.sdext.models.Log;
 import br.usp.sdext.models.candidate.status.Estate;
 import br.usp.sdext.models.candidate.status.Status;
+import br.usp.sdext.models.old.Log;
 import br.usp.sdext.parsers.AbstractParser;
 import br.usp.sdext.util.Misc;
 
@@ -133,7 +133,6 @@ public class EstateParser extends AbstractParser {
 				+  (int) (elapsedTime / 60000),(int) (elapsedTime % 60000) / 1000);
 	}
 
-	@Override
 	protected void printResults() {
 		
 		System.out.println("\nTotal objects loaded");

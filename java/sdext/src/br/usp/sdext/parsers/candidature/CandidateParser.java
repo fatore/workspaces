@@ -12,8 +12,8 @@ import br.usp.sdext.models.candidate.status.Job;
 import br.usp.sdext.models.candidate.status.MaritalStatus;
 import br.usp.sdext.models.candidate.status.Schooling;
 import br.usp.sdext.models.candidate.status.Status;
-import br.usp.sdext.models.location.StateOld;
-import br.usp.sdext.models.location.TownOld;
+import br.usp.sdext.models.old.State;
+import br.usp.sdext.models.old.Town;
 import br.usp.sdext.parsers.MiscParser;
 import br.usp.sdext.parsers.ModelParser;
 import br.usp.sdext.parsers.estate.EstateBinding;
@@ -95,16 +95,16 @@ public class CandidateParser extends ModelParser {
 			// Birth state.
 			String stateLabel = Misc.parseStr(pieces[36]); // label
 			if (stateLabel == null) {throw new Exception("State label is invalid: " + pieces[36]);}
-			StateOld birthState =  new StateOld(stateLabel);
-			birthState = (StateOld) Model.fetch(birthState, miscParser.getStatesMap());
+			State birthState =  new State(stateLabel);
+			birthState = (State) Model.fetch(birthState, miscParser.getStatesMap());
 			
 			// Birth town.
 			Long id = Misc.parseLong(pieces[37]);
 			String label = Misc.parseStr(pieces[38]);
 			if (label == null) {throw new Exception("Town label is invalid: " + pieces[38]);}
-			TownOld birthTown = new TownOld(id, label);
+			Town birthTown = new Town(id, label);
 			birthTown.setState(birthState);
-			birthTown = (TownOld) Model.fetch(birthTown, miscParser.getTownsMap());
+			birthTown = (Town) Model.fetch(birthTown, miscParser.getTownsMap());
 			candidate.setBirthTown(birthTown);
 
 

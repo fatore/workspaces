@@ -3,7 +3,7 @@ package br.usp.sdext.parsers.candidature;
 import java.util.HashMap;
 
 import br.usp.sdext.core.Model;
-import br.usp.sdext.models.Coalition;
+import br.usp.sdext.models.old.Coalition;
 import br.usp.sdext.parsers.ModelParser;
 import br.usp.sdext.util.Misc;
 

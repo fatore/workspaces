@@ -1,4 +1,4 @@
-package br.usp.sdext.models.location;
+package br.usp.sdext.models;
 
 import java.io.Serializable;
 
@@ -11,7 +11,7 @@ import br.usp.sdext.core.Model;
 @Entity
 public class State extends Model implements Serializable {
 
-	private static final long serialVersionUID = -2492705092435132356L;
+	private static final long serialVersionUID = -2413182824214875615L;
 
 	@Id
 	private Long id;

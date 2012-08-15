@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import br.usp.sdext.core.Model;
-import br.usp.sdext.models.Election;
-import br.usp.sdext.models.Log;
 import br.usp.sdext.models.candidate.Candidate;
 import br.usp.sdext.models.candidature.Candidature;
 import br.usp.sdext.models.candidature.Donor;
@@ -17,8 +15,10 @@ import br.usp.sdext.models.candidature.Expense;
 import br.usp.sdext.models.candidature.Income;
 import br.usp.sdext.models.candidature.Provider;
 import br.usp.sdext.models.ghosts.GhostCandidate;
-import br.usp.sdext.models.location.StateOld;
-import br.usp.sdext.models.location.TownOld;
+import br.usp.sdext.models.old.Election;
+import br.usp.sdext.models.old.Log;
+import br.usp.sdext.models.old.State;
+import br.usp.sdext.models.old.Town;
 import br.usp.sdext.parsers.AbstractParser;
 import br.usp.sdext.parsers.MiscParser;
 import br.usp.sdext.util.Misc;
@@ -170,8 +170,8 @@ public class AccountabilityParser extends AbstractParser {
 
 		// Create binding
 		String post = null;
-		StateOld electionState = null;
-		TownOld electionTown = null;
+		State electionState = null;
+		Town electionTown = null;
 
 		String candidateName = null;
 		Integer ballotNo = null;
@@ -186,8 +186,8 @@ public class AccountabilityParser extends AbstractParser {
 			
 			ballotNo = Misc.parseInt(pieces[3]);
 			
-			electionState = new StateOld(Misc.parseStr(pieces[4]));
-			electionState = (StateOld) StateOld.fetch(electionState, miscParser.getStatesMap());
+			electionState = new State(Misc.parseStr(pieces[4]));
+			electionState = (State) State.fetch(electionState, miscParser.getStatesMap());
 			
 			break;
 
@@ -199,12 +199,12 @@ public class AccountabilityParser extends AbstractParser {
 			
 			ballotNo = Misc.parseInt(pieces[4]);
 			
-			electionState = new StateOld(Misc.parseStr(pieces[5]));
-			electionState = (StateOld) StateOld.fetch(electionState, miscParser.getStatesMap());
+			electionState = new State(Misc.parseStr(pieces[5]));
+			electionState = (State) State.fetch(electionState, miscParser.getStatesMap());
 			
-			electionTown = new TownOld(null, Misc.parseStr(pieces[6]));
+			electionTown = new Town(null, Misc.parseStr(pieces[6]));
 			electionTown.setState(electionState);
-			electionTown = (TownOld) TownOld.fetch(electionTown, miscParser.getTownsMap());
+			electionTown = (Town) Town.fetch(electionTown, miscParser.getTownsMap());
 			
 			break;
 
@@ -216,8 +216,8 @@ public class AccountabilityParser extends AbstractParser {
 			
 			ballotNo = Misc.parseInt(pieces[3]);
 			
-			electionState = new StateOld(Misc.parseStr(pieces[1]));
-			electionState = (StateOld) StateOld.fetch(electionState, miscParser.getStatesMap());
+			electionState = new State(Misc.parseStr(pieces[1]));
+			electionState = (State) State.fetch(electionState, miscParser.getStatesMap());
 			
 			break;
 
@@ -263,8 +263,8 @@ public class AccountabilityParser extends AbstractParser {
 
 		// Create binding
 		String post = null;
-		StateOld electionState = null;
-		TownOld electionTown = null;
+		State electionState = null;
+		Town electionTown = null;
 
 		String candidateName = null;
 		Integer ballotNo = null;
@@ -279,8 +279,8 @@ public class AccountabilityParser extends AbstractParser {
 			
 			ballotNo = Misc.parseInt(pieces[3]);
 			
-			electionState = new StateOld(Misc.parseStr(pieces[4]));
-			electionState = (StateOld) StateOld.fetch(electionState, miscParser.getStatesMap());
+			electionState = new State(Misc.parseStr(pieces[4]));
+			electionState = (State) State.fetch(electionState, miscParser.getStatesMap());
 			
 			break;
 
@@ -292,12 +292,12 @@ public class AccountabilityParser extends AbstractParser {
 			
 			ballotNo = Misc.parseInt(pieces[4]);
 			
-			electionState = new StateOld(Misc.parseStr(pieces[5]));
-			electionState = (StateOld) StateOld.fetch(electionState, miscParser.getStatesMap());
+			electionState = new State(Misc.parseStr(pieces[5]));
+			electionState = (State) State.fetch(electionState, miscParser.getStatesMap());
 			
-			electionTown = new TownOld(null, Misc.parseStr(pieces[6]));
+			electionTown = new Town(null, Misc.parseStr(pieces[6]));
 			electionTown.setState(electionState);
-			electionTown = (TownOld) TownOld.fetch(electionTown, miscParser.getTownsMap());
+			electionTown = (Town) Town.fetch(electionTown, miscParser.getTownsMap());
 			
 			break;
 
@@ -309,8 +309,8 @@ public class AccountabilityParser extends AbstractParser {
 			
 			ballotNo = Misc.parseInt(pieces[3]);
 			
-			electionState = new StateOld(Misc.parseStr(pieces[1]));
-			electionState = (StateOld) StateOld.fetch(electionState, miscParser.getStatesMap());
+			electionState = new State(Misc.parseStr(pieces[1]));
+			electionState = (State) State.fetch(electionState, miscParser.getStatesMap());
 			
 			break;
 
@@ -366,7 +366,6 @@ public class AccountabilityParser extends AbstractParser {
 				+  (int) (elapsedTime / 60000),(int) (elapsedTime % 60000) / 1000);
 	}
 
-	@Override
 	protected void printResults() {
 		
 		System.out.println("\nTotal objects loaded");

@@ -33,39 +33,14 @@
         <!-- Drop and re-create the database schema on startup -->
         <property name="hbm2ddl.auto">create-drop</property>
 
-	<mapping class="br.usp.sdext.models.Log"/>
-	
-	<mapping class="br.usp.sdext.models.Coalition"/>
 	<mapping class="br.usp.sdext.models.Election"/>
-	<mapping class="br.usp.sdext.models.Party"/>
+	<mapping class="br.usp.sdext.models.Log"/>
+	<mapping class="br.usp.sdext.models.MesoRegion"/>
+	<mapping class="br.usp.sdext.models.MicroRegion"/>
+	<mapping class="br.usp.sdext.models.Region"/>
+	<mapping class="br.usp.sdext.models.State"/>
+	<mapping class="br.usp.sdext.models.Town"/>
 	
-	<mapping class="br.usp.sdext.models.location.Region"/>
-	<mapping class="br.usp.sdext.models.location.State"/>
-	<mapping class="br.usp.sdext.models.location.MesoRegion"/>
-	<mapping class="br.usp.sdext.models.location.MicroRegion"/>
-	<mapping class="br.usp.sdext.models.location.Town"/>
-	
-	<mapping class="br.usp.sdext.models.location.StateOld"/>
-	<mapping class="br.usp.sdext.models.location.TownOld"/>
-
-	<mapping class="br.usp.sdext.models.candidate.Candidate"/>
-	<mapping class="br.usp.sdext.models.candidate.Citizenship"/>
-	<mapping class="br.usp.sdext.models.candidate.Sex"/>
-	
-	<mapping class="br.usp.sdext.models.candidate.status.Job"/>
-	<mapping class="br.usp.sdext.models.candidate.status.MaritalStatus"/>
-	<mapping class="br.usp.sdext.models.candidate.status.Schooling"/>
-	<mapping class="br.usp.sdext.models.candidate.status.Status"/>
-	<mapping class="br.usp.sdext.models.candidate.status.Estate"/>
-	
-	<mapping class="br.usp.sdext.models.candidature.Candidature"/>
-	<mapping class="br.usp.sdext.models.candidature.Donor"/>
-	<mapping class="br.usp.sdext.models.candidature.Provider"/>
-	<mapping class="br.usp.sdext.models.candidature.Income"/>
-	<mapping class="br.usp.sdext.models.candidature.Expense"/>
-	
-	<mapping class="br.usp.sdext.models.ghosts.GhostCandidate"/>
-
     </session-factory>
 
 </hibernate-configuration>

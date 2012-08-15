@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import br.usp.sdext.core.Model;
-import br.usp.sdext.models.Coalition;
-import br.usp.sdext.models.Election;
-import br.usp.sdext.models.Log;
 import br.usp.sdext.models.Party;
 import br.usp.sdext.models.candidate.Candidate;
 import br.usp.sdext.models.candidature.Candidature;
+import br.usp.sdext.models.old.Coalition;
+import br.usp.sdext.models.old.Election;
+import br.usp.sdext.models.old.Log;
 import br.usp.sdext.parsers.AbstractParser;
 import br.usp.sdext.parsers.MiscParser;
 import br.usp.sdext.parsers.account.AccountabilityBinding;
@@ -159,7 +159,6 @@ public class CandidatureParser extends AbstractParser {
 				+  (int) (elapsedTime / 60000),(int) (elapsedTime % 60000) / 1000);
 	}
 
-	@Override
 	protected void printResults() {
 		
 		System.out.println("\nTotal objects loaded");
