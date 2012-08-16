@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import br.usp.sdext.core.Model;
 import br.usp.sdext.models.Election;
@@ -14,30 +13,25 @@ import br.usp.sdext.models.State;
 import br.usp.sdext.models.Town;
 import br.usp.sdext.util.ParseException;
 
-public class ElectionParser extends AbstractParser {
-
-	private LocationParser locationParser;
+public class CandidatureParser extends AbstractParser {
 	
-	private HashMap<Model, Model> electionsMap = new HashMap<>();
-
+	private LocationParser locationParser;
+	private ElectionParser electionParser;
+	
 	private ArrayList<Model> logs = new ArrayList<>();
-
-	public ElectionParser(LocationParser locationParser) {
-
+	
+	public CandidatureParser(LocationParser locationParser,
+			ElectionParser electionParser) {
+		
 		this.locationParser = locationParser;
+		this.electionParser = electionParser;
 	}
 
-	public HashMap<Model, Model> getElectionsMap() {return electionsMap;}
-	
-
-
-
-
-	@Override
 	protected void loadFile(File file) throws Exception {
 
 		if (file.getName().matches("([^\\s]+(\\.(?i)txt))")) {
 
+			System.out.println("Parsing candidatures from " + file.getName());
 			parseFile(file);
 		}
 	}
@@ -61,7 +55,7 @@ public class ElectionParser extends AbstractParser {
 					pieces[i] = pieces[i].replace("\"", "");
 				}
 
-				parseElection(pieces);
+				parseCandidature(pieces);
 
 			} catch (ParseException e) {
 
@@ -89,16 +83,18 @@ public class ElectionParser extends AbstractParser {
 		}
 	}
 
-	private void parseElection(String[] pieces) throws Exception {
+	private void parseCandidature(String[] pieces) throws Exception {
 
-		// Parse year.
-		Integer year = parseInt(pieces[2]);
-
-		// Parse description.
-		String description = pieces[3];	
-
+		Election mappedElection = parseElection(pieces);
+	}
+	
+	private Election parseElection(String[] pieces) throws Exception {
+		
+		Integer year = parseInt(pieces[2]); // year
+		Integer postCode = parseInt(pieces[8]); // posID
+		
 		// Parse and fetch state.
-		State state = new State(pieces[4]);
+		State state = new State(pieces[5]);
 
 		State mappedState = (State) locationParser.getStatesMap().get(state);
 
@@ -106,96 +102,34 @@ public class ElectionParser extends AbstractParser {
 
 			throw new ParseException("State not found in map" , state.getAcronym());
 		}
-
-		Town mappedTown;
-
-		// If it is not a major election then parse town.
+		
+		Town mappedTown = null;
+		
 		if ((year - Election.FIRST_MAIN_ELECTION) % 4 != 0) {
-
-			Integer tseCode = parseInt(pieces[5]);
-
+			
+			Integer tseCode = parseInt(pieces[6]);
+			
 			if (tseCode == null) {
 
-				throw new ParseException("Invalid TSE code", pieces[5]);
-			}
-
-			Town town = new Town(locationParser.parseTownNamex(pieces[6]), mappedState);
-			
-			// Try to find town by name and state.
-			if ((mappedTown = (Town) locationParser.getTownsMap().get(town)) == null) {
-
-				town.setTseCode(tseCode);
-				
-				// Try to find town by TSE code.
-				if ((mappedTown = (Town) locationParser.getTownsMapByTSE().get(town.getTseCode())) == null) {
-
-					// Check if town is not lost.
-					if (!locationParser.getLostTownsMap().containsKey(town)) {
-
-						// Try to disambiguate.
-						mappedTown = locationParser.disambiguateTown(town);
-						
-						// If all failed then town is lost.
-						if (mappedTown == null) {
-							
-							mappedTown = new Town();
-							mappedTown.setNamex(town.getNamex());
-							mappedTown.setState(town.getState());
-							
-							mappedTown = (Town) Model.fetch(mappedTown, locationParser.getTownsMap());
-							
-							locationParser.getLostTownsMap().put(town, town);
-							
-							logs.add(new Log("Town not found", town.getNamex() + ", " + town.getState().getAcronym()
-							+ ", " + town.getTseCode()));
-							
-						}
-					}
-					else {
-
-						mappedTown = (Town) locationParser.getLostTownsMap().get(town);
-					}
-				}
-			} 
-
-			// Check if TSE code has not already been set. 
-			if (mappedTown.getTseCode() == null) {
-
-				// Set TSE code.
-				mappedTown.setTseCode(tseCode);
-				
-			} else {
-
-				// Check for data inconsistency.
-				if (!mappedTown.getTseCode().equals(tseCode)) {
-
-					logs.add(new Log("Same city different TSE ids", mappedTown.getNamex() 
-							+ ", " + mappedTown.getTseCode() + ", " + tseCode));
-				}
+				throw new ParseException("Invalid TSE code", pieces[6]);
 			}
 			
-			// Add town to TSE code map.
-			locationParser.getTownsMapByTSE().put(mappedTown.getTseCode(), mappedTown);
+			Town town = new Town();
+			town.setTseCode(parseInt(pieces[6]));
+			
+			if ((mappedTown = (Town) locationParser.getTownsMapByTSE().get(tseCode)) == null) {
+				
+				throw new ParseException("Town TSE code not found", tseCode + "");
+			}
 		} 
-		// A major election, town does not matter.
-		else {
-			
-			mappedTown = null;
-		}
-
-		// Parse post.
-		Integer postCode = parseInt(pieces[7]);
-		String post = pieces[8];
 		
-		// Parse number of jobs.
-
-		Integer noJobs = parseInt(pieces[9]);
+		Election election = new Election(year, mappedState, mappedTown, postCode);
 		
-		Election election = new Election(year, description, mappedState, mappedTown, postCode, post, noJobs);
+		election = (Election) electionParser.getElectionsMap().get(election);
 		
-		Model.fetch(election, electionsMap);
+		return election;
 	}
-
+	
 	private Integer parseInt(String str) {
 
 		if (str.replace(" ", "").equals("")) return null;
@@ -205,12 +139,6 @@ public class ElectionParser extends AbstractParser {
 
 	public void save() {
 
-		Model.bulkSave(logs);
-		
-		System.out.println("Saving " + electionsMap.size() +" elections...");
-		Model.bulkSave(electionsMap.values());
-		
-		System.out.println("Done!");
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -229,21 +157,12 @@ public class ElectionParser extends AbstractParser {
 		electionParser.parse("/home/fm/work/data/sdext/eleitorais/candidatos/vagas/2010");
 		electionParser.parse("/home/fm/work/data/sdext/eleitorais/candidatos/vagas/2008");
 		electionParser.parse("/home/fm/work/data/sdext/eleitorais/candidatos/vagas/2006");
+		
+		CandidatureParser candidatureParser = new CandidatureParser(locationParser, electionParser);
+		
+		candidatureParser.parse("/home/fm/work/data/sdext/eleitorais/candidatos/candidaturas/2012");
 
 		locationParser.save();
 		electionParser.save();
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -15,8 +15,8 @@ import br.usp.sdext.models.old.Coalition;
 import br.usp.sdext.models.old.Election;
 import br.usp.sdext.models.old.Log;
 import br.usp.sdext.parsers.AbstractParser;
-import br.usp.sdext.parsers.MiscParser;
 import br.usp.sdext.parsers.account.AccountabilityBinding;
+import br.usp.sdext.parsers.old.MiscParser;
 import br.usp.sdext.util.Misc;
 
 public class CandidatureParser extends AbstractParser {

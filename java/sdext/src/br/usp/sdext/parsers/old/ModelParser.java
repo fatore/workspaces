@@ -1,4 +1,4 @@
-package br.usp.sdext.parsers;
+package br.usp.sdext.parsers.old;
 
 
 public abstract class ModelParser {

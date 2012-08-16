@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 import br.usp.sdext.core.Model;
 import br.usp.sdext.models.Log;
@@ -15,9 +17,10 @@ import br.usp.sdext.models.MicroRegion;
 import br.usp.sdext.models.Region;
 import br.usp.sdext.models.State;
 import br.usp.sdext.models.Town;
+import br.usp.sdext.util.LevenshteinDistance;
 import br.usp.sdext.util.ParseException;
 
-public class LocationParser extends ModelParser {
+public class LocationParser {
 
 	private ArrayList<Model> logs = new ArrayList<>();
 
@@ -297,7 +300,7 @@ public class LocationParser extends ModelParser {
 		return Integer.parseInt(str);
 	}
 
-	private String parseTownNamex(String str) {
+	public String parseTownNamex(String str) {
 
 		str = Normalizer.normalize(str, Normalizer.Form.NFD);
 
@@ -307,26 +310,123 @@ public class LocationParser extends ModelParser {
 
 		return str.toUpperCase().trim();
 	}
+	
+	public Town findMisspelledTown(Town missTown, int threshold) {
 
-	@Override
+		Iterator<Entry<Model, Model>> i = getTownsMap().entrySet().iterator();
+
+		while (i.hasNext()) {
+
+			Town town = (Town) ((Entry<Model, Model>) i.next()).getValue();
+
+			if (missTown.getState().equals(town.getState())) {
+
+				int distance = LevenshteinDistance.computeLevenshteinDistance(missTown.getNamex(), town.getNamex());
+
+				if (distance <= threshold) {
+
+					return town;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public Town guessTownNames(Town town) {
+		
+		switch (town.getNamex()) {
+		
+		case "SAO VALERIO DO TOCANTINS":
+			town.setNamex("SAO VALERIO DA NATIVIDADE");
+			break;
+			
+		case "ITAMARACA":
+			town.setNamex("ILHA DE ITAMARACA");
+			break;
+			
+		case "GOVERNADOR LOMANTO JUNIOR":
+			town.setNamex("BARRO PRETO");
+			break;
+			
+		case "TACIMA":
+			town.setNamex("CAMPO DE SANTANA");
+			break;
+			
+		case "SAO DOMINGOS DE POMBAL":
+			town.setNamex("SAO DOMINGOS");
+			break;
+			
+		case "SAO VICENTE DO SERIDO":
+			town.setNamex("SERIDO");
+			break;
+			
+		case "ASSU":
+			town.setNamex("ACU");
+			break;
+			
+		case "BOA SAUDE":
+			town.setNamex("JANUARIO CICCO");
+			break;
+			
+		case "CAMPO GRANDE":
+			town.setNamex("AUGUSTO SEVERO");
+			break;
+			
+		case "SERRA CAIADA":
+			town.setNamex("PRESIDENTE JUSCELINO");
+			break;
+			
+		case "COUTO DE MAGALHAES":
+			town.setNamex("COUTO MAGALHAES");
+			break;
+			
+		default:
+			return null;
+		}
+		
+		return (Town) townsMap.get(town);
+	}
+	
+	public Town disambiguateTown(Town town) {
+		
+		Town mappedTown;
+		
+		// Try to find similar.
+		if ((mappedTown = findMisspelledTown(town, 1)) == null) {
+
+			Town test = new Town();
+			test.setNamex(town.getNamex().replaceAll("DO OESTE", "D'OESTE"));
+			test.setState(town.getState());
+			mappedTown = (Town) getTownsMap().get(test);
+		}
+		
+		if (mappedTown == null) {
+			
+			// Try individually guesses..
+			mappedTown = guessTownNames(town);
+		}
+		
+		return mappedTown;
+	}
+
 	public void save() {
 
 		Model.bulkSave(logs);
 		System.out.println("Saving locations data: ");
 
-		System.out.println("\tSaving regions...");
+		System.out.println("\tSaving " + regionsMap.size() + " regions...");
 		Model.bulkSave(regionsMap.values());
 
-		System.out.println("\tSaving states...");
+		System.out.println("\tSaving " + statesMap.size() + " states...");
 		Model.bulkSave(statesMap.values());
 
-		System.out.println("\tSaving meso regions...");
+		System.out.println("\tSaving " + mesosMap.size() + " mesoregions...");
 		Model.bulkSave(mesosMap.values());
 
-		System.out.println("\tSaving micro regions...");
+		System.out.println("\tSaving " + microsMap.size() + " microregions...");
 		Model.bulkSave(microsMap.values());
 
-		System.out.println("\tSaving towns...");
+		System.out.println("\tSaving " + townsMap.size() + " towns...");
 		Model.bulkSave(townsMap.values());
 
 		System.out.println("Done!");

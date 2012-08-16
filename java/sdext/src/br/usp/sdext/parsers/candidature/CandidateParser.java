@@ -14,9 +14,9 @@ import br.usp.sdext.models.candidate.status.Schooling;
 import br.usp.sdext.models.candidate.status.Status;
 import br.usp.sdext.models.old.State;
 import br.usp.sdext.models.old.Town;
-import br.usp.sdext.parsers.MiscParser;
-import br.usp.sdext.parsers.ModelParser;
 import br.usp.sdext.parsers.estate.EstateBinding;
+import br.usp.sdext.parsers.old.MiscParser;
+import br.usp.sdext.parsers.old.ModelParser;
 import br.usp.sdext.util.Misc;
 
 public class CandidateParser extends ModelParser {

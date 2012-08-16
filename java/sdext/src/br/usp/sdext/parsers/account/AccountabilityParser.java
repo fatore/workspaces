@@ -20,7 +20,7 @@ import br.usp.sdext.models.old.Log;
 import br.usp.sdext.models.old.State;
 import br.usp.sdext.models.old.Town;
 import br.usp.sdext.parsers.AbstractParser;
-import br.usp.sdext.parsers.MiscParser;
+import br.usp.sdext.parsers.old.MiscParser;
 import br.usp.sdext.util.Misc;
 
 

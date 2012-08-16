@@ -114,10 +114,10 @@ Cap\'{\i }tulo 3.
 dos.png>] (./src/metodology/db_selection.tex) (./src/metodology/db_creation.tex
  [8] <images/datasus_ut.pdf, id=139, 602.25pt x 602.25pt>
 <use images/datasus_ut.pdf> [9]
-<images/locations_db.png, id=150, 731.73375pt x 325.215pt>
-<use images/locations_db.png> [10 <./images/datasus_ut.pdf>]
-(/usr/share/texmf-dist/tex/latex/psnfss/omsptm.fd) [11 <./images/locations_db.p
-ng>]) [12] [13]
+<images/locations_db.png, id=148, 731.73375pt x 325.215pt>
+<use images/locations_db.png> (/usr/share/texmf-dist/tex/latex/psnfss/omsptm.fd
+) [10 <./images/datasus_ut.pdf>] [11 <./images/locations_db.png>] [12])
+[13]
 Cap\'{\i }tulo 4.
 [14]
 Cap\'{\i }tulo 5.
@@ -132,5 +132,5 @@ mmi8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr
 /share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-dist/fon
 ts/type1/urw/times/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmr
 8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on document.pdf (17 pages, 246215 bytes).
+Output written on document.pdf (17 pages, 248366 bytes).
 Transcript written on document.log.

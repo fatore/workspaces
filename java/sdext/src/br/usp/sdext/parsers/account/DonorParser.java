@@ -5,8 +5,8 @@ import java.util.HashMap;
 import br.usp.sdext.core.Model;
 import br.usp.sdext.models.candidature.Donor;
 import br.usp.sdext.models.old.State;
-import br.usp.sdext.parsers.MiscParser;
-import br.usp.sdext.parsers.ModelParser;
+import br.usp.sdext.parsers.old.MiscParser;
+import br.usp.sdext.parsers.old.ModelParser;
 import br.usp.sdext.util.Misc;
 
 public class DonorParser extends ModelParser {

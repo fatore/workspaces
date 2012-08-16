@@ -1,10 +1,10 @@
-package br.usp.sdext.parsers;
+package br.usp.sdext.parsers.old;
 
 import java.util.HashMap;
 
 import br.usp.sdext.core.Model;
 
-public class MiscParser extends ModelParser {
+public class MiscParser {
 	
 	private int year;
 	
@@ -17,7 +17,6 @@ public class MiscParser extends ModelParser {
 	public HashMap<Model, Model> getStatesMap() {return statesMap;}
 	public HashMap<Model, Model> getTownsMap() {return townsMap;}
 	
-	@Override
 	public void save() {
 
 		Model.bulkSave(statesMap.values());

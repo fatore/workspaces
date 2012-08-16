@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import br.usp.sdext.core.Model;
 import br.usp.sdext.models.Party;
-import br.usp.sdext.parsers.ModelParser;
+import br.usp.sdext.parsers.old.ModelParser;
 import br.usp.sdext.util.Misc;
 
 public class PartyParser extends ModelParser {

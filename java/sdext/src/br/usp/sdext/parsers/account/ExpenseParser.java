@@ -6,7 +6,7 @@ import java.util.HashMap;
 import br.usp.sdext.core.Model;
 import br.usp.sdext.models.candidature.Expense;
 import br.usp.sdext.models.candidature.Provider;
-import br.usp.sdext.parsers.ModelParser;
+import br.usp.sdext.parsers.old.ModelParser;
 import br.usp.sdext.util.Misc;
 
 public class ExpenseParser extends ModelParser {

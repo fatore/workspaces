@@ -6,13 +6,6 @@ Optou-se por dividir a etapa de criação do banco de dados em módulos que são det
 
 \subsection{Tratamento de Ambiguidade entre Palavras}\label{sub:desamb}
 
-\subsubsection{Nomes de cidades}
-
-D'OESTE e DO OESTE 
-MOGI MIRIM e MOJI MIRIM
-
-\subsubsection{Nomes de candidatos}
-
 \subsection{Dados de Localidade}
 
 Uma informação que é recorrente em praticamente em todos os arquivos do repositório de dados trata-se da localização de determinado acontecimento, por exemplo o local onde um candidato concorre a um determinado cargo, ou o seu local de nascimento. Essa informação representa um dado valioso para as análises propostas, pois sua disponibilidade viabiliza análises sobre tendências geográficas.
@@ -100,10 +93,23 @@ Os arquivos de vagas disponíveis contém informações sobre todas as eleições real
         \label{tab:election}
 \end{table}
 
-Foram processados os arquivos pertencentes ao período de 2006 à 2012, resultando em um total de X eleições. Para 16 cidades do total de Y mesmo após à etapa de tratamento de ambiguidade mencionado na Subseção~\ref{sub:desamb} não foi possível realizar a correspondência com os dados do SUS. Porém, de qualquer modo essas cidades foram armazenadas no banco de dados, no entanto não poderão ser utilizadas em todas as análises propostas.
+Durante o processamento dos arquivos de vagas detectou-se situações em que não havia uma correspondência entre os nomes de alguns municípios apresentados nos arquivos do TSE e os dados obtidos do SUS. Após de uma análise minuciosa das ocorrências deste problema, encontrou-se os seguintes motivos e soluções para essas situações:
 
+\begin{itemize}
+
+        \item Em 24 dos casos o problema é causado por divergências na grafia dos nomes como em: ``Mogi Mirim'' e ``Moji Mirim''. Situações semelhantes ocorrem pelo uso do apostrofo em nomes como ``Santa Luzia D'Oeste''. O problema foi tratado pela abordagem descrita na Subseção~\ref{sub:desamb} e determinou-se a correspondência entre os nomes para todos os 21 casos.
+
+        \item 8 dos casos justificam-se por alterações nos nomes dos municípios, como por exemplo o município de ``Januário Cicco'' no Rio Grande do Norte que passou a se chamar ``Boa Saúde''. A solução adotada foi buscar para cada caso o nome antigo do município nos registros do IBGE~\cite{www.ibge}, conseguindo assim estabelecer a correspondência entre os nomes para esses casos.
+
+        \item Para 5 casos verificou-se que os municípios ainda não haviam sido instalados quando os dados do SUS/IBGE foram coletados. Por isso não constam na base de dados, tratam-se de casos como o município ``Paraíso das Águas'' no Mato Grosso do Sul. A única solução para esses casos foi armazená-los na base de dados mesmo sem uma referência com os dados do SUS/IBGE. Esses municípios não poderão ser utilizados em todas as análises propostas.
+
+\end{itemize}
+
+O processamento descrito nessa seção foi responsável por armazenar no banco de dados 28.082 eleições realizadas em 5.568 cidades de todo país.  
 
 \subsection{Dados de Candidatura}
+
+
 
 \subsection{Dados de Bens de Candidatos}
 

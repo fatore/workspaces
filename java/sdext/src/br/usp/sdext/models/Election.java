@@ -52,6 +52,14 @@ public class Election extends Model implements Serializable {
 		this.noJobs = noJobs;
 	}
 
+	public Election(Integer year, State state, Town town, Integer postCode) {
+		
+		this.year = year;
+		this.state = state;
+		this.town = town;
+		this.postCode = postCode;
+	}
+	
 	// getters
 	public Long getID() {return id;}
 	public Integer getYear() {return year;}

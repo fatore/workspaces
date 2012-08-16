@@ -2,6 +2,7 @@ package br.usp.sdext.models;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -28,6 +29,8 @@ public class Town extends Model implements Serializable {
 	private Integer siafiCode;
 	
 	private String name;
+	
+	@Column(nullable=false)
 	private String namex;
 	
 	private String obs;
@@ -83,6 +86,12 @@ public class Town extends Model implements Serializable {
 		this.longetude = longetude;
 		this.altitude = altitude;
 		this.area = area;
+	}
+
+	public Town(String namex, State state) {
+		
+		this.namex = namex;
+		this.state = state;
 	}
 
 	public Long getId() {return id;}
