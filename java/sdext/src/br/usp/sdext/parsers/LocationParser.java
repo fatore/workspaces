@@ -45,6 +45,15 @@ public class LocationParser {
 	public HashMap<Model, Model> getLostTownsMap() {return lostTownsMap;}
 	public HashMap<Integer, Model> getTownsMapByTSE() {return townsMapByTSE;}
 	
+	public void addSpecialValues() {
+		
+		Region mappedRegion = (Region) regionsMap.get(new Region(0));
+		
+		State state = new State(0, "BR", "Brasil", "BRASIL", -1, mappedRegion, 0f, "IGNOR");
+		
+		Model.persist(state, statesMap);
+	}
+	
 	public void parseFile(String filename, String action) throws Exception {
 
 		BufferedReader in = new BufferedReader(
@@ -127,14 +136,14 @@ public class LocationParser {
 		String acronymx = pieces[4];
 
 		String status = pieces[5];
+		
+		Region parsedRegion = new Region(ibgeCode, name, namex, acronym, acronymx, status);
 
-		Region region = new Region(ibgeCode, name, namex, acronym, acronymx, status);
-
-		Region mappedRegion = (Region) regionsMap.get(region);
+		Region mappedRegion = (Region) regionsMap.get(parsedRegion);
 
 		if (mappedRegion == null) {
 
-			region = (Region) Model.fetch(region, regionsMap);
+			mappedRegion = (Region) Model.persist(parsedRegion, regionsMap);
 
 		} else {
 
@@ -155,21 +164,22 @@ public class LocationParser {
 
 		Region region = new Region();
 		region.setIbgeCode(Integer.parseInt(pieces[5]));
-		region = (Region) Model.fetch(region, regionsMap);
+		region = (Region) Model.persist(region, regionsMap);
 
 		Float area = Float.parseFloat(pieces[6]);
 
 		String status = pieces[7];
 
-		State state = new State(ibgeCode, acronym, name, namex, sinpasCode, region, area, status);
-
-		State mappedState = (State) statesMap.get(state);
+		State parsedState = new State(ibgeCode, acronym,
+				name, namex, sinpasCode, region, area, status);
+		
+		State mappedState = (State) statesMap.get(parsedState);
 
 		if (mappedState == null) {
 
-			state = (State) Model.fetch(state, statesMap);
+			mappedState = (State) Model.persist(parsedState, statesMap);
 
-			statesMapByIBGE.put(state.getIbgeCode(), state);
+			statesMapByIBGE.put(mappedState.getIbgeCode(), mappedState);
 
 		} else {
 
@@ -190,20 +200,19 @@ public class LocationParser {
 		state = (State) statesMapByIBGE.get(Integer.parseInt(pieces[4]));
 
 		String status = pieces[5];
+		
+		MesoRegion parsedMeso = new MesoRegion(ibgeCode, name, namex, acronym, state, status);
 
-		MesoRegion mesoRegion = new MesoRegion(ibgeCode, name, namex, acronym, state, status);
-
-		MesoRegion mappedMeso = (MesoRegion) mesosMap.get(mesoRegion);
+		MesoRegion mappedMeso = (MesoRegion) mesosMap.get(parsedMeso);
 
 		if (mappedMeso == null) {
 
-			mesoRegion = (MesoRegion) Model.fetch(mesoRegion, mesosMap);
+			mappedMeso = (MesoRegion) Model.persist(parsedMeso, mesosMap);
 
 		} else {
 
-			throw new ParseException("Meso region already exists in map");
+			throw new ParseException("Mesoregion already exists in map");
 		}
-
 	}
 
 	private void parseMicroRegion(String[] pieces) throws Exception {
@@ -219,20 +228,19 @@ public class LocationParser {
 		state = (State) statesMapByIBGE.get(Integer.parseInt(pieces[4]));
 
 		String status = pieces[5];
+		
+		MicroRegion parsedMicro = new MicroRegion(ibgeCode, name, namex, acronym, state, status);
 
-		MicroRegion microRegion = new MicroRegion(ibgeCode, name, namex, acronym, state, status);
-
-		MicroRegion mappedMicro= (MicroRegion) mesosMap.get(microRegion);
+		MicroRegion mappedMicro= (MicroRegion) mesosMap.get(parsedMicro);
 
 		if (mappedMicro == null) {
 
-			microRegion = (MicroRegion) Model.fetch(microRegion, microsMap);
+			mappedMicro = (MicroRegion) Model.persist(parsedMicro, microsMap);
 
 		} else {
 
-			throw new ParseException("Meso region already exists in map");
+			throw new ParseException("Microregion already exists in map");
 		}
-
 	}
 
 	private void parseTown(String[] pieces) throws Exception {
@@ -273,24 +281,23 @@ public class LocationParser {
 
 		Float altitude = Float.parseFloat(pieces[27]);
 		Float area = Float.parseFloat(pieces[28]);
-
-		Town town = new Town(ibgeCode, ibgeCodeVD, status, sinpasCode, siafiCode,
+		
+		Town parsedTown = new Town(ibgeCode, ibgeCodeVD, status, sinpasCode, siafiCode,
 				name, namex, obs, altCode, altCodeVD, legalAmazon, border, capital,
 				state, mesoRegion, microRegion, latitude, longetude, altitude, area);
 
-		Town mappedTown = (Town) townsMap.get(town);
+		Town mappedTown = (Town) townsMap.get(parsedTown);
 
 		if (mappedTown == null) {
 
-			town = (Town) Model.fetch(town, townsMap);
+			mappedTown = (Town) Model.persist(parsedTown, townsMap);
 
-			townsMapByIBGE.put(town.getIbgeCode(), town);
+			townsMapByIBGE.put(mappedTown.getIbgeCode(), mappedTown);
 
 		} else {
 
 			throw new ParseException("Town already exists in map");
 		}
-
 	}
 
 	private Integer parseInt(String str) {
@@ -438,6 +445,7 @@ public class LocationParser {
 
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/reg.csv", "region");
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/uf.csv", "state");
+		locationParser.addSpecialValues();
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/meso.csv", "meso");
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/micro.csv", "micro");
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/mun.csv", "town");

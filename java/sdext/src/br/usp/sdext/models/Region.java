@@ -2,6 +2,7 @@ package br.usp.sdext.models;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -15,6 +16,7 @@ public class Region extends Model implements Serializable {
 	@Id
 	private Long id;
 	
+	@Column(nullable=false)
 	private Integer ibgeCode;
 	
 	private String name;
@@ -37,7 +39,12 @@ public class Region extends Model implements Serializable {
 		this.acronymx = acronymx;
 		this.status = status;
 	}
-	
+
+	public Region(Integer ibgeCode) {
+		
+		this.ibgeCode = ibgeCode;
+	}
+
 	public Long getId() {return id;}
 	public Integer getIbgeCode() {return ibgeCode;}
 	public String getName() {return name;}

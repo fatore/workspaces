@@ -29,9 +29,13 @@ public class ElectionParser extends AbstractParser {
 
 	public HashMap<Model, Model> getElectionsMap() {return electionsMap;}
 	
-
-
-
+	public void addSpecialValues() {
+		
+		State mappedState = (State) locationParser.getStatesMap().get(new State("BR"));
+		
+		Model.persist(new Election(2006, "ELEIÇÕES 2006", mappedState, null, 1, "PRESIDENTE", 1), electionsMap);
+		Model.persist(new Election(2010, "ELEIÇÕES 2010", mappedState, null, 1, "PRESIDENTE", 1), electionsMap);
+	}
 
 	@Override
 	protected void loadFile(File file) throws Exception {
@@ -96,15 +100,34 @@ public class ElectionParser extends AbstractParser {
 
 		// Parse description.
 		String description = pieces[3];	
+		
+		// Check if election is a plebiscite.
+		if (description.contains("PLEBISCITO")) {
+			
+			throw new ParseException("Election is a plebiscite", pieces[8]);
+		}
+		
+		// Parse post.
+		Integer postCode = parseInt(pieces[7]);
+		String post = pieces[8];
+		
+		// Parse number of jobs.
+		Integer noJobs = parseInt(pieces[9]);
+		
+		// Check if post is for vice.
+		if (post.contains("VICE")) {
+			
+			throw new ParseException("Election of a non elective post", post);
+		}
 
 		// Parse and fetch state.
-		State state = new State(pieces[4]);
+		State parsedState = new State(pieces[4]);
 
-		State mappedState = (State) locationParser.getStatesMap().get(state);
+		State mappedState = (State) locationParser.getStatesMap().get(parsedState);
 
 		if (mappedState == null) {
 
-			throw new ParseException("State not found in map" , state.getAcronym());
+			throw new ParseException("State not found in map" , parsedState.getAcronym());
 		}
 
 		Town mappedTown;
@@ -119,41 +142,41 @@ public class ElectionParser extends AbstractParser {
 				throw new ParseException("Invalid TSE code", pieces[5]);
 			}
 
-			Town town = new Town(locationParser.parseTownNamex(pieces[6]), mappedState);
+			Town parsedTown = new Town(locationParser.parseTownNamex(pieces[6]), mappedState);
 			
 			// Try to find town by name and state.
-			if ((mappedTown = (Town) locationParser.getTownsMap().get(town)) == null) {
+			if ((mappedTown = (Town) locationParser.getTownsMap().get(parsedTown)) == null) {
 
-				town.setTseCode(tseCode);
+				parsedTown.setTseCode(tseCode);
 				
 				// Try to find town by TSE code.
-				if ((mappedTown = (Town) locationParser.getTownsMapByTSE().get(town.getTseCode())) == null) {
+				if ((mappedTown = (Town) locationParser.getTownsMapByTSE().get(parsedTown.getTseCode())) == null) {
 
 					// Check if town is not lost.
-					if (!locationParser.getLostTownsMap().containsKey(town)) {
+					if (!locationParser.getLostTownsMap().containsKey(parsedTown)) {
 
 						// Try to disambiguate.
-						mappedTown = locationParser.disambiguateTown(town);
+						mappedTown = locationParser.disambiguateTown(parsedTown);
 						
 						// If all failed then town is lost.
 						if (mappedTown == null) {
 							
 							mappedTown = new Town();
-							mappedTown.setNamex(town.getNamex());
-							mappedTown.setState(town.getState());
+							mappedTown.setNamex(parsedTown.getNamex());
+							mappedTown.setState(parsedTown.getState());
 							
-							mappedTown = (Town) Model.fetch(mappedTown, locationParser.getTownsMap());
+							mappedTown = (Town) Model.persist(mappedTown, locationParser.getTownsMap());
 							
-							locationParser.getLostTownsMap().put(town, town);
+							locationParser.getLostTownsMap().put(parsedTown, parsedTown);
 							
-							logs.add(new Log("Town not found", town.getNamex() + ", " + town.getState().getAcronym()
-							+ ", " + town.getTseCode()));
+							logs.add(new Log("Town not found", parsedTown.getNamex() + ", " + parsedTown.getState().getAcronym()
+							+ ", " + parsedTown.getTseCode()));
 							
 						}
 					}
 					else {
 
-						mappedTown = (Town) locationParser.getLostTownsMap().get(town);
+						mappedTown = (Town) locationParser.getLostTownsMap().get(parsedTown);
 					}
 				}
 			} 
@@ -182,18 +205,20 @@ public class ElectionParser extends AbstractParser {
 			
 			mappedTown = null;
 		}
+		
+		Election parsedElection = new Election(year, description, 
+				mappedState, mappedTown, postCode, post, noJobs);
 
-		// Parse post.
-		Integer postCode = parseInt(pieces[7]);
-		String post = pieces[8];
+		Election mappedElection = (Election) electionsMap.get(parsedElection);
 		
-		// Parse number of jobs.
+		if (mappedElection == null) {
 
-		Integer noJobs = parseInt(pieces[9]);
-		
-		Election election = new Election(year, description, mappedState, mappedTown, postCode, post, noJobs);
-		
-		Model.fetch(election, electionsMap);
+			mappedElection = (Election) Model.persist(parsedElection, electionsMap);
+			
+		} else {
+			
+			throw new ParseException("Duplicate election", mappedElection.toString());
+		}
 	}
 
 	private Integer parseInt(String str) {
@@ -219,6 +244,7 @@ public class ElectionParser extends AbstractParser {
 
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/reg.csv", "region");
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/uf.csv", "state");
+		locationParser.addSpecialValues();
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/meso.csv", "meso");
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/micro.csv", "micro");
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/mun.csv", "town");
@@ -229,6 +255,7 @@ public class ElectionParser extends AbstractParser {
 		electionParser.parse("/home/fm/work/data/sdext/eleitorais/candidatos/vagas/2010");
 		electionParser.parse("/home/fm/work/data/sdext/eleitorais/candidatos/vagas/2008");
 		electionParser.parse("/home/fm/work/data/sdext/eleitorais/candidatos/vagas/2006");
+		electionParser.addSpecialValues();
 
 		locationParser.save();
 		electionParser.save();

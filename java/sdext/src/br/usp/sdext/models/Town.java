@@ -94,6 +94,11 @@ public class Town extends Model implements Serializable {
 		this.state = state;
 	}
 
+	public Town(Integer tseCode) {
+		
+		this.tseCode = tseCode;
+	}
+
 	public Long getId() {return id;}
 	public Integer getTseCode() {return tseCode;}
 	public Integer getUeCode() {return ueCode;}
@@ -144,16 +149,8 @@ public class Town extends Model implements Serializable {
 
 	@Override
 	public String toString() {
-		
-		return "Town [id=" + id + ", ibgeCode=" + ibgeCode + ", ibgeCodeVD="
-				+ ibgeCodeVD + ", status=" + status + ", sinpasCode="
-				+ sinpasCode + ", siafiCode=" + siafiCode + ", name=" + name
-				+ ", namex=" + namex + ", obs=" + obs + ", altCode=" + altCode
-				+ ", altCodeVD=" + altCodeVD + ", legalAmazon=" + legalAmazon
-				+ ", border=" + border + ", capital=" + capital + ", state="
-				+ state + ", mesoRegion=" + mesoRegion + ", microRegion="
-				+ microRegion + ", latitude=" + latitude + ", longetude="
-				+ longetude + ", altitude=" + altitude + ", area=" + area + "]";
+		return "Town [name=" + name + ", namex=" + namex + ", tseCode="
+				+ tseCode + "]";
 	}
 
 	@Override

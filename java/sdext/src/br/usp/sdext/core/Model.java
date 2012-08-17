@@ -41,7 +41,7 @@ public abstract class Model  {
 		return model;
 	}
 	
-	public static Model fetch(Model model, HashMap<Model, Model> map) {
+	public static Model persist(Model model, HashMap<Model, Model> map) {
 		
 		if (model == null) {
 			

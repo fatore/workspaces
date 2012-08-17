@@ -76,11 +76,8 @@ public class State extends Model implements Serializable {
 
 	@Override
 	public String toString() {
-		
-		return "State [id=" + id + ", ibgeCode=" + ibgeCode + ", acronym="
-				+ acronym + ", name=" + name + ", namex=" + namex
-				+ ", sinpasCode=" + sinpasCode + ", region=" + region
-				+ ", area=" + area + ", status=" + status + "]";
+		return "State [acronym=" + acronym + ", name=" + name + ", namex="
+				+ namex + "]";
 	}
 
 	@Override

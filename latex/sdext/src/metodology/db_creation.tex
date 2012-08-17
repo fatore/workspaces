@@ -18,10 +18,10 @@ Apesar de se tratar de um recurso voltado para a saúde, esse sistema apresenta u
 As tabelas do DATASUS relacionadas à unidades territoriais apresentam uma hierarquia completa de níveis de detalhamento geográfico que possibilitam trabalhar desde regiões nacionais até distritos de um município, como pode ser observado na Figura~\ref{fig:datasus_ut}. 
 
 \begin{figure}[htb]
-        \centering
-        \includegraphics[width=10cm]{images/datasus_ut.pdf}
-        \caption{Hierarquia dos níveis de detalhamento geográfico dos dados de unidades territoriais do DATASUS.}
-        \label{fig:datasus_ut}
+  \centering
+  \includegraphics[width=10cm]{images/datasus_ut.pdf}
+  \caption{Hierarquia dos níveis de detalhamento geográfico dos dados de unidades territoriais do DATASUS.}
+  \label{fig:datasus_ut}
 \end{figure}
 
 Para cada município tem-se sua localização geográfica com base em sua latitude e longitude. Além disso, o sistema mantém códigos em suas tabelas que possibilitam a comunicação com outros sistemas do governo, inclusive com o IBGE. 
@@ -33,10 +33,10 @@ Os dados do DATASUS estão no formato dBase e podem ser baixados livremente e imp
 Desenvolveu-se um processador responsável por carregar os arquivos sobre unidades territoriais do DATASUS no banco de dados. Esta tarefa resume-se a interpretar cada campo do arquivo CSV em um atributo de uma nova tabela no banco de dados. O resultado deste processamento é apresentado na Figura~\ref{fig:locations_db}.
 
 \begin{figure}[htb]
-        \centering
-        \includegraphics[width=15cm]{images/locations_db.png}
-        \caption{Resultado do processamento dos dados de unidades territoriais. Diagrama construído pela ferramenta \textit{SchemaSpy}~\cite{www.schemaspy}}
-        \label{fig:locations_db}
+  \centering
+  \includegraphics[width=15cm]{images/locations_db.png}
+  \caption{Resultado do processamento dos dados de unidades territoriais. Diagrama construído pela ferramenta \textit{SchemaSpy}~\cite{www.schemaspy}}
+  \label{fig:locations_db}
 \end{figure}
 
 A tabela de regiões contém 6 entradas (\textit{rows}), 1 que designa região ignorada ou no exterior e 5 que representam as macrorregiões nacionais. Uma região contém um ou mais estados. 
@@ -44,9 +44,9 @@ A tabela de regiões contém 6 entradas (\textit{rows}), 1 que designa região igno
 Ao todo a tabela de estados contém 28 entradas, sendo elas:
 
 \begin{itemize}
-        \item 26 Unidades Federativas;
-        \item Distrito Federal; e 
-        \item UF ignorada ou no exterior.
+  \item 26 Unidades Federativas;
+  \item Distrito Federal; e 
+  \item UF ignorada ou no exterior.
 \end{itemize}
 
 As tabelas de mesorregiões e microrregiões com 165 e 586 entradas, respectivamente, representam subdivisões dos estados que congregam diversos municípios de uma área geográfica com similaridades econômicas e sociais. Ambas foram criadas pelo IBGE para fins estatísticos e não constituem entidades políticas ou administrativas. 
@@ -54,10 +54,10 @@ As tabelas de mesorregiões e microrregiões com 165 e 586 entradas, respectivamen
 A tabela de cidades contém informações referentes a:
 
 \begin{itemize}
-        \item 5.565 Municípios em vigor, sendo 5.563 Municípios propriamente ditos, 1 Distrito Federal (Brasília) e 1 Distrito Estadual (Fernando de Noronha);
-        \item 60 Municípios transferidos de Goiás para Tocantins, quando da criação deste; estes códigos são válidos até 31/12/1988;
-        \item 1 Município extinto (Pinto Bandeira, no Rio Grande do Sul, reincorporado a Bento Gonçalves por decisão judicial); e
-        \item 27 Municípios ignorados, um para cada Unidade da Federação (exceto do Distrito Federal) e um correspondendo a UF ignorada ou no exterior.
+  \item 5.565 Municípios em vigor, sendo 5.563 Municípios propriamente ditos, 1 Distrito Federal (Brasília) e 1 Distrito Estadual (Fernando de Noronha);
+  \item 60 Municípios transferidos de Goiás para Tocantins, quando da criação deste; estes códigos são válidos até 31/12/1988;
+  \item 1 Município extinto (Pinto Bandeira, no Rio Grande do Sul, reincorporado a Bento Gonçalves por decisão judicial); e
+  \item 27 Municípios ignorados, um para cada Unidade da Federação (exceto do Distrito Federal) e um correspondendo a UF ignorada ou no exterior.
 \end{itemize}
 
 Os demais níveis de detalhamento, como distritos de municípios, não foram processados pois estão fora do interesse deste trabalho.
@@ -69,45 +69,61 @@ O processamento descrito nesta subseção estabelece uma base confiável de informa
 Os arquivos de vagas disponíveis contém informações sobre todas as eleições realizadas em todas unidades eleitorais. Assim, este arquivo possibilita não somente registrar o número de vagas para cada cargo como também criar a tabela eleição como mostra a Tabela~\ref{tab:election}. 
 
 \begin{table}[h!]
-        \centering
-        \begin{tabular}{|l|}
-                \hline
-                \multicolumn{1}{|c|}{\textbf{Atributos da Tabela Eleição}} \\
-                \hline
-                Ano \\
-                \hline
-                Descrição \\
-                \hline
-                Estado \\
-                \hline
-                Cidade \\
-                \hline
-                Código do Cargo \\
-                \hline
-                Descrição do Cargo \\
-                \hline
-                Número de Vagas \\
-                \hline
-        \end{tabular}
-        \caption{Atributos da tabela de eleições, resultante do processamento dos arquivos de vagas disponíveis.}
-        \label{tab:election}
+  \centering
+  \begin{tabular}{|l|}
+    \hline
+    \multicolumn{1}{|c|}{\textbf{Atributos da Tabela Eleição}} \\
+    \hline
+    Ano \\
+    \hline
+    Descrição \\
+    \hline
+    Estado \\
+    \hline
+    Cidade \\
+    \hline
+    Código do Cargo \\
+    \hline
+    Descrição do Cargo \\
+    \hline
+    Número de Vagas \\
+    \hline
+  \end{tabular}
+  \caption{Atributos da tabela de eleições, resultante do processamento dos arquivos de vagas disponíveis.}
+  \label{tab:election}
 \end{table}
 
 Durante o processamento dos arquivos de vagas detectou-se situações em que não havia uma correspondência entre os nomes de alguns municípios apresentados nos arquivos do TSE e os dados obtidos do SUS. Após de uma análise minuciosa das ocorrências deste problema, encontrou-se os seguintes motivos e soluções para essas situações:
 
 \begin{itemize}
+  \item Em 24 dos casos o problema é causado por divergências na grafia dos nomes como em: ``Mogi Mirim'' e ``Moji Mirim''. Situações semelhantes ocorrem pelo uso do apostrofo em nomes como ``Santa Luzia D'Oeste''. O problema foi tratado pela abordagem descrita na Subseção~\ref{sub:desamb} e determinou-se a correspondência entre os nomes para todos os 21 casos.
 
-        \item Em 24 dos casos o problema é causado por divergências na grafia dos nomes como em: ``Mogi Mirim'' e ``Moji Mirim''. Situações semelhantes ocorrem pelo uso do apostrofo em nomes como ``Santa Luzia D'Oeste''. O problema foi tratado pela abordagem descrita na Subseção~\ref{sub:desamb} e determinou-se a correspondência entre os nomes para todos os 21 casos.
+  \item 8 dos casos justificam-se por alterações nos nomes dos municípios, como por exemplo o município de ``Januário Cicco'' no Rio Grande do Norte que passou a se chamar ``Boa Saúde''. A solução adotada foi buscar para cada caso o nome antigo do município nos registros do IBGE~\cite{www.ibge}, conseguindo assim estabelecer a correspondência entre os nomes para esses casos.
 
-        \item 8 dos casos justificam-se por alterações nos nomes dos municípios, como por exemplo o município de ``Januário Cicco'' no Rio Grande do Norte que passou a se chamar ``Boa Saúde''. A solução adotada foi buscar para cada caso o nome antigo do município nos registros do IBGE~\cite{www.ibge}, conseguindo assim estabelecer a correspondência entre os nomes para esses casos.
-
-        \item Para 5 casos verificou-se que os municípios ainda não haviam sido instalados quando os dados do SUS/IBGE foram coletados. Por isso não constam na base de dados, tratam-se de casos como o município ``Paraíso das Águas'' no Mato Grosso do Sul. A única solução para esses casos foi armazená-los na base de dados mesmo sem uma referência com os dados do SUS/IBGE. Esses municípios não poderão ser utilizados em todas as análises propostas.
+  \item Para 5 casos verificou-se que os municípios ainda não haviam sido instalados quando os dados do SUS/IBGE foram coletados. Por isso não constam na base de dados, tratam-se de casos como o município ``Paraíso das Águas'' no Mato Grosso do Sul. A única solução para esses casos foi armazená-los na base de dados mesmo sem uma referência com os dados do SUS/IBGE. Esses municípios não poderão ser utilizados em todas as análises propostas.
 
 \end{itemize}
 
-O processamento descrito nessa seção foi responsável por armazenar no banco de dados 28.082 eleições realizadas em 5.568 cidades de todo país.  
+O processamento descrito nessa seção foi responsável por armazenar no banco de dados 22.484 eleições realizadas em 5.568 cidades no período de 2006 à 2012. Ao todo tem-se 123.841 cargos eletivos com as seguintes distribuições:
 
-\subsection{Dados de Candidatura}
+\begin{itemize}
+  \item 2 presidentes;
+  \item 54 governadores;
+  \item 81 senadores;
+  \item 1.026 deputados federais;
+  \item 2.118 deputados estaduais (sendo 48 distritais);
+  \item 11.133 prefeitos; e
+  \item 109.427 vereadores;
+
+\end{itemize}
+
+A tabela de eleições será utilizada na Subseção~\ref{sub:candidature} para definir em quais eleições os candidatos se inscreveram.
+
+\subsection{Dados de Candidatos}\label{sub:candidature}
+
+Verificou-se que o código utilizado pelo TSE não identifica univocamente um candidato.
+
+\subsection{Dados de Candidatura}\label{sub:candidature}
 
 
 

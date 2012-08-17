@@ -1,8 +1,8 @@
 package br.usp.sdext.app;
 
-import br.usp.sdext.parsers.account.AccountabilityParser;
-import br.usp.sdext.parsers.candidature.CandidatureParser;
-import br.usp.sdext.parsers.estate.EstateParser;
+import br.usp.sdext.parsers.old.AccountabilityParser;
+import br.usp.sdext.parsers.old.CandidatureParser;
+import br.usp.sdext.parsers.old.EstateParser;
 import br.usp.sdext.parsers.old.MiscParser;
 
 public class App {

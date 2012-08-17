@@ -128,9 +128,7 @@ public class Election extends Model implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Election [id=" + id + ", year=" + year + ", description="
-				+ description + ", state=" + state + ", town=" + town
-				+ ", postID=" + postCode + ", post=" + post + ", noJobs="
-				+ noJobs + "]";
+		return "Election [year=" + year + ", state=" + state.getAcronym() + ", town=" + town
+				+ ", post=" + post + "]";
 	}
 }

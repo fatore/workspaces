@@ -85,6 +85,13 @@ public class CandidatureParser extends AbstractParser {
 
 	private void parseCandidature(String[] pieces) throws Exception {
 
+		Integer round = parseInt(pieces[3]);
+		
+		if (round.equals(2)) {
+			
+			System.err.println("Segundo turno!");
+		}
+		
 		Election mappedElection = parseElection(pieces);
 	}
 	
@@ -125,9 +132,26 @@ public class CandidatureParser extends AbstractParser {
 		
 		Election election = new Election(year, mappedState, mappedTown, postCode);
 		
-		election = (Election) electionParser.getElectionsMap().get(election);
+		Election mappedElection = (Election) electionParser.getElectionsMap().get(election);
 		
-		return election;
+		if (mappedElection == null) {
+			
+			// Check if election is a plebiscite.
+			if (pieces[4].contains("PLEBISCITO")) {
+				
+				throw new ParseException("Candidature of a plebiscite", pieces[9]);
+			}
+			
+			// Check if post is for vice or substitute.
+			if (pieces[9].contains("VICE") || pieces[9].contains("SUPLENTE")) {
+				
+				throw new ParseException("Candidature for a non elective post", pieces[9]);
+			}
+				
+			throw new ParseException("Candidature election not found", election.toString());
+		}
+		
+		return mappedElection;
 	}
 	
 	private Integer parseInt(String str) {
@@ -139,6 +163,7 @@ public class CandidatureParser extends AbstractParser {
 
 	public void save() {
 
+		Model.bulkSave(logs);
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -147,6 +172,7 @@ public class CandidatureParser extends AbstractParser {
 
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/reg.csv", "region");
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/uf.csv", "state");
+		locationParser.addSpecialValues();
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/meso.csv", "meso");
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/micro.csv", "micro");
 		locationParser.parseFile("/home/fm/work/data/sdext/datasus/ut/mun.csv", "town");
@@ -157,12 +183,14 @@ public class CandidatureParser extends AbstractParser {
 		electionParser.parse("/home/fm/work/data/sdext/eleitorais/candidatos/vagas/2010");
 		electionParser.parse("/home/fm/work/data/sdext/eleitorais/candidatos/vagas/2008");
 		electionParser.parse("/home/fm/work/data/sdext/eleitorais/candidatos/vagas/2006");
+		electionParser.addSpecialValues();
 		
 		CandidatureParser candidatureParser = new CandidatureParser(locationParser, electionParser);
 		
-		candidatureParser.parse("/home/fm/work/data/sdext/eleitorais/candidatos/candidaturas/2012");
+		candidatureParser.parse("/home/fm/work/data/sdext/eleitorais/candidatos/candidaturas/2006");
 
-		locationParser.save();
-		electionParser.save();
+//		locationParser.save();
+//		electionParser.save();
+//		candidatureParser.save();
 	}
 }
