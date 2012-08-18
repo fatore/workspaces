@@ -419,21 +419,21 @@ public class LocationParser {
 	public void save() {
 
 		Model.bulkSave(logs);
-		System.out.println("Saving locations data: ");
+		System.out.println("Saving location data...");
 
-		System.out.println("\tSaving " + regionsMap.size() + " regions...");
+		System.out.println("\t" + regionsMap.size() + " regions...");
 		Model.bulkSave(regionsMap.values());
 
-		System.out.println("\tSaving " + statesMap.size() + " states...");
+		System.out.println("\t" + statesMap.size() + " states...");
 		Model.bulkSave(statesMap.values());
 
-		System.out.println("\tSaving " + mesosMap.size() + " mesoregions...");
+		System.out.println("\t" + mesosMap.size() + " mesoregions...");
 		Model.bulkSave(mesosMap.values());
 
-		System.out.println("\tSaving " + microsMap.size() + " microregions...");
+		System.out.println("\t" + microsMap.size() + " microregions...");
 		Model.bulkSave(microsMap.values());
 
-		System.out.println("\tSaving " + townsMap.size() + " towns...");
+		System.out.println("\t" + townsMap.size() + " towns...");
 		Model.bulkSave(townsMap.values());
 
 		System.out.println("Done!");

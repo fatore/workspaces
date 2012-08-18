@@ -5,26 +5,46 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import br.usp.sdext.core.Model;
+import br.usp.sdext.models.Candidate;
+import br.usp.sdext.models.Candidature;
+import br.usp.sdext.models.Coalition;
 import br.usp.sdext.models.Election;
 import br.usp.sdext.models.Log;
+import br.usp.sdext.models.Party;
 import br.usp.sdext.models.State;
 import br.usp.sdext.models.Town;
+import br.usp.sdext.parsers.AccountabilityBinding;
+import br.usp.sdext.util.Misc;
 import br.usp.sdext.util.ParseException;
 
 public class CandidatureParser extends AbstractParser {
 	
 	private LocationParser locationParser;
 	private ElectionParser electionParser;
+	private CandidateParser candidateParser;
+	private PartyParser partyParser;
+	private CoalitionParser coalitionParser;
 	
 	private ArrayList<Model> logs = new ArrayList<>();
 	
+	private int dups = 0; 
+	
+	private HashMap<Model, Model> candidatureMap = new HashMap<>();
+	private HashMap<AccountabilityBinding, Model> accountabilityBindings = new HashMap<>();
+	private HashMap<AccountabilityBinding, Model> estateBindings = new HashMap<>();
+
 	public CandidatureParser(LocationParser locationParser,
-			ElectionParser electionParser) {
+			ElectionParser electionParser, CandidateParser candidateParser,
+			PartyParser partyParser, CoalitionParser coalitionParser) {
 		
 		this.locationParser = locationParser;
 		this.electionParser = electionParser;
+		this.candidateParser = candidateParser;
+		this.partyParser = partyParser;
+		this.coalitionParser = coalitionParser;
 	}
 
 	protected void loadFile(File file) throws Exception {
@@ -87,12 +107,46 @@ public class CandidatureParser extends AbstractParser {
 
 		Integer round = parseInt(pieces[3]);
 		
-		if (round.equals(2)) {
-			
-			System.err.println("Segundo turno!");
-		}
-		
 		Election mappedElection = parseElection(pieces);
+		Candidate mappedCandidate = candidateParser.parseCandidate(pieces);
+		Party mappedParty = (Party) partyParser.parse(pieces);
+		Coalition mappedCoalition = (Coalition) coalitionParser.parse(pieces);
+		
+		Candidature parsedCandidature = new Candidature(
+				Misc.parseStr(pieces[13]), // ballot name
+				Misc.parseInt(pieces[12]), // ballot no
+				Misc.parseLong(pieces[14]), // sit ID
+				Misc.parseStr(pieces[15]), // sit
+				Misc.parseFloat(pieces[39]), // max exp
+				Misc.parseLong(pieces[40]), // result id
+				Misc.parseStr(pieces[41])); // result
+
+		// Bind objects.
+		parsedCandidature.setElection(mappedElection);
+		parsedCandidature.setCandidate(mappedCandidate);
+		parsedCandidature.setParty(mappedParty);
+		parsedCandidature.setCoalition(mappedCoalition);
+		
+		Candidature mappedCandidature = (Candidature) candidatureMap.get(parsedCandidature);
+
+		if (mappedCandidature == null) {
+			
+			parsedCandidature.setId(new Long(candidatureMap.size()));
+			candidatureMap.put(parsedCandidature, parsedCandidature);
+			accountabilityBindings.put(new AccountabilityBinding(parsedCandidature), parsedCandidature); 
+			
+		} else {
+
+			if (round.equals(2)) {
+				
+				mappedCandidature.setResultID(Misc.parseLong(pieces[40]));
+				mappedCandidature.setResult(Misc.parseStr(pieces[41]));
+				
+			} else {
+				
+				dups++;
+			}
+		}
 	}
 	
 	private Election parseElection(String[] pieces) throws Exception {
@@ -163,7 +217,14 @@ public class CandidatureParser extends AbstractParser {
 
 	public void save() {
 
+		System.out.println("Saving candidatures...");
 		Model.bulkSave(logs);
+		System.out.println("\tDuplicated candidatures: " + dups);
+		System.out.println("\tTotal candidatures: " + candidatureMap.size());
+		
+		Model.bulkSave(candidatureMap.values());
+		
+		System.out.println("Done!");
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -185,12 +246,22 @@ public class CandidatureParser extends AbstractParser {
 		electionParser.parse("/home/fm/work/data/sdext/eleitorais/candidatos/vagas/2006");
 		electionParser.addSpecialValues();
 		
-		CandidatureParser candidatureParser = new CandidatureParser(locationParser, electionParser);
+		CandidateParser candidateParser = new CandidateParser(locationParser);
+		
+		CoalitionParser coalitionParser = new CoalitionParser();
+		
+		PartyParser partyParser = new PartyParser();
+		
+		CandidatureParser candidatureParser = new CandidatureParser(locationParser, electionParser, 
+				candidateParser, partyParser, coalitionParser);
 		
 		candidatureParser.parse("/home/fm/work/data/sdext/eleitorais/candidatos/candidaturas/2006");
 
-//		locationParser.save();
-//		electionParser.save();
-//		candidatureParser.save();
+		locationParser.save();
+		electionParser.save();
+		candidateParser.save();
+		coalitionParser.save();
+		partyParser.save();
+		candidatureParser.save();
 	}
 }

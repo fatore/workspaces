@@ -1,12 +1,12 @@
-package br.usp.sdext.parsers.old;
+package br.usp.sdext.parsers;
 
 import java.util.HashMap;
 
 import br.usp.sdext.core.Model;
-import br.usp.sdext.models.old.Coalition;
+import br.usp.sdext.models.Coalition;
 import br.usp.sdext.util.Misc;
 
-public class CoalitionParser extends ModelParser {
+public class CoalitionParser {
 
 	private HashMap<Model, Model> coalitionsMap = new HashMap<>();
 	
@@ -27,10 +27,10 @@ public class CoalitionParser extends ModelParser {
 		return coalition;
 	}
 
-	@Override
 	public void save() {
 
-		System.out.println("\tSaving coalitions...");
+		System.out.print("Saving " + coalitionsMap.size() + " coalitions...");
 		Model.bulkSave(coalitionsMap.values());
+		System.out.println(" Done!");
 	}
 }

@@ -33,12 +33,27 @@
         <!-- Drop and re-create the database schema on startup -->
         <property name="hbm2ddl.auto">create-drop</property>
 
+	<mapping class="br.usp.sdext.models.Candidate"/>
+	<mapping class="br.usp.sdext.models.Candidature"/>
+	<mapping class="br.usp.sdext.models.Citizenship"/>
+	<mapping class="br.usp.sdext.models.Coalition"/>
+	<mapping class="br.usp.sdext.models.Donor"/>
 	<mapping class="br.usp.sdext.models.Election"/>
+	<mapping class="br.usp.sdext.models.Estate"/>
+	<mapping class="br.usp.sdext.models.Expense"/>
+	<mapping class="br.usp.sdext.models.Income"/>
+	<mapping class="br.usp.sdext.models.Job"/>
 	<mapping class="br.usp.sdext.models.Log"/>
+	<mapping class="br.usp.sdext.models.MaritalStatus"/>
 	<mapping class="br.usp.sdext.models.MesoRegion"/>
 	<mapping class="br.usp.sdext.models.MicroRegion"/>
+	<mapping class="br.usp.sdext.models.Party"/>
+	<mapping class="br.usp.sdext.models.Provider"/>
 	<mapping class="br.usp.sdext.models.Region"/>
+	<mapping class="br.usp.sdext.models.Schooling"/>
+	<mapping class="br.usp.sdext.models.Sex"/>
 	<mapping class="br.usp.sdext.models.State"/>
+	<mapping class="br.usp.sdext.models.Status"/>
 	<mapping class="br.usp.sdext.models.Town"/>
 	
     </session-factory>

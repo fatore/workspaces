@@ -8,19 +8,21 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import br.usp.sdext.core.Model;
 import br.usp.sdext.models.Candidate;
+import br.usp.sdext.models.Citizenship;
+import br.usp.sdext.models.Job;
 import br.usp.sdext.models.Log;
+import br.usp.sdext.models.MaritalStatus;
+import br.usp.sdext.models.Schooling;
+import br.usp.sdext.models.Sex;
 import br.usp.sdext.models.State;
+import br.usp.sdext.models.Status;
 import br.usp.sdext.models.Town;
-import br.usp.sdext.models.old.Status;
-import br.usp.sdext.parsers.old.EstateBinding;
-import br.usp.sdext.util.LevenshteinDistance;
+import br.usp.sdext.parsers.EstateBinding;
 import br.usp.sdext.util.Misc;
 import br.usp.sdext.util.ParseException;
 
@@ -29,6 +31,12 @@ public class CandidateParser extends AbstractParser {
 	private LocationParser locationParser;
 
 	private HashMap<Model, Model> candidatesMap = new HashMap<>();
+	private HashMap<String, Model> candidatesMapByVoterId = new HashMap<>();
+	
+	private HashMap<EstateBinding, Status> bindings = new HashMap<>();
+	
+	private int diffVoter = 0;
+	private int diffCand = 0;
 
 	private HashMap<Model, Model> sexMap = new HashMap<>();
 	private HashMap<Model, Model> ctzsMap = new HashMap<>();
@@ -36,12 +44,8 @@ public class CandidateParser extends AbstractParser {
 	private HashMap<Model, Model> jobsMap = new HashMap<>();
 	private HashMap<Model, Model> maritalStatusMap = new HashMap<>();
 	private HashMap<Model, Model> schoolingMap = new HashMap<>();
-	
-	private HashMap<EstateBinding, Status> bindings = new HashMap<>();
 
 	private ArrayList<Model> duppersList = new ArrayList<>();
-
-	private Long numElements = 0L;
 
 	private ArrayList<Model> logs = new ArrayList<>();
 
@@ -50,15 +54,15 @@ public class CandidateParser extends AbstractParser {
 		this.locationParser = locationParser;
 	}
 	
-	public Long getNumElements() {return numElements;}
 	public HashMap<Model, Model> getCandidatesMap() {return candidatesMap;}
+	public HashMap<String, Model> getCandidatesMapByVoterId() {return candidatesMapByVoterId;}
+	
 	public HashMap<Model, Model> getSexMap() {return sexMap;}
 	public HashMap<Model, Model> getCtzsMap() {return ctzsMap;}
 	public HashMap<Model, Model> getStatusMap() {return statusMap;}
 	public HashMap<Model, Model> getJobsMap() {return jobsMap;}
 	public HashMap<Model, Model> getMaritalStatusMap() {return maritalStatusMap;}
 	public HashMap<Model, Model> getSchMap() {return schoolingMap;}
-	public HashMap<EstateBinding, Status> getBindings() {return bindings;}
 	public ArrayList<Model> getDuppersList() {return duppersList;}
 
 	protected void loadFile(File file) throws Exception {
@@ -117,146 +121,156 @@ public class CandidateParser extends AbstractParser {
 		}
 	}
 
-	private void parseCandidate(String[] pieces) throws Exception {
+	public Candidate parseCandidate(String[] pieces) throws Exception {
 
+		// Parse candidate.
 		String namex = parseCandidateNamex(pieces[10]);
-
+		String voterID = pieces[26].trim();
+		Date birthDate = Misc.parseDate(pieces[25]);
+		
 		if (namex == null) {
 
 			throw new ParseException("Candidate name is invalid: ", pieces[10]);
 		}
 
-		Long voterID = parseLong(pieces[26]);
-
 		if (voterID == null) {
 
 			throw new ParseException("Candidate voter id is invalid: ", pieces[26]);
 		}
 
-		Date birthDate = Misc.parseDate(pieces[25]);
-
 		if (birthDate == null) {
 
 			throw new ParseException("Candidate birth date is invalid: ", pieces[25]);
 		}
+		
+		Candidate parsedCandidate =  new Candidate(voterID, namex, birthDate);
 
-		Candidate parsedCandidate = new Candidate(voterID, namex, birthDate);
-
+		// Check if name and birth date already exists
 		Candidate mappedCandidate = (Candidate) candidatesMap.get(parsedCandidate);
 
+		// if does not exist
 		if (mappedCandidate == null) {
 
-			mappedCandidate = (Candidate) Model.persist(parsedCandidate, candidatesMap);
-
-		} else {
-
-			// Check if doesn't has same name
-			if(!mappedCandidate.hasSameName(parsedCandidate)) {
+			// Check if same voter id has already been read
+			mappedCandidate = (Candidate) candidatesMapByVoterId.get(parsedCandidate.getVoterID());
+					
+			// if found nothing then it's OK to persist
+			if (mappedCandidate == null) {
 				
-				Candidate similar = findMisspelledCandidate(parsedCandidate, 3);
-				
-				if (similar == null) {
-					
-					System.err.println();
-					System.err.println(parsedCandidate.toString());
-					System.err.println(mappedCandidate.toString());
-					System.err.println();
-					
-				} else {
-					
-					mappedCandidate = similar;
-				}
-			}
-		}
-
-	}
-	
-	public Candidate findMisspelledCandidate(Candidate missCandidate, int threshold) {
-
-		Iterator<Entry<Model, Model>> i = candidatesMap.entrySet().iterator();
-
-		while (i.hasNext()) {
-
-			Candidate candidate = (Candidate) ((Entry<Model, Model>) i.next()).getValue();
-
-			if (missCandidate.getVoterID().equals(candidate.getVoterID())) {
-
-				int distance = LevenshteinDistance.computeLevenshteinDistance(
-						missCandidate.getNamex(), candidate.getNamex());
-
-				if (distance <= threshold) {
-
-					return candidate;
-				}
-			}
-		}
-		return null;
-	}
-
-	private void parseMisc(String[] pieces) throws Exception {
-
-		String name = parseCandidateNamex(pieces[10]);
-
-		if (name == null) {
-
-			throw new ParseException("Candidate name is invalid: ", pieces[10]);
-		}
-
-		Long voterID = parseLong(pieces[26]);
-
-		if (voterID == null) {
-
-			throw new ParseException("Candidate voter id is invalid: ", pieces[26]);
-		}
-
-		Date birthDate = Misc.parseDate(pieces[25]);
-
-		if (birthDate == null) {
-
-			throw new ParseException("Candidate birth date is invalid: ", pieces[25]);
-		}
-
-		Candidate candidate = new Candidate(voterID, name, birthDate);
-
-		// Look for the candidate in map ...
-		Candidate mappedCandidate = (Candidate) candidatesMap.get(candidate);
-
-		// ... if didn't find anything.
-		if (mappedCandidate == null) {
-
-			// Birth town.
-			Town mappedTown = parseBirthTown(pieces);
-
-			// Set the ID for the new Candidate ...
-			candidate.setId(numElements++);
-
-			// ... and put it in the map.
-			candidatesMap.put(candidate, candidate);
-		}
-		// ... if found something in the map.
-		else {
-			// Take a look if the objects are similar ...
-			if (mappedCandidate.hasSameName(candidate)) {
-
-				candidate = mappedCandidate;
+				mappedCandidate = (Candidate) Model.persist(parsedCandidate, candidatesMap);
+				candidatesMapByVoterId.put(mappedCandidate.getVoterID(), mappedCandidate);
 			} 
-			// Objects aren't similar! 
-			// VoterID is the same but not other attributes. !?
+			// else something is wrong with candidate
 			else {
-
-				// Set both candidates as "duppers".
-				mappedCandidate.setDupper(true);
-				candidate.setDupper(true);
-
-				// Set the ID for the new Candidate ...
-				candidate.setId(numElements++);
-
-				// ... and add the new Candidate to a duppers list
-				duppersList.add(candidate);
+				
+				// Accept if name is the same
+				if (!parsedCandidate.hasSameNamex(mappedCandidate)) {
+					
+					// Accept if name is similar
+					if (!parsedCandidate.hasSimilarNamex(mappedCandidate)) {
+						
+						// If all failed voter id is corrupted
+						
+						// Set mappedCandidate as duplicated
+						mappedCandidate.setDupper(true);
+						
+						// Persist a new candidate to represent the new duplicate
+						parsedCandidate.setDupper(true);
+						mappedCandidate = (Candidate) Model.persist(parsedCandidate, candidatesMap);
+						
+						logs.add(new Log("Different candidates, but same voter id", parsedCandidate.getVoterID()));
+						diffVoter++;
+					} 
+				} 
 			}
+
 		}
+		// found by name and birth date
+		else {
+
+			// check if voter id is not the same
+			if(!parsedCandidate.getVoterID().equals(mappedCandidate.getVoterID())) {
+
+				logs.add(new Log("Same candidate, but different voter id",
+						"parsed: " + parsedCandidate.getVoterID() + 
+						"mapped: " + mappedCandidate.getVoterID()));
+				diffCand++;
+				mappedCandidate.setDupper(true);
+			}
+			return mappedCandidate;
+		}
+		
+		// Parse remaining info.
+		
+		// Name.
+		String name = Misc.parseStr(pieces[10]); 
+		mappedCandidate.setName(name);
+		
+		// Sex.
+		Long sexId = Misc.parseLong(pieces[28]); // tseID
+		if (sexId == null) {throw new Exception("Sex id is invalid: " + pieces[28]);}
+		String sexLabel = Misc.parseStr(pieces[29]); // label
+		Sex sex = new Sex(sexId, sexLabel);
+		sex = (Sex) Model.persist(sex, sexMap);
+		mappedCandidate.setSex(sex);
+		
+		// Citizenship.
+		Long ctzId = Misc.parseLong(pieces[34]); // tseID
+		if (ctzId == null) {throw new Exception("Citizenship id is invalid: " + pieces[34]);}
+		String ctzLabel = Misc.parseStr(pieces[35]); // label
+		Citizenship ctz = new Citizenship(ctzId, ctzLabel);
+		ctz = (Citizenship) Model.persist(ctz, ctzsMap);
+		mappedCandidate.setCitizenship(ctz);
+		
+		Town birthTown = parseBirthTown(pieces);
+		mappedCandidate.setBirthTown(birthTown);
+		
+		// Parse Status
+		Integer year = parseInt(pieces[2]);
+		
+		// TSE ID.
+		Long tseId = Misc.parseLong(pieces[11]); // id
+		if (tseId == null) {throw new Exception("Candidate TSE id is invalid: " + pieces[11]);}
+		
+		// Age.
+		Integer age = Misc.parseInt(pieces[27]); // age
+		if (age == null) {age = Misc.getAge(birthDate);}
+
+		Status status = new Status(year, age, tseId);
+
+		// Job.
+		Long jobId = Misc.parseLong(pieces[23]); // tseID
+		if (jobId == null) {throw new Exception("Job id is invalid: " + pieces[23]);}
+		String jobLabel = Misc.parseStr(pieces[24]); // label
+		Job job = new Job(jobId, jobLabel);
+		job = (Job) Model.persist(job, jobsMap);
+		status.setJob(job);
+
+		// Marital Status
+		Long maritalId = Misc.parseLong(pieces[32]);
+		if (maritalId == null) {throw new Exception("Marital status id is invalid: " + pieces[32]);}
+		String maritalLabel = Misc.parseStr(pieces[33]);
+		MaritalStatus maritalStatus =  new MaritalStatus(maritalId, maritalLabel);
+		maritalStatus = (MaritalStatus) Model.persist(maritalStatus, maritalStatusMap);
+		status.setMaritalStatus(maritalStatus);
+
+		// Schooling.
+		Long schoolingId = Misc.parseLong(pieces[30]);
+		if (schoolingId == null) {throw new Exception("Schooling id is invalid: " + pieces[30]);}
+		String schoolingLabel = Misc.parseStr(pieces[31]);
+		Schooling schooling = new Schooling(schoolingId, schoolingLabel);
+		schooling = (Schooling) Model.persist(schooling, schoolingMap);
+		status.setSchooling(schooling);
+		
+		status.setCandidate(mappedCandidate);
+		
+		status = (Status) Model.persist(status, statusMap);
+		
+		bindings.put(new EstateBinding(status), status);
+		
+		return mappedCandidate;
 	}
-	
+
 	public String parseCandidateNamex(String str) {
 
 		str = Normalizer.normalize(str, Normalizer.Form.NFD);
@@ -264,7 +278,7 @@ public class CandidateParser extends AbstractParser {
 		str = str.replaceAll("[^\\p{ASCII}]", "");
 
 		str = str.replaceAll("[\\s\\-()]", " ");
-		
+
 		Pattern pattern = Pattern.compile("\\s+");
 		Matcher matcher = pattern.matcher(str);
 		str = matcher.replaceAll(" ");
@@ -355,7 +369,7 @@ public class CandidateParser extends AbstractParser {
 		return number;
 	}
 
-	private Long parseLong(String str) {
+	public Long parseLong(String str) {
 
 		if (str.replace(" ", "").equals("")) return null;
 
@@ -369,12 +383,24 @@ public class CandidateParser extends AbstractParser {
 		return number;
 	}
 
-
 	public void save() {
 
+		System.out.println("Saving candidates...");
 		Model.bulkSave(logs);
 
-		System.out.println("Saving canidates...");
+		System.out.println("\t" + diffVoter + " duplicated voter ids.");
+		System.out.println("\t" + diffCand + " candidates with more than one voter id.");
+		System.out.println("\tTotal candidates: " + candidatesMap.size());
+		
+		Model.bulkSave(sexMap.values());
+		Model.bulkSave(ctzsMap.values());
+		Model.bulkSave(schoolingMap.values());
+		Model.bulkSave(maritalStatusMap.values());
+		Model.bulkSave(jobsMap.values());
+		Model.bulkSave(candidatesMap.values());
+		Model.bulkSave(statusMap.values());
+		
+		System.out.println("Done!");
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -390,7 +416,7 @@ public class CandidateParser extends AbstractParser {
 
 		CandidateParser candidateParser = new CandidateParser(locationParser);
 
-		candidateParser.parse("/home/fm/work/data/sdext/eleitorais/candidatos/candidaturas/2012");
+		candidateParser.parse("/home/fm/work/data/sdext/eleitorais/candidatos/candidaturas/2010");
 
 		locationParser.save();
 		candidateParser.save();

@@ -19,6 +19,8 @@ public class ElectionParser extends AbstractParser {
 	private LocationParser locationParser;
 	
 	private HashMap<Model, Model> electionsMap = new HashMap<>();
+	
+	private int pleb = 0, non = 0, notFound = 0;
 
 	private ArrayList<Model> logs = new ArrayList<>();
 
@@ -104,6 +106,7 @@ public class ElectionParser extends AbstractParser {
 		// Check if election is a plebiscite.
 		if (description.contains("PLEBISCITO")) {
 			
+			pleb++;
 			throw new ParseException("Election is a plebiscite", pieces[8]);
 		}
 		
@@ -117,6 +120,7 @@ public class ElectionParser extends AbstractParser {
 		// Check if post is for vice.
 		if (post.contains("VICE")) {
 			
+			non++;
 			throw new ParseException("Election of a non elective post", post);
 		}
 
@@ -171,7 +175,7 @@ public class ElectionParser extends AbstractParser {
 							
 							logs.add(new Log("Town not found", parsedTown.getNamex() + ", " + parsedTown.getState().getAcronym()
 							+ ", " + parsedTown.getTseCode()));
-							
+							notFound++;
 						}
 					}
 					else {
@@ -230,9 +234,13 @@ public class ElectionParser extends AbstractParser {
 
 	public void save() {
 
+		System.out.println("Saving elections...");
 		Model.bulkSave(logs);
 		
-		System.out.println("Saving " + electionsMap.size() +" elections...");
+		System.out.println("\tNon elective posts: " + non);
+		System.out.println("\tIgnored as peblicites: " + pleb);
+		System.out.println("\tTowns not found: " + notFound);
+		System.out.println("\tTotal valid elections: " + electionsMap.size());
 		Model.bulkSave(electionsMap.values());
 		
 		System.out.println("Done!");

@@ -1,4 +1,4 @@
-package br.usp.sdext.parsers.old;
+package br.usp.sdext.parsers;
 
 import java.util.HashMap;
 
@@ -6,7 +6,7 @@ import br.usp.sdext.core.Model;
 import br.usp.sdext.models.Party;
 import br.usp.sdext.util.Misc;
 
-public class PartyParser extends ModelParser {
+public class PartyParser {
 
 	private HashMap<Model, Model> partiesMap = new HashMap<>();
 
@@ -24,10 +24,10 @@ public class PartyParser extends ModelParser {
 		return party;
 	}
 
-	@Override
 	public void save() {
 
-		System.out.println("\tSaving parties...");
+		System.out.print("Saving " +  partiesMap.size() + " parties...");
 		Model.bulkSave(partiesMap.values());
+		System.out.println(" Done!");
 	}
 }
