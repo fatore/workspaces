@@ -1,20 +1,16 @@
 package br.usp.sdext.models;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 import org.hibernate.Session;
 
 import br.usp.sdext.core.Model;
 import br.usp.sdext.db.HibernateUtil;
-import br.usp.sdext.models.Party;
 
 @Entity
 public class Candidature extends Model implements Serializable {
@@ -50,35 +46,14 @@ public class Candidature extends Model implements Serializable {
 	private Long resultID;
 	private String result;
 	
-	@OneToMany
-	private List<Income> incomes = new ArrayList<Income>();
-	@Column(name="real_incomes")
-	private Float realIncomes = new Float(0);
-	
-	@OneToMany
-	private List<Expense> expenses = new ArrayList<Expense>(); 
-	@Column(name="real_expenses")
-	private Float realExpenses = new Float(0);
-
-	private Integer candidateAge;
-	
 	@Column(name="tse_id")
-	private Long candidateTSEID;
-	
-	@ManyToOne
-	private Job candidateJob;
-	
-	@ManyToOne
-	private Schooling candidateSch;
-	
-	@ManyToOne
-	private MaritalStatus candidateMarital; 
+	private Long candidateTseID;
 	
 	public Candidature() {}
 	
 	public Candidature(String ballotName, Integer ballotNo,  
 			Long situationID, String situation, Float maxExpenses,
-			Long resultID, String result) {
+			Long resultID, String result, Long candidateTseID) {
 		
 		this.ballotName = ballotName;
 		this.ballotNo = ballotNo;
@@ -87,6 +62,7 @@ public class Candidature extends Model implements Serializable {
 		this.maxExpenses = maxExpenses;
 		this.resultID = resultID;
 		this.result = result;
+		this.candidateTseID = candidateTseID;
 	}	
 	
 	// getters
@@ -100,10 +76,9 @@ public class Candidature extends Model implements Serializable {
 	public Long getSituationID() {return situationID;}
 	public String getSituation() {return situation;}
 	public Float getMaxExpenses() {return maxExpenses;}
-	public List<Income> getIncomes() {return incomes;}
-	public List<Expense> getExpenses() {return expenses;}
 	public Long getResultID() {return resultID;}
 	public String getResult() {return result;}
+	public Long getTseID() {return candidateTseID;}
 
 	// setters
 	public void setId(Long id) {this.id = id;}
@@ -118,28 +93,8 @@ public class Candidature extends Model implements Serializable {
 	public void setMaxExpenses(Float maxExpenses) {this.maxExpenses = maxExpenses;}
 	public void setResultID(Long resultID) {this.resultID = resultID;}
 	public void setResult(String result) {this.result = result;}
+	public void setTseID(Long tseID) {this.candidateTseID = tseID;}
 	
-	
-	public void incRealIncomes(float value) {this.realIncomes += value;}
-	public void incRealExpenses(float value) {this.realExpenses += value;}
-	
-	public void addIncome(Income income) {
-		
-		this.incomes.add(income);
-		Float value = income.getValue();
-		if (value != null) {
-			incRealIncomes(value);
-		}
-	}
-	
-	public void addExpense(Expense expense) {
-		
-		this.expenses.add(expense);
-		Float value = expense.getValue();
-		if (value != null) {
-			incRealExpenses(value);
-		}
-	}
 	@Override
 	public String toString() {
 		return "Candidature [candidate=" + candidate.getID() + ", ballotName="

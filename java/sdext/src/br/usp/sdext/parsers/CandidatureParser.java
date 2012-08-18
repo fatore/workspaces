@@ -112,6 +112,10 @@ public class CandidatureParser extends AbstractParser {
 		Party mappedParty = (Party) partyParser.parse(pieces);
 		Coalition mappedCoalition = (Coalition) coalitionParser.parse(pieces);
 		
+		// TSE ID.
+		Long tseId = Misc.parseLong(pieces[11]); // id
+		if (tseId == null) {throw new Exception("Candidate TSE id is invalid: " + pieces[11]);}
+		
 		Candidature parsedCandidature = new Candidature(
 				Misc.parseStr(pieces[13]), // ballot name
 				Misc.parseInt(pieces[12]), // ballot no
@@ -119,7 +123,8 @@ public class CandidatureParser extends AbstractParser {
 				Misc.parseStr(pieces[15]), // sit
 				Misc.parseFloat(pieces[39]), // max exp
 				Misc.parseLong(pieces[40]), // result id
-				Misc.parseStr(pieces[41])); // result
+				Misc.parseStr(pieces[41]),
+				tseId); // result
 
 		// Bind objects.
 		parsedCandidature.setElection(mappedElection);

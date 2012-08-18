@@ -24,9 +24,6 @@ public class Status extends Model implements Serializable {
 	
 	private Integer age;
 	
-	@Column(name="tse_id")
-	private Long tseID; 
-	
 	@ManyToOne
 	private Job job; 
 	
@@ -40,6 +37,16 @@ public class Status extends Model implements Serializable {
 	private List<Estate> estates = new ArrayList<>();
 	public void addEstate(Estate estate) {this.estates.add(estate);}
 	
+	@OneToMany
+	private List<Income> incomes = new ArrayList<Income>();
+	@Column(name="real_incomes")
+	private Float realIncomes = new Float(0);
+	
+	@OneToMany
+	private List<Expense> expenses = new ArrayList<Expense>(); 
+	@Column(name="real_expenses")
+	private Float realExpenses = new Float(0);
+	
 	@ManyToOne
 	private Candidate candidate;
 	public void setCandidate(Candidate candidate) {this.candidate = candidate;}
@@ -47,11 +54,10 @@ public class Status extends Model implements Serializable {
 	
 	public Status() {}
 	
-	public Status(Integer year, Integer age, Long tseID) {
+	public Status(Integer year, Candidate candidate) {
 		
 		this.year = year;
-		this.age = age;
-		this.tseID = tseID;
+		this.candidate = candidate;
 	}	
 	
 	// getters
@@ -60,7 +66,8 @@ public class Status extends Model implements Serializable {
 	public Integer getAge() {return age;}
 	public Schooling getSchooling() {return schooling;	}
 	public MaritalStatus getMaritalStatus() {return maritalStatus;}
-	public Long getTseID() {return tseID;}
+	public List<Income> getIncomes() {return incomes;}
+	public List<Expense> getExpenses() {return expenses;}
 	public Integer getYear() {return year;}
 
 	// setters
@@ -69,8 +76,28 @@ public class Status extends Model implements Serializable {
 	public void setAge(Integer age) {this.age = age;}
 	public void setSchooling(Schooling schooling) {this.schooling = schooling;}
 	public void setMaritalStatus(MaritalStatus maritalStatus) {this.maritalStatus = maritalStatus;}
-	public void setTseID(Long tseID) {this.tseID = tseID;}
 	public void setYear(Integer year) {this.year = year;}
+	
+	public void incRealIncomes(float value) {this.realIncomes += value;}
+	public void incRealExpenses(float value) {this.realExpenses += value;}
+	
+	public void addIncome(Income income) {
+		
+		this.incomes.add(income);
+		Float value = income.getValue();
+		if (value != null) {
+			incRealIncomes(value);
+		}
+	}
+	
+	public void addExpense(Expense expense) {
+		
+		this.expenses.add(expense);
+		Float value = expense.getValue();
+		if (value != null) {
+			incRealExpenses(value);
+		}
+	}
 
 	@Override
 	public int hashCode() {
@@ -108,9 +135,11 @@ public class Status extends Model implements Serializable {
 	@Override
 	public String toString() {
 		return "Status [id=" + id + ", year=" + year + ", age=" + age
-				+ ", tseID=" + tseID + ", job=" + job + ", schooling="
-				+ schooling + ", maritalStatus=" + maritalStatus + ", estates="
-				+ estates + "]";
+				+ ", job=" + job + ", schooling=" + schooling
+				+ ", maritalStatus=" + maritalStatus + ", estates=" + estates
+				+ ", incomes=" + incomes + ", realIncomes=" + realIncomes
+				+ ", expenses=" + expenses + ", realExpenses=" + realExpenses
+				+ ", candidate=" + candidate + "]";
 	}
 }
 

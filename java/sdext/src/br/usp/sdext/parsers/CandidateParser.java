@@ -22,7 +22,6 @@ import br.usp.sdext.models.Sex;
 import br.usp.sdext.models.State;
 import br.usp.sdext.models.Status;
 import br.usp.sdext.models.Town;
-import br.usp.sdext.parsers.EstateBinding;
 import br.usp.sdext.util.Misc;
 import br.usp.sdext.util.ParseException;
 
@@ -32,8 +31,6 @@ public class CandidateParser extends AbstractParser {
 
 	private HashMap<Model, Model> candidatesMap = new HashMap<>();
 	private HashMap<String, Model> candidatesMapByVoterId = new HashMap<>();
-	
-	private HashMap<EstateBinding, Status> bindings = new HashMap<>();
 	
 	private int diffVoter = 0;
 	private int diffCand = 0;
@@ -228,15 +225,12 @@ public class CandidateParser extends AbstractParser {
 		// Parse Status
 		Integer year = parseInt(pieces[2]);
 		
-		// TSE ID.
-		Long tseId = Misc.parseLong(pieces[11]); // id
-		if (tseId == null) {throw new Exception("Candidate TSE id is invalid: " + pieces[11]);}
+		Status status = new Status(year, mappedCandidate);
 		
 		// Age.
 		Integer age = Misc.parseInt(pieces[27]); // age
 		if (age == null) {age = Misc.getAge(birthDate);}
-
-		Status status = new Status(year, age, tseId);
+		status.setAge(age);
 
 		// Job.
 		Long jobId = Misc.parseLong(pieces[23]); // tseID
@@ -262,11 +256,7 @@ public class CandidateParser extends AbstractParser {
 		schooling = (Schooling) Model.persist(schooling, schoolingMap);
 		status.setSchooling(schooling);
 		
-		status.setCandidate(mappedCandidate);
-		
 		status = (Status) Model.persist(status, statusMap);
-		
-		bindings.put(new EstateBinding(status), status);
 		
 		return mappedCandidate;
 	}
