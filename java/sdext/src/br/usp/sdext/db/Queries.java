@@ -2,9 +2,10 @@ package br.usp.sdext.db;
 
 import java.util.*;
 
+import trash.Candidate;
+import trash.Sex;
+
 import br.usp.sdext.core.Model;
-import br.usp.sdext.models.old.Candidate;
-import br.usp.sdext.models.old.Sex;
 
 
 public class Queries {

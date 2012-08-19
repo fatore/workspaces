@@ -11,17 +11,17 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import br.usp.sdext.core.Log;
 import br.usp.sdext.core.Model;
-import br.usp.sdext.models.Candidate;
-import br.usp.sdext.models.Citizenship;
-import br.usp.sdext.models.Job;
-import br.usp.sdext.models.Log;
-import br.usp.sdext.models.MaritalStatus;
-import br.usp.sdext.models.Schooling;
-import br.usp.sdext.models.Sex;
-import br.usp.sdext.models.State;
-import br.usp.sdext.models.Status;
-import br.usp.sdext.models.Town;
+import br.usp.sdext.models.candidate.Candidate;
+import br.usp.sdext.models.candidate.Citizenship;
+import br.usp.sdext.models.candidate.Sex;
+import br.usp.sdext.models.candidate.status.Job;
+import br.usp.sdext.models.candidate.status.MaritalStatus;
+import br.usp.sdext.models.candidate.status.Schooling;
+import br.usp.sdext.models.candidate.status.Status;
+import br.usp.sdext.models.location.State;
+import br.usp.sdext.models.location.Town;
 import br.usp.sdext.util.Misc;
 import br.usp.sdext.util.ParseException;
 

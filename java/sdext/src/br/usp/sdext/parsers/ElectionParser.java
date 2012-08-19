@@ -7,11 +7,12 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import br.usp.sdext.core.Log;
 import br.usp.sdext.core.Model;
-import br.usp.sdext.models.Election;
-import br.usp.sdext.models.Log;
-import br.usp.sdext.models.State;
-import br.usp.sdext.models.Town;
+import br.usp.sdext.models.election.Election;
+import br.usp.sdext.models.election.Post;
+import br.usp.sdext.models.location.State;
+import br.usp.sdext.models.location.Town;
 import br.usp.sdext.util.ParseException;
 
 public class ElectionParser extends AbstractParser {
@@ -19,6 +20,8 @@ public class ElectionParser extends AbstractParser {
 	private LocationParser locationParser;
 	
 	private HashMap<Model, Model> electionsMap = new HashMap<>();
+	
+	private HashMap<Model, Model> postsMap = new HashMap<>();
 	
 	private int pleb = 0, non = 0, notFound = 0;
 
@@ -30,13 +33,17 @@ public class ElectionParser extends AbstractParser {
 	}
 
 	public HashMap<Model, Model> getElectionsMap() {return electionsMap;}
+	public HashMap<Model, Model> getPostsMap() {return postsMap;}
 	
 	public void addSpecialValues() {
 		
 		State mappedState = (State) locationParser.getStatesMap().get(new State("BR"));
 		
-		Model.persist(new Election(2006, "ELEI합ES 2006", mappedState, null, 1, "PRESIDENTE", 1), electionsMap);
-		Model.persist(new Election(2010, "ELEI합ES 2010", mappedState, null, 1, "PRESIDENTE", 1), electionsMap);
+		Post post = new Post(1L, "PRESIDENTE");
+		post = (Post) Model.persist(post, postsMap);
+		
+		Model.persist(new Election(2006, "ELEI합ES 2006", mappedState, null, post, 1), electionsMap);
+		Model.persist(new Election(2010, "ELEI합ES 2010", mappedState, null, post, 1), electionsMap);
 	}
 
 	@Override
@@ -95,10 +102,15 @@ public class ElectionParser extends AbstractParser {
 		}
 	}
 
-	private void parseElection(String[] pieces) throws Exception {
+	private Election parseElection(String[] pieces) throws Exception {
 
 		// Parse year.
 		Integer year = parseInt(pieces[2]);
+		
+		if (year == null) {
+			
+			throw new ParseException("Election year is invalid", pieces[2]);
+		}
 
 		// Parse description.
 		String description = pieces[3];	
@@ -111,18 +123,26 @@ public class ElectionParser extends AbstractParser {
 		}
 		
 		// Parse post.
-		Integer postCode = parseInt(pieces[7]);
-		String post = pieces[8];
+		Long postCode = parseLong(pieces[7]);
+		
+		if (postCode == null) {
+			
+			throw new ParseException("Election post is invalid", pieces[7]);
+		}
+		String postLabel = pieces[8];
+		
+		// Check if post is for vice.
+		if (postLabel.contains("VICE")) {
+			
+			non++;
+			throw new ParseException("Election of a non elective post", postLabel);
+		}
+		
+		Post post = new Post(postCode, postLabel);
+		post = (Post) Model.persist(post, postsMap);
 		
 		// Parse number of jobs.
 		Integer noJobs = parseInt(pieces[9]);
-		
-		// Check if post is for vice.
-		if (post.contains("VICE")) {
-			
-			non++;
-			throw new ParseException("Election of a non elective post", post);
-		}
 
 		// Parse and fetch state.
 		State parsedState = new State(pieces[4]);
@@ -131,7 +151,7 @@ public class ElectionParser extends AbstractParser {
 
 		if (mappedState == null) {
 
-			throw new ParseException("State not found in map" , parsedState.getAcronym());
+			throw new ParseException("State election not found in map" , parsedState.getAcronym());
 		}
 
 		Town mappedTown;
@@ -143,7 +163,7 @@ public class ElectionParser extends AbstractParser {
 
 			if (tseCode == null) {
 
-				throw new ParseException("Invalid TSE code", pieces[5]);
+				throw new ParseException("Invalid election town TSE code", pieces[5]);
 			}
 
 			Town parsedTown = new Town(locationParser.parseTownNamex(pieces[6]), mappedState);
@@ -173,7 +193,7 @@ public class ElectionParser extends AbstractParser {
 							
 							locationParser.getLostTownsMap().put(parsedTown, parsedTown);
 							
-							logs.add(new Log("Town not found", parsedTown.getNamex() + ", " + parsedTown.getState().getAcronym()
+							logs.add(new Log("Town election not found", parsedTown.getNamex() + ", " + parsedTown.getState().getAcronym()
 							+ ", " + parsedTown.getTseCode()));
 							notFound++;
 						}
@@ -196,7 +216,7 @@ public class ElectionParser extends AbstractParser {
 				// Check for data inconsistency.
 				if (!mappedTown.getTseCode().equals(tseCode)) {
 
-					logs.add(new Log("Same city different TSE ids", mappedTown.getNamex() 
+					logs.add(new Log("Same town different TSE ids", mappedTown.getNamex() 
 							+ ", " + mappedTown.getTseCode() + ", " + tseCode));
 				}
 			}
@@ -211,7 +231,7 @@ public class ElectionParser extends AbstractParser {
 		}
 		
 		Election parsedElection = new Election(year, description, 
-				mappedState, mappedTown, postCode, post, noJobs);
+				mappedState, mappedTown, post, noJobs);
 
 		Election mappedElection = (Election) electionsMap.get(parsedElection);
 		
@@ -223,6 +243,8 @@ public class ElectionParser extends AbstractParser {
 			
 			throw new ParseException("Duplicate election", mappedElection.toString());
 		}
+		
+		return mappedElection;
 	}
 
 	private Integer parseInt(String str) {
@@ -232,6 +254,20 @@ public class ElectionParser extends AbstractParser {
 		return Integer.parseInt(str);
 	}
 
+	public Long parseLong(String str) {
+
+		if (str.replace(" ", "").equals("")) return null;
+
+		Long number = Long.parseLong(str);
+
+		if (number < 1) {
+
+			return null;
+		}
+
+		return number;
+	}
+	
 	public void save() {
 
 		System.out.println("Saving elections...");

@@ -7,15 +7,15 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import br.usp.sdext.core.Log;
 import br.usp.sdext.core.Model;
-import br.usp.sdext.models.Candidate;
-import br.usp.sdext.models.Candidature;
-import br.usp.sdext.models.Coalition;
-import br.usp.sdext.models.Election;
-import br.usp.sdext.models.Log;
-import br.usp.sdext.models.Party;
-import br.usp.sdext.models.State;
-import br.usp.sdext.models.Town;
+import br.usp.sdext.models.candidate.Candidate;
+import br.usp.sdext.models.candidature.Candidature;
+import br.usp.sdext.models.coalition.Coalition;
+import br.usp.sdext.models.election.Election;
+import br.usp.sdext.models.location.State;
+import br.usp.sdext.models.location.Town;
+import br.usp.sdext.models.party.Party;
 import br.usp.sdext.parsers.AccountabilityBinding;
 import br.usp.sdext.util.Misc;
 import br.usp.sdext.util.ParseException;
@@ -103,8 +103,12 @@ public class CandidatureParser extends AbstractParser {
 		}
 	}
 
-	private void parseCandidature(String[] pieces) throws Exception {
+	private Candidature parseCandidature(String[] pieces) throws Exception {
 
+		Long resultID = Misc.parseLong(pieces[40]);
+		String result = Misc.parseStr(pieces[41]);
+		
+		
 		Integer round = parseInt(pieces[3]);
 		
 		Election mappedElection = parseElection(pieces);
@@ -121,10 +125,10 @@ public class CandidatureParser extends AbstractParser {
 				Misc.parseInt(pieces[12]), // ballot no
 				Misc.parseLong(pieces[14]), // sit ID
 				Misc.parseStr(pieces[15]), // sit
-				Misc.parseFloat(pieces[39]), // max exp
-				Misc.parseLong(pieces[40]), // result id
-				Misc.parseStr(pieces[41]),
-				tseId); // result
+				Misc.parseFloat(pieces[39]), // max EXP
+				resultID, // result id
+				result, // result
+				tseId); // TSE id
 
 		// Bind objects.
 		parsedCandidature.setElection(mappedElection);
@@ -134,6 +138,7 @@ public class CandidatureParser extends AbstractParser {
 		
 		Candidature mappedCandidature = (Candidature) candidatureMap.get(parsedCandidature);
 
+		// Check if candidature already exists
 		if (mappedCandidature == null) {
 			
 			parsedCandidature.setId(new Long(candidatureMap.size()));
@@ -141,7 +146,7 @@ public class CandidatureParser extends AbstractParser {
 			accountabilityBindings.put(new AccountabilityBinding(parsedCandidature), parsedCandidature); 
 			
 		} else {
-
+			
 			if (round.equals(2)) {
 				
 				mappedCandidature.setResultID(Misc.parseLong(pieces[40]));
@@ -149,9 +154,13 @@ public class CandidatureParser extends AbstractParser {
 				
 			} else {
 				
+				System.out.println(mappedCandidature.toString());
+				System.out.println(parsedCandidature.toString());
 				dups++;
 			}
 		}
+		
+		return mappedCandidature;
 	}
 	
 	private Election parseElection(String[] pieces) throws Exception {
@@ -262,11 +271,11 @@ public class CandidatureParser extends AbstractParser {
 		
 		candidatureParser.parse("/home/fm/work/data/sdext/eleitorais/candidatos/candidaturas/2006");
 
-		locationParser.save();
-		electionParser.save();
-		candidateParser.save();
-		coalitionParser.save();
-		partyParser.save();
-		candidatureParser.save();
+//		locationParser.save();
+//		electionParser.save();
+//		candidateParser.save();
+//		coalitionParser.save();
+//		partyParser.save();
+//		candidatureParser.save();
 	}
 }

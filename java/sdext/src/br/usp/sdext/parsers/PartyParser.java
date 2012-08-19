@@ -3,7 +3,7 @@ package br.usp.sdext.parsers;
 import java.util.HashMap;
 
 import br.usp.sdext.core.Model;
-import br.usp.sdext.models.Party;
+import br.usp.sdext.models.party.Party;
 import br.usp.sdext.util.Misc;
 
 public class PartyParser {

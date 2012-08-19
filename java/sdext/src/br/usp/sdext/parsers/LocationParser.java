@@ -10,13 +10,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import br.usp.sdext.core.Log;
 import br.usp.sdext.core.Model;
-import br.usp.sdext.models.Log;
-import br.usp.sdext.models.MesoRegion;
-import br.usp.sdext.models.MicroRegion;
-import br.usp.sdext.models.Region;
-import br.usp.sdext.models.State;
-import br.usp.sdext.models.Town;
+import br.usp.sdext.models.location.MesoRegion;
+import br.usp.sdext.models.location.MicroRegion;
+import br.usp.sdext.models.location.Region;
+import br.usp.sdext.models.location.State;
+import br.usp.sdext.models.location.Town;
 import br.usp.sdext.util.LevenshteinDistance;
 import br.usp.sdext.util.ParseException;
 
