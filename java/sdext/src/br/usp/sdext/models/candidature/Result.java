@@ -27,6 +27,11 @@ public class Result extends Model implements Serializable {
 		this.label = label;
 	}
 	
+	public Result(Long tseId) {
+		
+		this.tseCode = tseId;
+	}
+	
 	public Long getId() {return id;}
 	public Long getTseCode() {return tseCode;}
 	public String getLabel() {return label;}

@@ -1,20 +1,22 @@
-package trash;
+package br.usp.sdext.parsers;
 
 import java.util.Date;
 import java.util.HashMap;
 
 import br.usp.sdext.core.Model;
+import br.usp.sdext.models.account.Expense;
+import br.usp.sdext.models.account.Provider;
 import br.usp.sdext.util.Misc;
 
-public class IncomeParser extends ModelParser {
+public class ExpenseParser {
 
-	private HashMap<Model, Model> incomesMap = new HashMap<>();
+	private HashMap<Model, Model> expenseMap = new HashMap<>();
 
-	public HashMap<Model, Model> getIncomesMap() {return incomesMap;}
+	public HashMap<Model, Model> getExpenseMap() {return expenseMap;}
 
-	public Model parse(String[] pieces, int year, Donor donor) throws Exception {
+	public Model parse(String[] pieces, int year, Provider provider) throws Exception {
 
-		// Parse income.
+		// Parse expense.
 		Date date = null;
 		Float value = null;
 		String type = null;
@@ -43,21 +45,20 @@ public class IncomeParser extends ModelParser {
 			break;
 		}
 
-		Income income = new Income(value, type, date);
-
-		// Set income donor's.
-		income.setDonor(donor);
-
-		income = (Income) Model.persist(income, incomesMap);
+		Expense expense = new Expense(value, type, date);
 		
-		return income;
+		// Set expense provider.
+		expense.setProvider(provider);
+
+		expense = (Expense) Model.persist(expense, expenseMap);
+		
+		return expense;
 	}
 
-	@Override
 	public void save() {
 
-		System.out.println("\tSaving incomes...");
-		Model.bulkSave(incomesMap.values());
+		System.out.println("\tSaving expenses...");
+		Model.bulkSave(expenseMap.values());
 
 	}
 }

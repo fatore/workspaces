@@ -1,19 +1,22 @@
-package trash;
+package br.usp.sdext.parsers;
 
 import java.util.HashMap;
 
 import br.usp.sdext.core.Model;
+import br.usp.sdext.models.account.Donor;
+import br.usp.sdext.models.location.State;
 import br.usp.sdext.util.Misc;
+import br.usp.sdext.util.ParseException;
 
-public class DonorParser extends ModelParser {
-
-	private MiscParser miscParser;
+public class DonorParser  {
 
 	private HashMap<Model, Model> donorsMap = new HashMap<>();
 
-	public DonorParser(MiscParser miscParser) {
-
-		this.miscParser = miscParser;
+	private LocationParser locationParser;
+	
+	public DonorParser(LocationParser locationParser) {
+		
+		this.locationParser = locationParser;
 	}
 
 	public HashMap<Model, Model> getDonorMap() {return donorsMap;}
@@ -50,17 +53,23 @@ public class DonorParser extends ModelParser {
 		}
 
 		Donor donor = new Donor(donorName, donorCPF);
+		
+		State state = new State(donorUF);
 
-		State donorState = new State(donorUF);
-		donorState = (State) State.persist(donorState, miscParser.getStatesMap());
-		donor.setState(donorState);
+		State mappedState = (State) locationParser.getStatesMap().get(state);
+
+		if (mappedState == null) {
+
+			throw new ParseException("Election state not found in map" , state.getAcronym());
+		}
+
+		donor.setState(state);
 
 		donor = (Donor) Model.persist(donor, donorsMap);
 		
 		return donor;
 	}
 
-	@Override
 	public void save() {
 
 		System.out.println("\tSaving donors...");

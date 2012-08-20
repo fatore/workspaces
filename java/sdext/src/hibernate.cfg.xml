@@ -33,28 +33,39 @@
         <!-- Drop and re-create the database schema on startup -->
         <property name="hbm2ddl.auto">create-drop</property>
 
-	<mapping class="br.usp.sdext.models.Candidate"/>
-	<mapping class="br.usp.sdext.models.Candidature"/>
-	<mapping class="br.usp.sdext.models.Citizenship"/>
-	<mapping class="br.usp.sdext.models.Coalition"/>
-	<mapping class="br.usp.sdext.models.Donor"/>
-	<mapping class="br.usp.sdext.models.Election"/>
-	<mapping class="br.usp.sdext.models.Estate"/>
-	<mapping class="br.usp.sdext.models.Expense"/>
-	<mapping class="br.usp.sdext.models.Income"/>
-	<mapping class="br.usp.sdext.models.Job"/>
-	<mapping class="br.usp.sdext.models.Log"/>
-	<mapping class="br.usp.sdext.models.MaritalStatus"/>
-	<mapping class="br.usp.sdext.models.MesoRegion"/>
-	<mapping class="br.usp.sdext.models.MicroRegion"/>
-	<mapping class="br.usp.sdext.models.Party"/>
-	<mapping class="br.usp.sdext.models.Provider"/>
-	<mapping class="br.usp.sdext.models.Region"/>
-	<mapping class="br.usp.sdext.models.Schooling"/>
-	<mapping class="br.usp.sdext.models.Sex"/>
-	<mapping class="br.usp.sdext.models.State"/>
-	<mapping class="br.usp.sdext.models.Status"/>
-	<mapping class="br.usp.sdext.models.Town"/>
+	<mapping class="br.usp.sdext.core.Log"/>
+	
+	<mapping class="br.usp.sdext.models.account.Donor"/>
+	<mapping class="br.usp.sdext.models.account.Expense"/>
+	<mapping class="br.usp.sdext.models.account.Income"/>
+	<mapping class="br.usp.sdext.models.account.Provider"/>
+	
+	<mapping class="br.usp.sdext.models.candidate.Candidate"/>
+	<mapping class="br.usp.sdext.models.candidate.Citizenship"/>
+	<mapping class="br.usp.sdext.models.candidate.Sex"/>
+	
+	<mapping class="br.usp.sdext.models.candidate.status.Estate"/>
+	<mapping class="br.usp.sdext.models.candidate.status.Job"/>
+	<mapping class="br.usp.sdext.models.candidate.status.MaritalStatus"/>
+	<mapping class="br.usp.sdext.models.candidate.status.Schooling"/>
+	<mapping class="br.usp.sdext.models.candidate.status.Status"/>
+	
+	<mapping class="br.usp.sdext.models.candidature.Candidature"/>
+	<mapping class="br.usp.sdext.models.candidature.Result"/>
+	<mapping class="br.usp.sdext.models.candidature.Situation"/>
+	
+	<mapping class="br.usp.sdext.models.coalition.Coalition"/>
+	
+	<mapping class="br.usp.sdext.models.election.Election"/>
+	<mapping class="br.usp.sdext.models.election.Post"/>
+	
+	<mapping class="br.usp.sdext.models.location.MesoRegion"/>
+	<mapping class="br.usp.sdext.models.location.MicroRegion"/>
+	<mapping class="br.usp.sdext.models.location.Region"/>
+	<mapping class="br.usp.sdext.models.location.State"/>
+	<mapping class="br.usp.sdext.models.location.Town"/>
+	
+	<mapping class="br.usp.sdext.models.party.Party"/>
 	
     </session-factory>
 

@@ -276,7 +276,9 @@ public class ElectionParser extends AbstractParser {
 		System.out.println("\tNon elective posts: " + non);
 		System.out.println("\tIgnored as peblicites: " + pleb);
 		System.out.println("\tTowns not found: " + notFound);
+		System.out.println("\tDistinct posts: " + postsMap.size());
 		System.out.println("\tTotal valid elections: " + electionsMap.size());
+		Model.bulkSave(postsMap.values());
 		Model.bulkSave(electionsMap.values());
 		
 		System.out.println("Done!");

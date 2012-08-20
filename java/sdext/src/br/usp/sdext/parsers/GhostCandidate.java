@@ -1,4 +1,4 @@
-package trash;
+package br.usp.sdext.parsers;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +7,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import br.usp.sdext.core.Model;
+import br.usp.sdext.models.account.Expense;
+import br.usp.sdext.models.account.Income;
 
 @Entity
 @Table(name="ghost_candidate")

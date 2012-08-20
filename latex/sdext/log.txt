@@ -117,11 +117,11 @@ dos.png>] (./src/metodology/db_selection.tex) (./src/metodology/db_creation.tex
 <images/locations_db.png, id=148, 731.73375pt x 325.215pt>
 <use images/locations_db.png> (/usr/share/texmf-dist/tex/latex/psnfss/omsptm.fd
 ) [10 <./images/datasus_ut.pdf>] [11 <./images/locations_db.png>] [12])
-[13]
+[13] [14]
 Cap\'{\i }tulo 4.
-[14]
+[15]
 Cap\'{\i }tulo 5.
-[15] (/usr/share/texmf-dist/tex/latex/psnfss/t1pcr.fd) [16] (./document.aux)
+[16] (/usr/share/texmf-dist/tex/latex/psnfss/t1pcr.fd) [17] (./document.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
@@ -132,5 +132,5 @@ mmi8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr
 /share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-dist/fon
 ts/type1/urw/times/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmr
 8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on document.pdf (17 pages, 248292 bytes).
+Output written on document.pdf (18 pages, 248745 bytes).
 Transcript written on document.log.

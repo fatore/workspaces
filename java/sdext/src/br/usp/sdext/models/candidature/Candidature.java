@@ -40,35 +40,43 @@ public class Candidature extends Model implements Serializable {
 	
 	private Integer ballotNo;
 	
-	private Long situationID;
-	private String situation;
+	@ManyToOne
+	private Situation situation;
+	
+	@ManyToOne
+	private Result result;
 	
 	@Column(name="max_expenses")
 	private Float maxExpenses;
 	
-	@Column(name="result_id")
-	private Long resultID;
-	private String result;
-	
-	@Column(name="tse_id")
-	private Long candidateTseID;
+	@Column(name="tse_code")
+	private Long candidateTseCode;
 	
 	public Candidature() {}
 	
-	public Candidature(String ballotName, Integer ballotNo,  
-			Long situationID, String situation, Float maxExpenses,
-			Long resultID, String result, Long candidateTseID) {
+	public Candidature(Candidate candidate, Election election) {
 		
+		this.candidate = candidate;
+		this.election = election;
+	}
+
+	public Candidature(Candidate candidate, Election election,
+			Party party, Coalition coalition, String ballotName,
+			Integer ballotNo, Situation situation, Result result,
+			Float maxExpenses, Long candidateTseID) {
+		
+		this.candidate = candidate;
+		this.election = election;
+		this.party = party;
+		this.coalition = coalition;
 		this.ballotName = ballotName;
 		this.ballotNo = ballotNo;
-		this.situationID = situationID;
 		this.situation = situation;
-		this.maxExpenses = maxExpenses;
-		this.resultID = resultID;
 		this.result = result;
-		this.candidateTseID = candidateTseID;
-	}	
-	
+		this.maxExpenses = maxExpenses;
+		this.candidateTseCode = candidateTseID;
+	}
+
 	// getters
 	public Long getID() {return id;}
 	public Election getElection() {return election;}
@@ -77,12 +85,10 @@ public class Candidature extends Model implements Serializable {
 	public String getBallotName() {return ballotName;}
 	public Party getParty() {return party;}
 	public Integer getBallotNo() {return ballotNo;}
-	public Long getSituationID() {return situationID;}
-	public String getSituation() {return situation;}
+	public Situation getSituation() {return situation;}
 	public Float getMaxExpenses() {return maxExpenses;}
-	public Long getResultID() {return resultID;}
-	public String getResult() {return result;}
-	public Long getTseID() {return candidateTseID;}
+	public Result getResult() {return result;}
+	public Long getTseCode() {return candidateTseCode;}
 
 	// setters
 	public void setId(Long id) {this.id = id;}
@@ -92,20 +98,18 @@ public class Candidature extends Model implements Serializable {
 	public void setParty(Party party) {this.party = party;}
 	public void setBallotName(String ballotName) {this.ballotName = ballotName;}
 	public void setBallotNo(Integer ballotNo) {this.ballotNo = ballotNo;}
-	public void setSituationID(Long situationID) {this.situationID = situationID;}
-	public void setSituation(String situation) {this.situation = situation;}
+	public void setSituation(Situation situation) {this.situation = situation;}
 	public void setMaxExpenses(Float maxExpenses) {this.maxExpenses = maxExpenses;}
-	public void setResultID(Long resultID) {this.resultID = resultID;}
-	public void setResult(String result) {this.result = result;}
-	public void setTseID(Long tseID) {this.candidateTseID = tseID;}
+	public void setResult(Result result) {this.result = result;}
+	public void setTseCode(Long tseID) {this.candidateTseCode = tseID;}
 	
 	@Override
 	public String toString() {
 		return "Candidature [ballotName=" + ballotName
-				+ ", ballotNo=" + ballotNo + ", situationID=" + situationID
-				+ ", situation=" + situation + ", maxExpenses=" + maxExpenses
-				+ ", resultID=" + resultID + ", result=" + result
-				+ ", candidateTseID=" + candidateTseID + "]";
+				+ ", ballotNo=" + ballotNo
+				+ ", situation=" + situation.getLabel() + ", maxExpenses=" + maxExpenses
+				+ ", result=" + result.getLabel()
+				+ ", candidateTseID=" + candidateTseCode + "]";
 	}
 
 	@Override

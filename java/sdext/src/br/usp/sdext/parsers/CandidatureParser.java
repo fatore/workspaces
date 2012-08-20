@@ -11,12 +11,16 @@ import br.usp.sdext.core.Log;
 import br.usp.sdext.core.Model;
 import br.usp.sdext.models.candidate.Candidate;
 import br.usp.sdext.models.candidature.Candidature;
+import br.usp.sdext.models.candidature.Result;
+import br.usp.sdext.models.candidature.Situation;
 import br.usp.sdext.models.coalition.Coalition;
 import br.usp.sdext.models.election.Election;
+import br.usp.sdext.models.election.Post;
 import br.usp.sdext.models.location.State;
 import br.usp.sdext.models.location.Town;
 import br.usp.sdext.models.party.Party;
-import br.usp.sdext.parsers.AccountabilityBinding;
+import br.usp.sdext.parsers.bindings.AccountBinding;
+import br.usp.sdext.parsers.bindings.EstateBinding;
 import br.usp.sdext.util.Misc;
 import br.usp.sdext.util.ParseException;
 
@@ -32,9 +36,19 @@ public class CandidatureParser extends AbstractParser {
 	
 	private int dups = 0; 
 	
-	private HashMap<Model, Model> candidatureMap = new HashMap<>();
-	private HashMap<AccountabilityBinding, Model> accountabilityBindings = new HashMap<>();
-	private HashMap<AccountabilityBinding, Model> estateBindings = new HashMap<>();
+	private HashMap<Model, Model> candidaturesMap = new HashMap<>();
+	
+	private HashMap<Model, Model> situationsMap = new HashMap<>();
+	private HashMap<Model, Model> resultsMap = new HashMap<>();
+	
+	private HashMap<AccountBinding, Model> accountBindings = new HashMap<>();
+	private HashMap<EstateBinding, Model> estateBindings = new HashMap<>();
+	
+	public HashMap<Model, Model> getCandidaturesMap() {return candidaturesMap;}
+	public HashMap<Model, Model> getSituationsMap() {return situationsMap;}
+	public HashMap<Model, Model> getResultsMap() {return resultsMap;}
+	public HashMap<AccountBinding, Model> getAccountBindings() {return accountBindings;}
+	public HashMap<EstateBinding, Model> getEstateBindings() {return estateBindings;}
 
 	public CandidatureParser(LocationParser locationParser,
 			ElectionParser electionParser, CandidateParser candidateParser,
@@ -51,7 +65,6 @@ public class CandidatureParser extends AbstractParser {
 
 		if (file.getName().matches("([^\\s]+(\\.(?i)txt))")) {
 
-			System.out.println("Parsing candidatures from " + file.getName());
 			parseFile(file);
 		}
 	}
@@ -105,9 +118,62 @@ public class CandidatureParser extends AbstractParser {
 
 	private Candidature parseCandidature(String[] pieces) throws Exception {
 
-		Long resultID = Misc.parseLong(pieces[40]);
-		String result = Misc.parseStr(pieces[41]);
+		Long tseId = Misc.parseLong(pieces[11]); 
 		
+		if(tseId == 60000000002L) {
+			
+			System.out.println();
+		}
+		
+		if (tseId == null) {
+			throw new Exception("Candidate TSE id is invalid: " + pieces[11]);
+		}
+		
+		Long situationID = Misc.parseLong(pieces[14]);
+		String situationLabel = Misc.parseStr(pieces[15]);
+		
+		if (situationID == null) {
+			
+			return null;
+		}
+		
+		switch (situationID.intValue()) {
+		
+		case 4: // rejected W/R
+		case 5: // canceled
+		case 6: // resigns
+		case 7: // dead
+		case 8: // waiting judge
+		case 9: // ineligible
+		case 10: // revoked
+		case 13: // empty
+		case 14: // rejected
+		case 17: // judging
+		case 18: // revoked W/R
+			return null;
+			
+		case 2: // accepted
+		case 16: // accepted W/R
+			break;
+			
+		default:
+			System.err.println("Strange candidature situation: " + situationID + ", " + situationLabel);
+			throw new ParseException("Strange candidature situation", situationID + ", " + situationLabel);
+		}
+		
+		Situation situation = new Situation(situationID, situationLabel);
+		situation = (Situation) Model.persist(situation, situationsMap);
+		
+		Long resultID = Misc.parseLong(pieces[40]);
+		String resultLabel = Misc.parseStr(pieces[41]);
+		
+		if (resultID == null) {
+			
+			throw new ParseException("Candidature result is null");
+		}
+		
+		Result result = new Result(resultID, resultLabel);
+		result = (Result) Model.persist(result, resultsMap);
 		
 		Integer round = parseInt(pieces[3]);
 		
@@ -116,48 +182,48 @@ public class CandidatureParser extends AbstractParser {
 		Party mappedParty = (Party) partyParser.parse(pieces);
 		Coalition mappedCoalition = (Coalition) coalitionParser.parse(pieces);
 		
-		// TSE ID.
-		Long tseId = Misc.parseLong(pieces[11]); // id
-		if (tseId == null) {throw new Exception("Candidate TSE id is invalid: " + pieces[11]);}
+		String ballotName = Misc.parseStr(pieces[13]);
+		Integer ballotNo = Misc.parseInt(pieces[12]);
+		Float maxExpenses = Misc.parseFloat(pieces[39]);
 		
-		Candidature parsedCandidature = new Candidature(
-				Misc.parseStr(pieces[13]), // ballot name
-				Misc.parseInt(pieces[12]), // ballot no
-				Misc.parseLong(pieces[14]), // sit ID
-				Misc.parseStr(pieces[15]), // sit
-				Misc.parseFloat(pieces[39]), // max EXP
-				resultID, // result id
-				result, // result
-				tseId); // TSE id
-
+		Candidature parsedCandidature = new Candidature(mappedCandidate, mappedElection, mappedParty, 
+				mappedCoalition, ballotName, ballotNo, situation, result, maxExpenses, tseId);
+		
 		// Bind objects.
 		parsedCandidature.setElection(mappedElection);
 		parsedCandidature.setCandidate(mappedCandidate);
 		parsedCandidature.setParty(mappedParty);
 		parsedCandidature.setCoalition(mappedCoalition);
 		
-		Candidature mappedCandidature = (Candidature) candidatureMap.get(parsedCandidature);
+		Candidature mappedCandidature = (Candidature) candidaturesMap.get(parsedCandidature);
 
 		// Check if candidature already exists
 		if (mappedCandidature == null) {
 			
-			parsedCandidature.setId(new Long(candidatureMap.size()));
-			candidatureMap.put(parsedCandidature, parsedCandidature);
-			accountabilityBindings.put(new AccountabilityBinding(parsedCandidature), parsedCandidature); 
+			mappedCandidature = (Candidature) Model.persist(parsedCandidature, candidaturesMap);
+			
+			accountBindings.put(new AccountBinding(mappedCandidature), mappedCandidature); 
+			
+			estateBindings.put(new EstateBinding(mappedCandidature), mappedCandidature);
 			
 		} else {
 			
 			if (round.equals(2)) {
 				
-				mappedCandidature.setResultID(Misc.parseLong(pieces[40]));
-				mappedCandidature.setResult(Misc.parseStr(pieces[41]));
+				mappedCandidature.setResult(result);
 				
 			} else {
 				
-				System.out.println(mappedCandidature.toString());
-				System.out.println(parsedCandidature.toString());
-				dups++;
+				if (!mappedCandidature.getResult().equals(parsedCandidature.getResult())) {
+					
+					if (parsedCandidature.getResult().getTseCode() == 1) {
+						
+						Result elected = (Result) resultsMap.get(new Result(1L));
+						mappedCandidature.setResult(elected);
+					} 
+				}
 			}
+			dups++;
 		}
 		
 		return mappedCandidature;
@@ -166,7 +232,15 @@ public class CandidatureParser extends AbstractParser {
 	private Election parseElection(String[] pieces) throws Exception {
 		
 		Integer year = parseInt(pieces[2]); // year
-		Integer postCode = parseInt(pieces[8]); // posID
+		
+		Post parsedPost = new Post(parseLong(pieces[8]));
+		
+		Post mappedPost = (Post) electionParser.getPostsMap().get(parsedPost);
+		
+		if (mappedPost == null) {
+			
+			throw new ParseException("Election post not found", pieces[8]);
+		}
 		
 		// Parse and fetch state.
 		State state = new State(pieces[5]);
@@ -175,7 +249,7 @@ public class CandidatureParser extends AbstractParser {
 
 		if (mappedState == null) {
 
-			throw new ParseException("State not found in map" , state.getAcronym());
+			throw new ParseException("Election state not found in map" , state.getAcronym());
 		}
 		
 		Town mappedTown = null;
@@ -198,7 +272,7 @@ public class CandidatureParser extends AbstractParser {
 			}
 		} 
 		
-		Election election = new Election(year, mappedState, mappedTown, postCode);
+		Election election = new Election(year, mappedState, mappedTown, mappedPost);
 		
 		Election mappedElection = (Election) electionParser.getElectionsMap().get(election);
 		
@@ -229,14 +303,30 @@ public class CandidatureParser extends AbstractParser {
 		return Integer.parseInt(str);
 	}
 
+	public Long parseLong(String str) {
+
+		if (str.replace(" ", "").equals("")) return null;
+
+		Long number = Long.parseLong(str);
+
+		if (number < 1) {
+
+			return null;
+		}
+
+		return number;
+	}
+	
 	public void save() {
 
 		System.out.println("Saving candidatures...");
 		Model.bulkSave(logs);
 		System.out.println("\tDuplicated candidatures: " + dups);
-		System.out.println("\tTotal candidatures: " + candidatureMap.size());
+		System.out.println("\tTotal candidatures: " + candidaturesMap.size());
 		
-		Model.bulkSave(candidatureMap.values());
+		Model.bulkSave(situationsMap.values());
+		Model.bulkSave(resultsMap.values());
+		Model.bulkSave(candidaturesMap.values());
 		
 		System.out.println("Done!");
 	}
@@ -270,12 +360,13 @@ public class CandidatureParser extends AbstractParser {
 				candidateParser, partyParser, coalitionParser);
 		
 		candidatureParser.parse("/home/fm/work/data/sdext/eleitorais/candidatos/candidaturas/2006");
+		candidatureParser.parse("/home/fm/work/data/sdext/eleitorais/candidatos/candidaturas/2010");
 
-//		locationParser.save();
-//		electionParser.save();
-//		candidateParser.save();
-//		coalitionParser.save();
-//		partyParser.save();
-//		candidatureParser.save();
+		locationParser.save();
+		electionParser.save();
+		candidateParser.save();
+		coalitionParser.save();
+		partyParser.save();
+		candidatureParser.save();
 	}
 }

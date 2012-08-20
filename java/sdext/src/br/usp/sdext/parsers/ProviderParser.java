@@ -1,11 +1,12 @@
-package trash;
+package br.usp.sdext.parsers;
 
 import java.util.HashMap;
 
 import br.usp.sdext.core.Model;
+import br.usp.sdext.models.account.Provider;
 import br.usp.sdext.util.Misc;
 
-public class ProviderParser extends ModelParser {
+public class ProviderParser {
 
 	private HashMap<Model, Model> providerMap = new HashMap<>();
 
@@ -45,7 +46,6 @@ public class ProviderParser extends ModelParser {
 		return provider;
 	}
 
-	@Override
 	public void save() {
 
 		System.out.println("\tSaving providers...");
