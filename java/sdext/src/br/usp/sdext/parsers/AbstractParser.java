@@ -12,7 +12,7 @@ public abstract class AbstractParser {
 			baseDir = new File(baseDirStr);
 		}
 		
-		System.out.print("Looking for directory " + baseDirStr + ".");
+		System.out.print("Looking for directory " + baseDirStr);
 		
 		if ( baseDir != null && baseDir.exists() && baseDir.isDirectory()) {
 			
