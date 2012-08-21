@@ -27,9 +27,9 @@ public class Post extends Model implements Serializable {
 		this.label = label;
 	}
 	
-	public Post(Long tseCode) {
+	public Post(String label) {
 		
-		this.tseCode = tseCode;
+		this.label = label;
 	}
 
 	public Long getId() {return id;}
@@ -42,16 +42,14 @@ public class Post extends Model implements Serializable {
 	
 	@Override
 	public int hashCode() {
-		
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((tseCode == null) ? 0 : tseCode.hashCode());
+		result = prime * result + ((label == null) ? 0 : label.hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -59,10 +57,10 @@ public class Post extends Model implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Post other = (Post) obj;
-		if (tseCode == null) {
-			if (other.tseCode != null)
+		if (label == null) {
+			if (other.label != null)
 				return false;
-		} else if (!tseCode.equals(other.tseCode))
+		} else if (!label.equals(other.label))
 			return false;
 		return true;
 	}

@@ -233,7 +233,7 @@ public class CandidatureParser extends AbstractParser {
 		
 		Integer year = parseInt(pieces[2]); // year
 		
-		Post parsedPost = new Post(parseLong(pieces[8]));
+		Post parsedPost = new Post(Misc.parseStr(pieces[9]));
 		
 		Post mappedPost = (Post) electionParser.getPostsMap().get(parsedPost);
 		

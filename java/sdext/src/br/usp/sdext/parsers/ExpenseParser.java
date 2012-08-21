@@ -45,14 +45,14 @@ public class ExpenseParser {
 			break;
 		}
 
-		Expense expense = new Expense(value, type, date);
+		Expense parsedExpense = new Expense(value, type, date);
 		
 		// Set expense provider.
-		expense.setProvider(provider);
+		parsedExpense.setProvider(provider);
 
-		expense = (Expense) Model.persist(expense, expenseMap);
+		Expense mappedExpense = (Expense) Model.persist(parsedExpense, expenseMap);
 		
-		return expense;
+		return mappedExpense;
 	}
 
 	public void save() {

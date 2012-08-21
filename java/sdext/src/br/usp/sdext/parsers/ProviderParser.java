@@ -8,9 +8,9 @@ import br.usp.sdext.util.Misc;
 
 public class ProviderParser {
 
-	private HashMap<Model, Model> providerMap = new HashMap<>();
+	private HashMap<Model, Model> providersMap = new HashMap<>();
 
-	public HashMap<Model, Model> getProviderMap() {return providerMap;}
+	public HashMap<Model, Model> getProviderMap() {return providersMap;}
 
 	public Model parse(String[] pieces, int year) throws Exception {
 
@@ -39,17 +39,17 @@ public class ProviderParser {
 			break;
 		}
 
-		Provider provider = new Provider(providerName, providerCPF);
+		Provider parsedProvider = new Provider(providerName, providerCPF);
 
-		provider = (Provider) Model.persist(provider, providerMap);
+		Provider mappedProvider = (Provider) Model.persist(parsedProvider, providersMap);
 
-		return provider;
+		return mappedProvider;
 	}
 
 	public void save() {
 
 		System.out.println("\tSaving providers...");
-		Model.bulkSave(providerMap.values());
+		Model.bulkSave(providersMap.values());
 
 	}
 }

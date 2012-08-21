@@ -13,7 +13,6 @@ import br.usp.sdext.models.account.Donor;
 import br.usp.sdext.models.account.Expense;
 import br.usp.sdext.models.account.Income;
 import br.usp.sdext.models.account.Provider;
-import br.usp.sdext.models.candidate.Candidate;
 import br.usp.sdext.models.candidate.status.Status;
 import br.usp.sdext.models.candidature.Candidature;
 import br.usp.sdext.models.election.Election;
@@ -28,7 +27,6 @@ public class AccountParser extends AbstractParser {
 
 	private LocationParser locationParser;
 	private CandidateParser candidateParser;
-	private CandidatureParser candidatureParser;
 	private ElectionParser electionParser;
 
 	private HashMap<AccountBinding, Model> bindings;
@@ -49,12 +47,18 @@ public class AccountParser extends AbstractParser {
 
 	private Long notFound = 0L;
 
-	public AccountParser(LocationParser locationParser, CandidateParser candidateParser,
-			CandidatureParser candidatureParser) {
 
+	public AccountParser(LocationParser locationParser, CandidateParser candidateParser, 
+			CandidatureParser candidatureParser, ElectionParser electionParser) {
+		
 		this.locationParser = locationParser;
 		this.candidateParser = candidateParser;
-		this.candidatureParser = candidatureParser;
+		this.electionParser = electionParser;
+		this.donorParser = new DonorParser(locationParser);
+		this.incomeParser = new IncomeParser();
+		this.providerParser = new ProviderParser();
+		this.expenseParser = new ExpenseParser();
+		this.bindings = candidatureParser.getAccountBindings();
 	}
 
 	protected void loadFile(File file) throws Exception {
@@ -178,7 +182,7 @@ public class AccountParser extends AbstractParser {
 		// Create binding
 		String postLabel = null;
 		String stateLabel = null;
-		String townLabel = null;
+		String townCode = null;
 
 		String name = null;
 		Integer ballotNo = null;
@@ -207,7 +211,7 @@ public class AccountParser extends AbstractParser {
 
 			stateLabel = Misc.parseStr(pieces[5]);
 
-			townLabel = Misc.parseStr(pieces[6]);
+			townCode = Misc.parseStr(pieces[6]);
 
 			break;
 
@@ -228,22 +232,36 @@ public class AccountParser extends AbstractParser {
 			break;
 		}
 
-		State state = new State(pieces[4]);
+		State parsedState = new State(stateLabel);
 
-		State mappedState = (State) locationParser.getStatesMap().get(state);
+		State mappedState = (State) locationParser.getStatesMap().get(parsedState);
 
 		if (mappedState == null) {
 
-			throw new ParseException("Election state not found in map" , state.getAcronym());
+			throw new ParseException("Election state not found in map" , parsedState.getAcronym());
 		}
 
 		Town mappedTown = null;
-		if (townLabel != null) {
+		
+		if ((year - Election.FIRST_MAIN_ELECTION) % 4 != 0) {
+			
+			Integer tseCode = Misc.parseInt(townCode);
+			
+			if (tseCode == null) {
 
-			// Parse town
-		}
+				throw new ParseException("Invalid TSE code", pieces[6]);
+			}
+			
+			Town parsedTown = new Town();
+			parsedTown.setTseCode(Misc.parseInt(pieces[6]));
+			
+			if ((mappedTown = (Town) locationParser.getTownsMapByTSE().get(tseCode)) == null) {
+				
+				throw new ParseException("Town TSE code not found", tseCode + "");
+			}
+		} 
 
-		Post parsedPost = new Post(Misc.parseLong(pieces[8]));
+		Post parsedPost = new Post(postLabel);
 
 		Post mappedPost = (Post) electionParser.getPostsMap().get(parsedPost);
 
@@ -252,21 +270,16 @@ public class AccountParser extends AbstractParser {
 			throw new ParseException("Election post not found", pieces[8]);
 		}
 
-		Election election = new Election();
-		election.setPost(mappedPost);
-		election.setState(state);
-		election.setTown(mappedTown);
-		election.setYear(year);
+		Election parsedElection = new Election(year, mappedState, mappedTown, mappedPost);
+		
+		Election mappedElection = (Election) electionParser.getElectionsMap().get(parsedElection);
+		
+		if (mappedElection == null) {
+			
+			throw new ParseException("Election not found", parsedElection.toString());
+		}
 
-		Candidate candidate = new Candidate();
-		candidate.setName(name);
-
-		Candidature candidature = new Candidature();
-		candidature.setElection(election);
-		candidature.setCandidate(candidate);
-		candidature.setBallotNo(ballotNo);
-
-		AccountBinding binding = new AccountBinding(candidature);
+		AccountBinding binding = new AccountBinding(ballotNo, mappedElection);
 
 		Candidature mappedCandidature = (Candidature) bindings.get(binding);
 
@@ -276,7 +289,7 @@ public class AccountParser extends AbstractParser {
 
 		} else {
 
-			Status parsedStatus = new Status(year, candidate);
+			Status parsedStatus = new Status(year, mappedCandidature.getCandidate());
 
 			Status mappedStatus = (Status) candidateParser.getStatusMap().get(parsedStatus);
 
@@ -284,7 +297,7 @@ public class AccountParser extends AbstractParser {
 
 				throw new ParseException("Candidate status not found", parsedStatus.toString());
 			}
-
+			
 			mappedStatus.addIncome(income);
 		}
 	}
@@ -298,7 +311,7 @@ public class AccountParser extends AbstractParser {
 		// Create binding
 		String postLabel = null;
 		String stateLabel = null;
-		String townLabel = null;
+		String townCode = null;
 
 		String name = null;
 		Integer ballotNo = null;
@@ -327,7 +340,7 @@ public class AccountParser extends AbstractParser {
 
 			stateLabel = Misc.parseStr(pieces[5]);
 
-			townLabel = Misc.parseStr(pieces[6]);
+			townCode = Misc.parseStr(pieces[6]);
 
 			break;
 
@@ -347,22 +360,36 @@ public class AccountParser extends AbstractParser {
 			break;
 		}
 
-		State state = new State(pieces[4]);
+		State parsedState = new State(stateLabel);
 
-		State mappedState = (State) locationParser.getStatesMap().get(state);
+		State mappedState = (State) locationParser.getStatesMap().get(parsedState);
 
 		if (mappedState == null) {
 
-			throw new ParseException("Election state not found in map" , state.getAcronym());
+			throw new ParseException("Election state not found in map" , parsedState.getAcronym());
 		}
 
 		Town mappedTown = null;
-		if (townLabel != null) {
+		
+		if ((year - Election.FIRST_MAIN_ELECTION) % 4 != 0) {
+			
+			Integer tseCode = Misc.parseInt(townCode);
+			
+			if (tseCode == null) {
 
-			// Parse town
-		}
+				throw new ParseException("Invalid TSE code", pieces[6]);
+			}
+			
+			Town parsedTown = new Town();
+			parsedTown.setTseCode(Misc.parseInt(pieces[6]));
+			
+			if ((mappedTown = (Town) locationParser.getTownsMapByTSE().get(tseCode)) == null) {
+				
+				throw new ParseException("Town TSE code not found", tseCode + "");
+			}
+		} 
 
-		Post parsedPost = new Post(Misc.parseLong(pieces[8]));
+		Post parsedPost = new Post(postLabel);
 
 		Post mappedPost = (Post) electionParser.getPostsMap().get(parsedPost);
 
@@ -371,21 +398,16 @@ public class AccountParser extends AbstractParser {
 			throw new ParseException("Election post not found", pieces[8]);
 		}
 
-		Election election = new Election();
-		election.setPost(mappedPost);
-		election.setState(mappedState);
-		election.setTown(mappedTown);
-		election.setYear(year);
+		Election parsedElection = new Election(year, mappedState, mappedTown, mappedPost);
+		
+		Election mappedElection = (Election) electionParser.getElectionsMap().get(parsedElection);
+		
+		if (mappedElection == null) {
+			
+			throw new ParseException("Election not found", parsedElection.toString());
+		}
 
-		Candidate candidate = new Candidate();
-		candidate.setName(name);
-
-		Candidature candidature = new Candidature();
-		candidature.setElection(election);
-		candidature.setCandidate(candidate);
-		candidature.setBallotNo(ballotNo);
-
-		AccountBinding binding = new AccountBinding(candidature);
+		AccountBinding binding = new AccountBinding(ballotNo, mappedElection);
 
 		Candidature mappedCandidature = (Candidature) bindings.get(binding);
 
@@ -395,7 +417,7 @@ public class AccountParser extends AbstractParser {
 
 		} else {
 
-			Status parsedStatus = new Status(year, candidate);
+			Status parsedStatus = new Status(year, mappedCandidature.getCandidate());
 
 			Status mappedStatus = (Status) candidateParser.getStatusMap().get(parsedStatus);
 
@@ -454,17 +476,23 @@ public class AccountParser extends AbstractParser {
 
 		candidatureParser.parse("/home/fm/work/data/sdext/eleitorais/candidatos/candidaturas/2010");
 
-		AccountParser estateParser = new AccountParser(locationParser, candidateParser, candidatureParser);
+		EstateParser estateParser = new EstateParser(locationParser, candidateParser, candidatureParser);
 
-		estateParser.parse("/home/fm/work/data/sdext/eleitorais/candidatos/bens/2010");
+//		estateParser.parse("/home/fm/work/data/sdext/eleitorais/candidatos/bens/2010");
+		
+		AccountParser accountParser = new AccountParser(locationParser, candidateParser,
+				candidatureParser, electionParser);
+		
+		accountParser.parse("/home/fm/work/data/sdext/eleitorais/prestacao_contas/2010/candidato");
 
-		locationParser.save();
-		electionParser.save();
-		coalitionParser.save();
-		partyParser.save();
-		estateParser.save();
-		candidateParser.save();
-		candidatureParser.save();
+//		locationParser.save();
+//		electionParser.save();
+//		coalitionParser.save();
+//		partyParser.save();
+//		accountParser.save();
+//		estateParser.save();
+//		candidateParser.save();
+//		candidatureParser.save();
 	}
 }
 
