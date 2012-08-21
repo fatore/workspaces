@@ -140,6 +140,11 @@ public class EstateParser extends AbstractParser {
 		Float value = Misc.parseFloat(pieces[9]);
 		Date registryDate = Misc.parseDate(pieces[10]);
 		
+		if (detail.contains("UNIDADE MONETARIA DA EPOCA")) {
+			
+			throw new ParseException("Different currency ", detail);
+		}
+		
 		Estate estate = new Estate(estateTseId, label, detail, value, registryDate);
 		estate.setId(new Long(estateList.size()));
 		estateList.add(estate);

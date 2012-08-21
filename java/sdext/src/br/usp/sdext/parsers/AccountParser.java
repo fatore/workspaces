@@ -12,6 +12,7 @@ import br.usp.sdext.core.Log;
 import br.usp.sdext.core.Model;
 import br.usp.sdext.models.account.Donor;
 import br.usp.sdext.models.account.Expense;
+import br.usp.sdext.models.account.GhostCandidate;
 import br.usp.sdext.models.account.Income;
 import br.usp.sdext.models.account.Provider;
 import br.usp.sdext.models.candidate.status.Status;
@@ -456,13 +457,10 @@ public class AccountParser extends AbstractParser {
 
 	public void save() {
 
-		System.out.println("\nTotal objects loaded");
-		System.out.println("\tDonors: " + donorParser.getDonorMap().size());
-		System.out.println("\tIncomes: " + incomeParser.getIncomesMap().size());
-		System.out.println("\tProviders: " + providerParser.getProviderMap().size());
-		System.out.println("\tExpenses: " + expenseParser.getExpenseMap().size());
-		System.out.println("\tLog Entries: " + logs.size());
-		System.out.println("\tInexistent Candidates: " + ghosts.size());
+		System.out.println("Saving transactions data...");
+		System.out.println("\t" + ghosts.size() + " transactions for unknown candidates.");
+		
+		Model.bulkSave(logs);
 		
 		donorParser.save();
 		incomeParser.save();
@@ -470,8 +468,6 @@ public class AccountParser extends AbstractParser {
 		expenseParser.save();
 
 		Model.bulkSave(ghosts);
-		Model.bulkSave(logs);
-
 	}
 
 	public static void main(String[] args) throws Exception {

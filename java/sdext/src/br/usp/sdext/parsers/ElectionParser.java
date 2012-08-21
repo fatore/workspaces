@@ -239,11 +239,7 @@ public class ElectionParser extends AbstractParser {
 
 			mappedElection = (Election) Model.persist(parsedElection, electionsMap);
 			
-		} else {
-			
-			throw new ParseException("Duplicate election", mappedElection.toString());
-		}
-		
+		} 
 		return mappedElection;
 	}
 

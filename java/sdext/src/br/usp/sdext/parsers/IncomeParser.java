@@ -57,8 +57,8 @@ public class IncomeParser {
 
 	public void save() {
 
-		System.out.println("\tSaving incomes...");
+		System.out.print("\tSaving incomes...");
 		Model.bulkSave(incomesMap.values());
-
+		System.out.println(" Done!");
 	}
 }

@@ -77,8 +77,8 @@ public class DonorParser  {
 
 	public void save() {
 
-		System.out.println("\tSaving donors...");
+		System.out.print("\tSaving " + donorsMap.size() + " donors...");
 		Model.bulkSave(donorsMap.values());
-
+		System.out.println(" Done!");
 	}
 }

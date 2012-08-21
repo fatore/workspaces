@@ -57,8 +57,8 @@ public class ExpenseParser {
 
 	public void save() {
 
-		System.out.println("\tSaving expenses...");
+		System.out.print("\tSaving expenses...");
 		Model.bulkSave(expenseMap.values());
-
+		System.out.println(" Done!");
 	}
 }

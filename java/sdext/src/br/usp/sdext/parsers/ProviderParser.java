@@ -48,8 +48,8 @@ public class ProviderParser {
 
 	public void save() {
 
-		System.out.println("\tSaving providers...");
+		System.out.print("\tSaving providers...");
 		Model.bulkSave(providersMap.values());
-
+		System.out.println(" Done!");
 	}
 }

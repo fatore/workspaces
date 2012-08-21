@@ -330,10 +330,10 @@ public class CandidateParser extends AbstractParser {
 
 				if (mappedTown == null) {
 
-					System.err.println("error");
+					System.err.println("ERROR: Town not found: " + town.toString());
 				}
 
-				logs.add(new Log("Birth town not found.", pieces[38] + ", " + pieces[36] + ", " + pieces[37]));
+//				logs.add(new Log("Birth town not found.", pieces[38] + ", " + pieces[36] + ", " + pieces[37]));
 			}
 		}
 

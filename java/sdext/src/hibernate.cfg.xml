@@ -39,6 +39,7 @@
 	<mapping class="br.usp.sdext.models.account.Expense"/>
 	<mapping class="br.usp.sdext.models.account.Income"/>
 	<mapping class="br.usp.sdext.models.account.Provider"/>
+	<mapping class="br.usp.sdext.models.account.GhostCandidate"/>
 	
 	<mapping class="br.usp.sdext.models.candidate.Candidate"/>
 	<mapping class="br.usp.sdext.models.candidate.Citizenship"/>
