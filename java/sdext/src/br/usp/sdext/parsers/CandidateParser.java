@@ -8,6 +8,7 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,7 +45,7 @@ public class CandidateParser extends AbstractParser {
 
 	private ArrayList<Model> duppersList = new ArrayList<>();
 
-	private ArrayList<Model> logs = new ArrayList<>();
+	private HashSet<Model> logs = new HashSet<>();
 
 	public CandidateParser(LocationParser locationParser) {
 

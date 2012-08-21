@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 
 import br.usp.sdext.core.Log;
 import br.usp.sdext.core.Model;
@@ -25,7 +26,7 @@ public class EstateParser extends AbstractParser {
 	private CandidatureParser candidatureParser;
 	
 	private ArrayList<Model> estateList = new ArrayList<>();
-	private ArrayList<Model> logs = new ArrayList<>();
+	private HashSet<Model> logs = new HashSet<>();
 	
 	private Long notFound = 0L;
 
@@ -175,12 +176,8 @@ public class EstateParser extends AbstractParser {
 
 		CandidateParser candidateParser = new CandidateParser(locationParser);
 
-		CoalitionParser coalitionParser = new CoalitionParser();
-
-		PartyParser partyParser = new PartyParser();
-
 		CandidatureParser candidatureParser = new CandidatureParser(locationParser, electionParser, 
-				candidateParser, partyParser, coalitionParser);
+				candidateParser);
 
 		candidatureParser.parse("/home/fm/work/data/sdext/eleitorais/candidatos/candidaturas/2010");
 		
@@ -190,8 +187,6 @@ public class EstateParser extends AbstractParser {
 
 		locationParser.save();
 		electionParser.save();
-		coalitionParser.save();
-		partyParser.save();
 		estateParser.save();
 		candidateParser.save();
 		candidatureParser.save();

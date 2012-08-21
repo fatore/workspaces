@@ -5,8 +5,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.text.Normalizer;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
@@ -22,7 +22,7 @@ import br.usp.sdext.util.ParseException;
 
 public class LocationParser {
 
-	private ArrayList<Model> logs = new ArrayList<>();
+	private HashSet<Model> logs = new HashSet<>();
 
 	private HashMap<Model, Model> regionsMap = new HashMap<>();
 	private HashMap<Model, Model> statesMap = new HashMap<>();

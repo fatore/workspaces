@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import br.usp.sdext.core.Log;
 import br.usp.sdext.core.Model;
@@ -25,8 +25,8 @@ public class ElectionParser extends AbstractParser {
 	
 	private int pleb = 0, non = 0, notFound = 0;
 
-	private ArrayList<Model> logs = new ArrayList<>();
-
+	private HashSet<Model> logs = new HashSet<>();
+	
 	public ElectionParser(LocationParser locationParser) {
 
 		this.locationParser = locationParser;

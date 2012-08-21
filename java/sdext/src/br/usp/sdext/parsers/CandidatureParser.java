@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import br.usp.sdext.core.Log;
 import br.usp.sdext.core.Model;
@@ -32,7 +32,7 @@ public class CandidatureParser extends AbstractParser {
 	private PartyParser partyParser;
 	private CoalitionParser coalitionParser;
 	
-	private ArrayList<Model> logs = new ArrayList<>();
+	private HashSet<Model> logs = new HashSet<>();
 	
 	private int dups = 0; 
 	
@@ -51,14 +51,14 @@ public class CandidatureParser extends AbstractParser {
 	public HashMap<EstateBinding, Model> getEstateBindings() {return estateBindings;}
 
 	public CandidatureParser(LocationParser locationParser,
-			ElectionParser electionParser, CandidateParser candidateParser,
-			PartyParser partyParser, CoalitionParser coalitionParser) {
+			ElectionParser electionParser, CandidateParser candidateParser) {
 		
 		this.locationParser = locationParser;
 		this.electionParser = electionParser;
 		this.candidateParser = candidateParser;
-		this.partyParser = partyParser;
-		this.coalitionParser = coalitionParser;
+		
+		this.partyParser = new PartyParser();
+		this.coalitionParser = new CoalitionParser();
 	}
 
 	protected void loadFile(File file) throws Exception {
@@ -120,12 +120,8 @@ public class CandidatureParser extends AbstractParser {
 
 		Long tseId = Misc.parseLong(pieces[11]); 
 		
-		if(tseId == 60000000002L) {
-			
-			System.out.println();
-		}
-		
 		if (tseId == null) {
+			
 			throw new Exception("Candidate TSE id is invalid: " + pieces[11]);
 		}
 		
@@ -134,7 +130,7 @@ public class CandidatureParser extends AbstractParser {
 		
 		if (situationID == null) {
 			
-			return null;
+			throw new Exception("Candidate situation is invalid: " + pieces[11]);
 		}
 		
 		switch (situationID.intValue()) {
@@ -146,6 +142,7 @@ public class CandidatureParser extends AbstractParser {
 		case 8: // waiting judge
 		case 9: // ineligible
 		case 10: // revoked
+		case 11: // negated
 		case 13: // empty
 		case 14: // rejected
 		case 17: // judging
@@ -319,6 +316,9 @@ public class CandidatureParser extends AbstractParser {
 	
 	public void save() {
 
+		coalitionParser.save();
+		partyParser.save();
+		
 		System.out.println("Saving candidatures...");
 		Model.bulkSave(logs);
 		System.out.println("\tDuplicated candidatures: " + dups);
@@ -352,12 +352,8 @@ public class CandidatureParser extends AbstractParser {
 		
 		CandidateParser candidateParser = new CandidateParser(locationParser);
 		
-		CoalitionParser coalitionParser = new CoalitionParser();
-		
-		PartyParser partyParser = new PartyParser();
-		
-		CandidatureParser candidatureParser = new CandidatureParser(locationParser, electionParser, 
-				candidateParser, partyParser, coalitionParser);
+		CandidatureParser candidatureParser = new CandidatureParser(locationParser,
+				electionParser, candidateParser);
 		
 		candidatureParser.parse("/home/fm/work/data/sdext/eleitorais/candidatos/candidaturas/2006");
 		candidatureParser.parse("/home/fm/work/data/sdext/eleitorais/candidatos/candidaturas/2010");
@@ -365,8 +361,6 @@ public class CandidatureParser extends AbstractParser {
 		locationParser.save();
 		electionParser.save();
 		candidateParser.save();
-		coalitionParser.save();
-		partyParser.save();
 		candidatureParser.save();
 	}
 }
