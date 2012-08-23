@@ -35,7 +35,7 @@ public class LocationParser {
 	private HashMap<Integer, Model> townsMapByTSE= new HashMap<>();
 
 	private HashMap<Model, Model> lostTownsMap= new HashMap<>();
-	
+
 	public HashMap<Model, Model> getRegionsMap() {return regionsMap;}
 	public HashMap<Model, Model> getStatesMap() {return statesMap;}
 	public HashMap<Model, Model> getMesosMap() {return mesosMap;}
@@ -44,16 +44,16 @@ public class LocationParser {
 	public HashMap<Integer, Model> getTownsMapByIBGE() {return townsMapByIBGE;}
 	public HashMap<Model, Model> getLostTownsMap() {return lostTownsMap;}
 	public HashMap<Integer, Model> getTownsMapByTSE() {return townsMapByTSE;}
-	
+
 	public void addSpecialValues() {
-		
+
 		Region mappedRegion = (Region) regionsMap.get(new Region(0));
-		
+
 		State state = new State(0, "BR", "Brasil", "BRASIL", -1, mappedRegion, 0f, "IGNOR");
-		
+
 		Model.persist(state, statesMap);
 	}
-	
+
 	public void parseFile(String filename, String action) throws Exception {
 
 		BufferedReader in = new BufferedReader(
@@ -136,7 +136,7 @@ public class LocationParser {
 		String acronymx = pieces[4];
 
 		String status = pieces[5];
-		
+
 		Region parsedRegion = new Region(ibgeCode, name, namex, acronym, acronymx, status);
 
 		Region mappedRegion = (Region) regionsMap.get(parsedRegion);
@@ -172,7 +172,7 @@ public class LocationParser {
 
 		State parsedState = new State(ibgeCode, acronym,
 				name, namex, sinpasCode, region, area, status);
-		
+
 		State mappedState = (State) statesMap.get(parsedState);
 
 		if (mappedState == null) {
@@ -200,7 +200,7 @@ public class LocationParser {
 		state = (State) statesMapByIBGE.get(Integer.parseInt(pieces[4]));
 
 		String status = pieces[5];
-		
+
 		MesoRegion parsedMeso = new MesoRegion(ibgeCode, name, namex, acronym, state, status);
 
 		MesoRegion mappedMeso = (MesoRegion) mesosMap.get(parsedMeso);
@@ -228,7 +228,7 @@ public class LocationParser {
 		state = (State) statesMapByIBGE.get(Integer.parseInt(pieces[4]));
 
 		String status = pieces[5];
-		
+
 		MicroRegion parsedMicro = new MicroRegion(ibgeCode, name, namex, acronym, state, status);
 
 		MicroRegion mappedMicro= (MicroRegion) mesosMap.get(parsedMicro);
@@ -281,7 +281,7 @@ public class LocationParser {
 
 		Float altitude = Float.parseFloat(pieces[27]);
 		Float area = Float.parseFloat(pieces[28]);
-		
+
 		Town parsedTown = new Town(ibgeCode, ibgeCodeVD, status, sinpasCode, siafiCode,
 				name, namex, obs, altCode, altCodeVD, legalAmazon, border, capital,
 				state, mesoRegion, microRegion, latitude, longetude, altitude, area);
@@ -317,7 +317,7 @@ public class LocationParser {
 
 		return str.toUpperCase().trim();
 	}
-	
+
 	public Town findMisspelledTown(Town missTown, int threshold) {
 
 		Iterator<Entry<Model, Model>> i = getTownsMap().entrySet().iterator();
@@ -338,66 +338,66 @@ public class LocationParser {
 		}
 		return null;
 	}
-	
+
 	public Town guessTownNames(Town town) {
-		
+
 		switch (town.getNamex()) {
-		
+
 		case "SAO VALERIO DO TOCANTINS":
 			town.setNamex("SAO VALERIO DA NATIVIDADE");
 			break;
-			
+
 		case "ITAMARACA":
 			town.setNamex("ILHA DE ITAMARACA");
 			break;
-			
+
 		case "GOVERNADOR LOMANTO JUNIOR":
 			town.setNamex("BARRO PRETO");
 			break;
-			
+
 		case "TACIMA":
 			town.setNamex("CAMPO DE SANTANA");
 			break;
-			
+
 		case "SAO DOMINGOS DE POMBAL":
 			town.setNamex("SAO DOMINGOS");
 			break;
-			
+
 		case "SAO VICENTE DO SERIDO":
 			town.setNamex("SERIDO");
 			break;
-			
+
 		case "ASSU":
 			town.setNamex("ACU");
 			break;
-			
+
 		case "BOA SAUDE":
 			town.setNamex("JANUARIO CICCO");
 			break;
-			
+
 		case "CAMPO GRANDE":
 			town.setNamex("AUGUSTO SEVERO");
 			break;
-			
+
 		case "SERRA CAIADA":
 			town.setNamex("PRESIDENTE JUSCELINO");
 			break;
-			
+
 		case "COUTO DE MAGALHAES":
 			town.setNamex("COUTO MAGALHAES");
 			break;
-			
+
 		default:
 			return null;
 		}
-		
+
 		return (Town) townsMap.get(town);
 	}
-	
+
 	public Town disambiguateTown(Town town) {
-		
+
 		Town mappedTown;
-		
+
 		// Try to find similar.
 		if ((mappedTown = findMisspelledTown(town, 1)) == null) {
 
@@ -406,13 +406,13 @@ public class LocationParser {
 			test.setState(town.getState());
 			mappedTown = (Town) getTownsMap().get(test);
 		}
-		
+
 		if (mappedTown == null) {
-			
+
 			// Try individually guesses..
 			mappedTown = guessTownNames(town);
 		}
-		
+
 		return mappedTown;
 	}
 
@@ -435,6 +435,10 @@ public class LocationParser {
 
 		System.out.println("\t" + townsMap.size() + " towns...");
 		Model.bulkSave(townsMap.values());
+
+		statesMapByIBGE.clear();
+		townsMapByIBGE.clear();
+		townsMapByTSE.clear();
 
 		System.out.println("Done!");
 	}

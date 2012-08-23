@@ -23,9 +23,9 @@ public class ElectionParser extends AbstractParser {
 	
 	private HashMap<Model, Model> postsMap = new HashMap<>();
 	
-	private int pleb = 0, non = 0, notFound = 0;
-
 	private HashSet<Model> logs = new HashSet<>();
+	
+	private int pleb = 0, non = 0, notFound = 0;
 	
 	public ElectionParser(LocationParser locationParser) {
 

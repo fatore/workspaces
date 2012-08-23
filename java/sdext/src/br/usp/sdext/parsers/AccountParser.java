@@ -30,13 +30,13 @@ public class AccountParser extends AbstractParser {
 	private LocationParser locationParser;
 	private CandidateParser candidateParser;
 	private ElectionParser electionParser;
-
-	private HashMap<AccountBinding, Model> bindings;
-
+	
 	private DonorParser donorParser;
 	private IncomeParser incomeParser;
 	private ProviderParser providerParser;
 	private ExpenseParser expenseParser;
+	
+	private HashMap<AccountBinding, Model> bindings;
 
 	private ArrayList<Model> ghosts = new ArrayList<>();
 	private HashSet<Model> logs = new HashSet<>();
@@ -48,7 +48,6 @@ public class AccountParser extends AbstractParser {
 	private boolean csv;
 
 	private Long notFound = 0L;
-
 
 	public AccountParser(LocationParser locationParser, CandidateParser candidateParser, 
 			CandidatureParser candidatureParser, ElectionParser electionParser) {
@@ -468,6 +467,8 @@ public class AccountParser extends AbstractParser {
 		expenseParser.save();
 
 		Model.bulkSave(ghosts);
+		
+		bindings.clear();
 	}
 
 	public static void main(String[] args) throws Exception {

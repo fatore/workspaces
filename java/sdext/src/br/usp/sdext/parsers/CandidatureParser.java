@@ -329,6 +329,9 @@ public class CandidatureParser extends AbstractParser {
 		Model.bulkSave(candidaturesMap.values());
 		
 		System.out.println("Done!");
+		
+		accountBindings.clear();
+		estateBindings.clear();
 	}
 
 	public static void main(String[] args) throws Exception {

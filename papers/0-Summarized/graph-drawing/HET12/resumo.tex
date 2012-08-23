@@ -1,0 +1,111 @@
+\documentclass[a4paper,12pt]{article}
+
+% config
+\usepackage[brazil]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{times}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage[pdftex]{graphicx}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{textfit}
+\usepackage[natbib=true,sorting=none, firstinits=true]{biblatex}
+\usepackage{url}
+\usepackage{color}  
+\usepackage{wrapfig}
+\usepackage[top=30mm,bottom=20mm,left=30mm,right=20mm,twoside]{geometry}
+
+\usepackage{array}
+\usepackage{multirow}
+
+\hypersetup{
+        colorlinks=true,
+        citecolor=black,
+        filecolor=black,
+        linkcolor=black,
+        urlcolor=black
+}
+
+% indentation
+\setlength{\parindent}{0pt} % no indent
+\setlength{\parskip}{2.0ex plus 0.5ex minus 0.2ex} % paragraph spacing
+\setlength{\skip\footins}{2cm} % spacing between footer and text
+\setlength{\footnotesep}{0.5cm} % space between footer itens
+\renewcommand{\baselinestretch}{1.5} % line spacing
+
+\bibliography{references}
+
+\title{}
+
+\author{Francisco Morgani Fatore}
+
+\begin{document}
+
+\hrule
+{\large\bf Graph Bundling by Kernel Density Estimation} \\
+\vspace{0.25cm}
+{\large Hurter, C. and Ersoy, O. and Telea, A.}
+\hrule
+
+\vspace{0.5cm}
+
+\it{This text is Francisco Morgani Fatore's summary of this paper, written as part of
+  the course of for the course Computational Visualization  (\href{http://wiki.icmc.usp.br/index.php/SCC-5836(Rminghim)}{http://wiki.icmc.usp.br/index.php/SCC-5836(Rminghim)}).}
+
+
+\vspace{1.0cm}
+{\bf Conceito/Contribuições:}
+
+Os autores apresentam as seguintes contribuições:
+
+\begin{itemize}
+  \item Um novo método mais simples e rápido para bundling de grafos;
+  \item Uma técnica de desenho de bundles que evita obstáculos arbitrários como legendas, ícones e outras formas que podem complementar o grafo; e
+  \item Um modo de visualizar a qualidade dos bundles.
+\end{itemize}
+
+\vspace{0.5cm}
+{\bf Implementação:}
+
+Técnicas de bundling podem ser vistas como operadores que deslocam pontos pertences ao grafo com base na distribuição da vizinhança de cada ponto. O resultado é um novo layout onde as arestas estão agrupadas em grupos de alta densidade e separados por áreas de baixa densidade (espaços em branco).
+
+A implementação proposta pelos autores para materializar este conceito é entender o operador de bundling como uma função de processamento de imagens que busca aguçar as densidades locais das arestas. Assim o método trabalha diretamente no desenho do grafo aplicando métodos de KDE (kernel density estimation) para definir a densidade de cada ponto e obter assim um mapa de densidade de todo o grafo. O método trabalha iterativamente buscando a cada passo unir as arestas de acordo com o mapa de densidade.
+
+
+\vspace{0.5cm}
+{\bf Trabalhos relacionados: }
+
+Menciona-se alguns trabalhos relacionados à técnicas de simplificação de grafo que buscam reduzir a poluição de um grafo ao unir nós fortemente conectados e arestas~\cite{AvHK06, AMA07}. Relata-se que essas técnicas não trabalham no grafo como um todo, fato que dificulta a exploração em escala. Além disso, a simplificação implica em alguns casos em alterar as posições dos nós, fato que não pode ser aceito para todas aplicações. 
+
+A ideia de edge bundling parte de um trabalho que conclui que encontrar grupos de nodes ligados por conjuntos de arestas é mais fácil quando os conjuntos de arestas (bundles) estão separados por espaços em branco~\cite{GHNS11}. 
+
+Relata-se também que existe uma variedade de trabalhos que abordam o desenho e exploração de ``bundled layouts'', o que revela que a maior preocupação do trabalho trata-se em como construir os bundles.  
+
+
+\vspace{0.5cm}
+{\bf Características dos dados:}
+
+O trabalho é realizado sobre grafos.
+
+\vspace{0.5cm}
+{\bf Domínio Aplicação:}
+
+No artigo constam estudos de caso com dados de migração nos EUA e também sobre os voos de uma companhia area francesa.
+
+\vspace{0.5cm}
+{\bf Próximos Passos:}
+
+Otimizações como programação em CUDA poderiam ser realizadas para melhorar o desempenho da aplicação.
+
+\vspace{0.5cm}
+{\bf Uso em outras áreas:}
+
+Os autores admitem que os usos das técnicas apresentadas podem extrapolar outras áreas. A avaliação do bundling gerado por exemplo poderia ser utilizado em outras áreas como método de avaliação de visualizações.
+
+\printbibliography
+
+\end{document}
+

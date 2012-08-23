@@ -165,6 +165,10 @@ public abstract class Model  {
 		
 		transaction.commit();
 		session.close();
+		
+		collection.clear();
+		
+		System.gc();
 	}
 	
 //	public static Model findByPK(Long id) {

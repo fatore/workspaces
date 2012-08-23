@@ -57,7 +57,7 @@ public class ExpenseParser {
 
 	public void save() {
 
-		System.out.print("\tSaving expenses...");
+		System.out.print("\tSaving " + expenseMap.size() + " expenses...");
 		Model.bulkSave(expenseMap.values());
 		System.out.println(" Done!");
 	}

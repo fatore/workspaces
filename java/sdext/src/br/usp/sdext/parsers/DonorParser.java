@@ -54,21 +54,21 @@ public class DonorParser  {
 
 		Donor donor = new Donor(donorName, donorCPF);
 
-		State state = null;
+		State mappedState = null;
 
 		if (stateLabel != null) {
 			
-			state = new State(stateLabel);
+			State parsedState = new State(stateLabel);
 
-			State mappedState = (State) locationParser.getStatesMap().get(state);
+			mappedState = (State) locationParser.getStatesMap().get(parsedState);
 
 			if (mappedState == null) {
 
-				throw new ParseException("Election state not found in map" , state.getAcronym());
+				throw new ParseException("Election state not found in map" , parsedState.getAcronym());
 			}
 		}
 
-		donor.setState(state);
+		donor.setState(mappedState);
 
 		donor = (Donor) Model.persist(donor, donorsMap);
 

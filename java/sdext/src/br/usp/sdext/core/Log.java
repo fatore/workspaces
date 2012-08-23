@@ -19,8 +19,13 @@ public class Log extends Model implements Serializable {
 	
 	@Column(columnDefinition="text")
 	private String line;
+	
 	private String cause;
+	
+	@Column(columnDefinition="text")
 	private String message;
+	
+	@Column(columnDefinition="text")
 	private String detail;
 	
 	public Log() {}

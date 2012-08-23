@@ -1,3 +1,4 @@
+
 package br.usp.sdext.parsers;
 
 import java.util.Date;
@@ -57,7 +58,7 @@ public class IncomeParser {
 
 	public void save() {
 
-		System.out.print("\tSaving incomes...");
+		System.out.print("\tSaving" + incomesMap + " incomes...");
 		Model.bulkSave(incomesMap.values());
 		System.out.println(" Done!");
 	}

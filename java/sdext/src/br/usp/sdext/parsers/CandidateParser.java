@@ -392,6 +392,9 @@ public class CandidateParser extends AbstractParser {
 		Model.bulkSave(statusMap.values());
 		
 		System.out.println("Done!");
+		
+		candidatesMapByVoterId.clear();
+		duppersList.clear();
 	}
 
 	public static void main(String[] args) throws Exception {
